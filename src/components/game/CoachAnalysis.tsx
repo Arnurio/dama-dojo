@@ -1,0 +1,185 @@
+"use client";
+import { useState } from "react";
+import { Coach } from "@/lib/coaches";
+import { MoveRecord } from "@/store/game-store";
+import { PieceColor } from "@/lib/checkers-engine";
+
+interface Props {
+  coach: Coach;
+  moveHistory: MoveRecord[];
+  winner: PieceColor | "draw" | null;
+  playerColor: PieceColor;
+  isPro: boolean;
+  reviewsToday: number;
+  onClose: () => void;
+}
+
+export default function CoachAnalysis({ coach, moveHistory, winner, playerColor, isPro, reviewsToday, onClose }: Props) {
+  const [analysis, setAnalysis] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [unlocked, setUnlocked] = useState(isPro);
+
+  const freeLimit = 3;
+  const canUseForFree = reviewsToday < freeLimit;
+  const canAnalyze = unlocked || canUseForFree;
+
+  const playerWon = winner === playerColor;
+  const totalMoves = moveHistory.length;
+  const playerCaptures = moveHistory.filter(m => m.player === playerColor && m.captures.length > 0).length;
+
+  const fetchAnalysis = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/coach-analysis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          coachId: coach.id,
+          coachPrompt: coach.aiPrompt,
+          playerWon,
+          totalMoves,
+          playerCaptures,
+          playerColor,
+          winner,
+        }),
+      });
+      const data = await res.json();
+      setAnalysis(data.analysis ?? "Не удалось получить анализ.");
+    } catch {
+      setAnalysis(getOfflineAnalysis(coach, playerWon, playerCaptures, totalMoves));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleJudgeUnlock = () => {
+    setUnlocked(true);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-[#111118] border border-white/10 rounded-3xl p-6 max-w-lg w-full">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="text-4xl">{coach.avatar}</div>
+            <div>
+              <div className="font-bold">{coach.name}</div>
+              <div className="text-xs text-indigo-400">{coach.title}</div>
+            </div>
+          </div>
+          <button onClick={onClose} className="text-white/40 hover:text-white text-xl">×</button>
+        </div>
+
+        {/* Game summary */}
+        <div className="bg-white/5 rounded-2xl p-4 mb-4">
+          <div className="text-sm font-semibold mb-2">Game Summary</div>
+          <div className="grid grid-cols-3 gap-3 text-center">
+            <div>
+              <div className={`text-xl font-bold ${playerWon ? "text-green-400" : "text-red-400"}`}>
+                {playerWon ? "WIN" : winner === "draw" ? "DRAW" : "LOSS"}
+              </div>
+              <div className="text-xs text-white/40">Result</div>
+            </div>
+            <div>
+              <div className="text-xl font-bold text-indigo-400">{totalMoves}</div>
+              <div className="text-xs text-white/40">Total Moves</div>
+            </div>
+            <div>
+              <div className="text-xl font-bold text-amber-400">{playerCaptures}</div>
+              <div className="text-xs text-white/40">Your Captures</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Analysis section */}
+        {!canAnalyze && !unlocked ? (
+          <div className="bg-indigo-600/10 border border-indigo-500/30 rounded-2xl p-4 text-center">
+            <div className="text-2xl mb-2">🔒</div>
+            <div className="font-semibold mb-1">Daily limit reached ({freeLimit}/day free)</div>
+            <div className="text-sm text-white/60 mb-4">Upgrade to Pro for unlimited AI coach analysis</div>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={handleJudgeUnlock}
+                className="bg-amber-500/20 border border-amber-500/40 text-amber-300 py-2 rounded-xl text-sm font-medium"
+              >
+                🧑‍⚖️ Judge Demo — Unlock for 0 ₸
+              </button>
+              <button className="bg-gradient-to-r from-indigo-600 to-purple-600 py-2 rounded-xl text-sm font-medium">
+                ✨ Upgrade to Pro
+              </button>
+            </div>
+          </div>
+        ) : analysis ? (
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+            <div className="text-sm font-semibold text-white/60 mb-2">Coach says:</div>
+            <div className="text-sm leading-relaxed whitespace-pre-wrap">{analysis}</div>
+          </div>
+        ) : (
+          <button
+            onClick={fetchAnalysis}
+            disabled={loading}
+            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 disabled:opacity-50 py-3 rounded-xl font-semibold transition-all"
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="animate-spin">⟳</span> {coach.name} is analyzing...
+              </span>
+            ) : (
+              `${coach.avatar} Get ${coach.name}'s Analysis`
+            )}
+          </button>
+        )}
+
+        {!isPro && canAnalyze && !analysis && (
+          <p className="text-xs text-white/30 mt-2 text-center">
+            {freeLimit - reviewsToday} free analysis remaining today
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function getOfflineAnalysis(coach: Coach, playerWon: boolean, captures: number, totalMoves: number): string {
+  const analyses: Record<string, string[]> = {
+    arman: [
+      `${playerWon ? "Победа — лишь начало пути. Истинное мастерство в том, чтобы понять, почему ты победил." : "Поражение — твой лучший учитель. Не убегай от него."}
+
+Ты сделал ${totalMoves} ходов и взял ${captures} фигуры. ${captures < 3 ? "Больше атаки. Размен фигур — двигатель победы." : "Хорошее давление."}
+
+Найди свое икигай в каждом ходе, кузнечик. 🌸`,
+    ],
+    erzat: [
+      `${playerWon ? "YESSSS. That's how KZ engineers play. Bold. No retreat." : "We don't lose. We collect data. Get back in there."}
+
+${captures} captures in ${totalMoves} moves. ${captures < 3 ? "Too passive. Next game — attack from move 1." : "Aggressive. I like it."}
+
+Meta offered me billions. I said no. Now say no to losing. 🚀`,
+    ],
+    nurdaulet: [
+      `${playerWon ? "Excellent ROI on this game." : "This game was a bad investment. Let's fix the portfolio."}
+
+Analysis: ${totalMoves} moves, ${captures} captures. ${captures / totalMoves < 0.2 ? "Low capture rate — you're playing too conservatively. A VC who doesn't take risks doesn't get returns." : "Good aggression. Deploying capital well."}
+
+From London to Almaty, I learned: patience + calculated risk = victory. 💼`,
+    ],
+    arlan: [
+      `bro ${playerWon ? "WE WON LETS GOOO 🔥" : "nah we don't vibe that way. rematch."}
+
+${totalMoves} moves. ${captures} caps. ${captures < 2 ? "bro u gotta capture more. that's literally free pieces 💀" : "the captures were clean fr fr"}
+
+i dropped out of high school and got into YC. you can definitely learn checkers. vibe play next time ⚡`,
+    ],
+    timur: [
+      `${playerWon ? "Acceptable." : "Unacceptable. I sponsor world champions. This was not champion-level play."}
+
+${totalMoves} moves. ${captures} captures. ${captures < 4 ? "Insufficient aggression. Kings are built on the back of captured pieces." : "Capture rate noted."}
+
+The board is a chess game. Every move has a price. Don't waste them. — Timur Turlov, President, Kazakhstan Chess Federation ♟️`,
+    ],
+  };
+
+  const coachAnalyses = analyses[coach.id] ?? analyses.arman;
+  return coachAnalyses[Math.floor(Math.random() * coachAnalyses.length)];
+}

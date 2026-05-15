@@ -1,0 +1,185 @@
+"use client";
+import Link from "next/link";
+import { useAuthStore } from "@/store/auth-store";
+import { auth, googleProvider } from "@/lib/firebase";
+import { signInWithPopup, signOut } from "firebase/auth";
+import { COACHES } from "@/lib/coaches";
+
+export default function Home() {
+  const { user, profile } = useAuthStore();
+
+  const handleLogin = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
+
+  return (
+    <main className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
+      {/* Background glow */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/10 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/10 blur-3xl" />
+      </div>
+
+      {/* Nav */}
+      <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl">♟️</span>
+          <span className="text-xl font-bold gradient-text">Dama Dojo</span>
+        </div>
+        <div className="flex items-center gap-4">
+          {user ? (
+            <>
+              <Link href="/leaderboard" className="text-sm text-white/60 hover:text-white transition-colors">
+                Leaderboard
+              </Link>
+              <Link href="/shop" className="text-sm text-white/60 hover:text-white transition-colors">
+                {profile?.isPro ? "✨ Pro" : "Shop"}
+              </Link>
+              <div className="flex items-center gap-2">
+                {user.photoURL && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full border border-indigo-500" />
+                )}
+                <span className="text-sm text-white/80">{profile?.elo ?? 1000} ELO</span>
+              </div>
+              <button onClick={handleLogout} className="text-sm text-white/40 hover:text-white/80 transition-colors">
+                Sign out
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={handleLogin}
+              className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              Sign in with Google
+            </button>
+          )}
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section className="relative z-10 flex flex-col items-center text-center px-4 pt-20 pb-12">
+        <div className="inline-flex items-center gap-2 bg-indigo-600/10 border border-indigo-500/30 rounded-full px-4 py-1.5 text-sm text-indigo-300 mb-6">
+          🇰🇿 &nbsp; Built by a KZ vibe coder · nFactorial 2026
+        </div>
+        <h1 className="text-5xl md:text-7xl font-black mb-4 leading-tight">
+          Learn Checkers From
+          <br />
+          <span className="gradient-text">KZ Tech Legends</span>
+        </h1>
+        <p className="text-lg text-white/60 max-w-2xl mb-8">
+          Play online, get coached by Kazakhstan&apos;s top founders, climb the ELO ladder.
+          <br />Arman teaches patience. Timur teaches dominance. Arlan says just vibe.
+        </p>
+        <div className="flex flex-wrap gap-3 justify-center">
+          <Link
+            href="/play"
+            className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-3 rounded-xl font-semibold text-lg transition-all hover:scale-105 active:scale-95"
+          >
+            Play Now ⚡
+          </Link>
+          <Link
+            href="/play?mode=online"
+            className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-3 rounded-xl font-semibold text-lg transition-all"
+          >
+            Find Match 🌐
+          </Link>
+        </div>
+        <div className="flex gap-8 mt-12 text-center">
+          {[
+            { label: "Active Players", value: "2,847" },
+            { label: "Games Played", value: "14,203" },
+            { label: "KZ Coaches", value: "5" },
+          ].map(stat => (
+            <div key={stat.label}>
+              <div className="text-2xl font-bold text-indigo-400">{stat.value}</div>
+              <div className="text-sm text-white/40">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Coach Roster */}
+      <section className="relative z-10 px-4 md:px-8 py-12 max-w-6xl mx-auto">
+        <h2 className="text-3xl font-bold text-center mb-2">Meet Your Coaches</h2>
+        <p className="text-white/50 text-center mb-8">Real founders. Real personalities. AI-powered wisdom.</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {COACHES.map((coach) => (
+            <div key={coach.id} className="coach-card relative bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
+              {coach.isPro && (
+                <div className="absolute top-2 right-2 bg-amber-500/20 border border-amber-500/40 rounded-full px-2 py-0.5 text-xs text-amber-400">
+                  PRO
+                </div>
+              )}
+              <div className="text-4xl mb-3 float-animation">{coach.avatar}</div>
+              <div className="font-semibold text-sm">{coach.name}</div>
+              <div className="text-xs text-indigo-400 mb-1">{coach.title}</div>
+              <div className="text-xs text-white/40">{coach.company}</div>
+              <div className="mt-2 text-xs italic text-white/60 border-t border-white/5 pt-2">
+                &ldquo;{coach.catchphrase}&rdquo;
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Features */}
+      <section className="relative z-10 px-4 md:px-8 py-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { icon: "🧠", title: "AI Coach", desc: "Post-game analysis in your coach's voice." },
+            { icon: "🌐", title: "Multiplayer", desc: "Online matchmaking or invite via link." },
+            { icon: "📊", title: "ELO Ranking", desc: "City and global leaderboards." },
+            { icon: "🎨", title: "Customize", desc: "Board skins, piece designs, coach outfits." },
+          ].map(f => (
+            <div key={f.title} className="bg-white/3 border border-white/8 rounded-2xl p-5">
+              <div className="text-3xl mb-2">{f.icon}</div>
+              <div className="font-semibold text-sm mb-1">{f.title}</div>
+              <div className="text-xs text-white/50">{f.desc}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Pro CTA */}
+      <section className="relative z-10 px-4 py-16 max-w-2xl mx-auto text-center">
+        <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-500/30 rounded-3xl p-8">
+          <div className="text-4xl mb-4">✨</div>
+          <h3 className="text-2xl font-bold mb-2">Go Pro</h3>
+          <p className="text-white/60 mb-6">
+            All 5 coaches, unlimited AI analysis, exclusive skins, priority matchmaking.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/shop"
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 px-6 py-3 rounded-xl font-semibold transition-all"
+            >
+              Upgrade to Pro ✨
+            </Link>
+            <Link
+              href="/shop?demo=true"
+              className="bg-white/5 hover:bg-white/10 border border-white/20 px-6 py-3 rounded-xl font-semibold transition-all text-white/80"
+            >
+              🧑‍⚖️ Judge Demo — 0 ₸
+            </Link>
+          </div>
+          <p className="text-xs text-white/30 mt-3">
+            Production: Kaspi Pay / Freedom Pay · Demo: test card 4242 4242 4242 4242
+          </p>
+        </div>
+      </section>
+
+      <footer className="relative z-10 border-t border-white/5 py-8 text-center text-sm text-white/30">
+        <p>Built by Arnur Kemerbek · nFactorial Incubator 2026 · 2.5 days · Vibe coded with AI 🚀</p>
+      </footer>
+    </main>
+  );
+}

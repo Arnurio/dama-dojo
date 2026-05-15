@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0a0f;
+  --foreground: #f0f0f0;
+  --card: #111118;
+  --card-border: #1e1e2e;
+  --accent: #6366f1;
+  --accent-glow: rgba(99, 102, 241, 0.3);
+  --board-light: #f0d9b5;
+  --board-dark: #b58863;
+  --gold: #ffd700;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6, #d946ef);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.piece {
+  transition: transform 0.2s ease;
+  cursor: pointer;
+}
+
+.piece:hover {
+  transform: scale(1.08);
+}
+
+.piece.selected {
+  transform: scale(1.12);
+  filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+}
+
+.valid-move-hint {
+  animation: pulse-hint 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse-hint {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 0.9; transform: scale(0.95); }
+}
+
+.coach-card {
+  transition: all 0.3s ease;
+}
+
+.coach-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.6); }
+}
+
+.glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
