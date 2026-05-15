@@ -14,14 +14,18 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     const fetchPlayers = async () => {
+      if (!db) {
+        setPlayers(DEMO_PLAYERS);
+        setLoading(false);
+        return;
+      }
       try {
         const q = query(collection(db, "users"), orderBy("elo", "desc"), limit(50));
         const snap = await getDocs(q);
         const data = snap.docs.map(d => d.data() as UserProfile);
-        setPlayers(data);
+        setPlayers(data.length > 0 ? data : DEMO_PLAYERS);
       } catch (e) {
         console.error(e);
-        // Fallback demo data
         setPlayers(DEMO_PLAYERS);
       } finally {
         setLoading(false);

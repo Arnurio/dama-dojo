@@ -34,6 +34,10 @@ function ShopPageInner() {
   }, [isJudgeDemo, userIsPro]);
 
   const handleLogin = async () => {
+    if (!auth) {
+      alert("Sign-in unavailable — but you can still unlock Pro as a guest below!");
+      return;
+    }
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (e) {
@@ -48,7 +52,7 @@ function ShopPageInner() {
     setLocalPro(true);
 
     // Also sync to Firestore if logged in (optional bonus)
-    if (user && profile) {
+    if (user && profile && db) {
       try {
         const ref = doc(db, "users", user.uid);
         await updateDoc(ref, { isPro: true });

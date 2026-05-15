@@ -1,6 +1,6 @@
-import { initializeApp, getApps } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, getApps, FirebaseApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, Auth } from "firebase/auth";
+import { getFirestore, Firestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,8 +11,22 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+// Resolve Firebase only when env vars exist; never crash at build time
+function initFirebase(): { app: FirebaseApp; auth: Auth; db: Firestore } | null {
+  if (!firebaseConfig.apiKey || !firebaseConfig.projectId) return null;
+  try {
+    const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+    return { app, auth: getAuth(app), db: getFirestore(app) };
+  } catch (e) {
+    console.warn("Firebase init failed:", e);
+    return null;
+  }
+}
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
+const fb = initFirebase();
+
+// Exports are nullable; callers handle the null path (guest mode)
+export const auth = fb?.auth ?? null;
+export const db = fb?.db ?? null;
 export const googleProvider = new GoogleAuthProvider();
+export const isFirebaseReady = () => fb !== null;

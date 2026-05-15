@@ -2,19 +2,25 @@
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { auth, db, isFirebaseReady } from "@/lib/firebase";
 import { useAuthStore, UserProfile } from "@/store/auth-store";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { setUser, setProfile, setLoading, initGuest } = useAuthStore();
 
   useEffect(() => {
-    // Initialize guest state immediately (works without auth)
+    // Always initialize guest state — works without Firebase
     initGuest();
+
+    // If Firebase isn't configured, stop here (guest-only mode)
+    if (!isFirebaseReady() || !auth) {
+      setLoading(false);
+      return;
+    }
 
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
-      if (user) {
+      if (user && db) {
         try {
           const ref = doc(db, "users", user.uid);
           const snap = await getDoc(ref);

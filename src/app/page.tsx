@@ -11,6 +11,10 @@ export default function Home() {
   const userIsPro = isPro();
 
   const handleLogin = async () => {
+    if (!auth) {
+      alert("Sign-in is not configured. You can still play and use Pro features as a guest!");
+      return;
+    }
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (e) {
@@ -20,6 +24,7 @@ export default function Home() {
   };
 
   const handleLogout = async () => {
+    if (!auth) return;
     await signOut(auth);
   };
 
