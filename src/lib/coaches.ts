@@ -1,38 +1,52 @@
 export interface Coach {
   id: string;
   name: string;
+  shortName: string;
   title: string;
   company: string;
-  avatar: string; // emoji for now, replace with image paths
+  avatar: string; // emoji fallback
+  imagePath: string; // path to cartoon portrait /coaches/{id}.png
+  bgGradient: string; // tailwind gradient classes
+  rating: number; // ELO-style rating
+  specialty: string;
+  playStyle: string;
+  signatureOpening: string;
   boardTheme: {
     light: string;
     dark: string;
     accent: string;
   };
-  pieceEmoji: { man: string; king: string };
   catchphrase: string;
   personality: string;
   isPro: boolean;
   aiPrompt: string;
   catchphrases: string[];
+  bio: string;
 }
 
 export const COACHES: Coach[] = [
   {
     id: "arman",
     name: "Arman Suleimenov",
-    title: "The Sensei 🥋",
-    company: "nFactorial",
+    shortName: "Arman",
+    title: "The Sensei",
+    company: "nFactorial Incubator",
     avatar: "🧘",
+    imagePath: "/coaches/arman.png",
+    bgGradient: "from-rose-500/30 via-pink-400/20 to-amber-500/30",
+    rating: 1100,
+    specialty: "Patience & Discipline",
+    playStyle: "Defensive · Methodical",
+    signatureOpening: "The Ikigai Defense",
     boardTheme: {
       light: "#F5E6C8",
       dark: "#2D5016",
       accent: "#C8102E",
     },
-    pieceEmoji: { man: "⬤", king: "♛" },
     catchphrase: "Терпение, кузнечик.",
     personality: "zen",
     isPro: false,
+    bio: "Founder of nFactorial — Kazakhstan's most famous coding school. Believes mastery comes from finding your ikigai. Will teach you the art of the slow grind.",
     catchphrases: [
       "Терпение, кузнечик.",
       "Каждый ход — это путь.",
@@ -45,18 +59,25 @@ export const COACHES: Coach[] = [
   {
     id: "erzat",
     name: "Erzat Dulat",
-    title: "The Renegade 🎬",
+    shortName: "Erzat",
+    title: "The Renegade",
     company: "Higgsfield AI",
     avatar: "🚀",
+    imagePath: "/coaches/erzat.png",
+    bgGradient: "from-fuchsia-600/40 via-violet-600/30 to-cyan-500/30",
+    rating: 1450,
+    specialty: "Aggressive Disruption",
+    playStyle: "Hyper-Aggressive · Sacrificial",
+    signatureOpening: "The Meta Refusal Gambit",
     boardTheme: {
       light: "#1A1A2E",
       dark: "#16213E",
       accent: "#E94560",
     },
-    pieceEmoji: { man: "⬤", king: "♛" },
     catchphrase: "We don't sell. We win.",
     personality: "aggressive",
     isPro: true,
+    bio: "Co-founder of Higgsfield AI — the viral video AI unicorn. Refused to sell to Meta. Plays checkers like he plays the AI market: bold, fast, no retreat.",
     catchphrases: [
       "We don't sell. We win.",
       "Meta offered billions. I said no. What's your excuse?",
@@ -69,18 +90,25 @@ export const COACHES: Coach[] = [
   {
     id: "nurdaulet",
     name: "Nurdaulet Bazylbekov",
-    title: "The Strategist 💼",
+    shortName: "Nurdaulet",
+    title: "The Strategist",
     company: "Eurasian Hub",
     avatar: "🌐",
+    imagePath: "/coaches/nurdaulet.png",
+    bgGradient: "from-blue-600/40 via-sky-500/20 to-amber-400/30",
+    rating: 1350,
+    specialty: "Long-term Planning",
+    playStyle: "Positional · Calculated",
+    signatureOpening: "The VC Pivot",
     boardTheme: {
       light: "#E8F4F8",
       dark: "#1B3A6B",
       accent: "#F4A261",
     },
-    pieceEmoji: { man: "⬤", king: "♛" },
-    catchphrase: "Верю в молодое поколение.",
+    catchphrase: "Believe in the long game.",
     personality: "strategic",
     isPro: true,
+    bio: "Founder of Eurasian Hub — Central Asia's premier VC hub. Pivoted from London finance to back young KZ founders. Treats every piece like a portfolio investment.",
     catchphrases: [
       "Верю в молодое поколение.",
       "London taught me finance. Kazakhstan taught me vision.",
@@ -93,18 +121,25 @@ export const COACHES: Coach[] = [
   {
     id: "arlan",
     name: "Arlan Rakhmetzhanov",
-    title: "The Vibe Coder ⚡",
+    shortName: "Arlan",
+    title: "The Vibe Coder",
     company: "nozomio.ai · YC",
-    avatar: "💻",
+    avatar: "⚡",
+    imagePath: "/coaches/arlan.png",
+    bgGradient: "from-emerald-500/40 via-lime-400/30 to-yellow-300/30",
+    rating: 1250,
+    specialty: "Pure Instinct",
+    playStyle: "Chaotic · Fast",
+    signatureOpening: "The Vibe Rush",
     boardTheme: {
       light: "#0D1117",
       dark: "#161B22",
       accent: "#00FF41",
     },
-    pieceEmoji: { man: "⬤", king: "♛" },
     catchphrase: "No overthink. Vibe play. Ship it.",
     personality: "hype",
     isPro: true,
+    bio: "High school dropout. YC-accepted. Built nozomio.ai by pure vibe coding. Proof that vision > everything. Will hype you into either a brilliant move or a disaster.",
     catchphrases: [
       "No overthink. Vibe play. Ship it.",
       "High school dropout. YC accepted. Millions shipped. What's your move?",
@@ -117,18 +152,25 @@ export const COACHES: Coach[] = [
   {
     id: "timur",
     name: "Timur Turlov",
-    title: "The Grandmaster ♟️",
+    shortName: "Timur",
+    title: "The Grandmaster",
     company: "Freedom Holding",
     avatar: "👑",
+    imagePath: "/coaches/timur.png",
+    bgGradient: "from-amber-500/40 via-yellow-400/30 to-blue-900/40",
+    rating: 1850,
+    specialty: "Precision Domination",
+    playStyle: "Grandmaster · Ruthless",
+    signatureOpening: "The Freedom Sacrifice",
     boardTheme: {
       light: "#F8F0E3",
       dark: "#1C2841",
       accent: "#FFD700",
     },
-    pieceEmoji: { man: "⬤", king: "♛" },
     catchphrase: "Шахматы — жизнь. Дамки — судьба.",
     personality: "grandmaster",
     isPro: true,
+    bio: "Billionaire. CEO of Freedom Holding. President of Kazakhstan Chess Federation. Sponsors world chess championships. The hardest opponent in the dojo. He will not go easy.",
     catchphrases: [
       "Шахматы — жизнь. Дамки — судьба.",
       "I sponsor world chess championships. I know every move.",
@@ -142,4 +184,8 @@ export const COACHES: Coach[] = [
 
 export function getCoach(id: string): Coach {
   return COACHES.find(c => c.id === id) ?? COACHES[0];
+}
+
+export interface CoachPieceProps {
+  piece: { man: string; king: string };
 }

@@ -8,6 +8,7 @@ import { getBestMove } from "@/lib/checkers-engine";
 import { COACHES } from "@/lib/coaches";
 import CheckersBoard from "@/components/game/CheckersBoard";
 import CoachAnalysis from "@/components/game/CoachAnalysis";
+import CoachCard from "@/components/coach/CoachCard";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 
@@ -115,33 +116,25 @@ function PlayPageInner() {
         )}
 
         {/* Coach */}
-        <div className="w-full max-w-md mb-8">
-          <label className="text-sm text-white/60 mb-2 block">Your Coach</label>
-          <div className="grid grid-cols-5 gap-2">
+        <div className="w-full max-w-2xl mb-8">
+          <label className="text-sm text-white/60 mb-3 block">Your Coach</label>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {COACHES.map(c => {
-              const locked = c.isPro && !profile?.isPro;
+              const unlocked = !c.isPro || (profile?.isPro ?? false);
               return (
-                <button
+                <CoachCard
                   key={c.id}
-                  onClick={() => !locked && setSetupCoach(c.id)}
-                  className={cn(
-                    "py-2 rounded-xl text-center border transition-all relative",
-                    setupCoach === c.id
-                      ? "bg-indigo-600/30 border-indigo-500 text-white"
-                      : locked
-                      ? "bg-white/3 border-white/5 opacity-40 cursor-not-allowed"
-                      : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
-                  )}
-                >
-                  <div className="text-2xl">{c.avatar}</div>
-                  <div className="text-xs mt-1 truncate px-1">{c.name.split(" ")[0]}</div>
-                  {locked && <div className="absolute top-1 right-1 text-xs">🔒</div>}
-                </button>
+                  coach={c}
+                  unlocked={unlocked}
+                  selected={setupCoach === c.id}
+                  onClick={() => unlocked && setSetupCoach(c.id)}
+                  size="sm"
+                />
               );
             })}
           </div>
           {!profile?.isPro && (
-            <p className="text-xs text-amber-400/70 mt-2 text-center">
+            <p className="text-xs text-amber-400/70 mt-3 text-center">
               4 coaches locked · <Link href="/shop" className="underline">Unlock Pro</Link> or use{" "}
               <Link href="/shop?demo=true" className="underline">Judge Demo (0 ₸)</Link>
             </p>

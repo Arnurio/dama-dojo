@@ -4,6 +4,7 @@ import { useAuthStore } from "@/store/auth-store";
 import { auth, googleProvider } from "@/lib/firebase";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { COACHES } from "@/lib/coaches";
+import CoachCard from "@/components/coach/CoachCard";
 
 export default function Home() {
   const { user, profile } = useAuthStore();
@@ -109,24 +110,23 @@ export default function Home() {
 
       {/* Coach Roster */}
       <section className="relative z-10 px-4 md:px-8 py-12 max-w-6xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-2">Meet Your Coaches</h2>
-        <p className="text-white/50 text-center mb-8">Real founders. Real personalities. AI-powered wisdom.</p>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="flex items-end justify-between mb-6">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-black mb-1">Top Coaches</h2>
+            <p className="text-white/50 text-sm">5 founders · AI-powered · Real personalities</p>
+          </div>
+          <Link href="/coaches" className="text-sm text-indigo-400 hover:text-indigo-300 hidden md:inline">
+            View all →
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
           {COACHES.map((coach) => (
-            <div key={coach.id} className="coach-card relative bg-white/5 border border-white/10 rounded-2xl p-4 text-center">
-              {coach.isPro && (
-                <div className="absolute top-2 right-2 bg-amber-500/20 border border-amber-500/40 rounded-full px-2 py-0.5 text-xs text-amber-400">
-                  PRO
-                </div>
-              )}
-              <div className="text-4xl mb-3 float-animation">{coach.avatar}</div>
-              <div className="font-semibold text-sm">{coach.name}</div>
-              <div className="text-xs text-indigo-400 mb-1">{coach.title}</div>
-              <div className="text-xs text-white/40">{coach.company}</div>
-              <div className="mt-2 text-xs italic text-white/60 border-t border-white/5 pt-2">
-                &ldquo;{coach.catchphrase}&rdquo;
-              </div>
-            </div>
+            <CoachCard
+              key={coach.id}
+              coach={coach}
+              unlocked={!coach.isPro || (profile?.isPro ?? false)}
+              size="md"
+            />
           ))}
         </div>
       </section>
