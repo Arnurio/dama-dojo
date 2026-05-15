@@ -9,6 +9,7 @@ import { COACHES } from "@/lib/coaches";
 import CheckersBoard from "@/components/game/CheckersBoard";
 import CoachAnalysis from "@/components/game/CoachAnalysis";
 import CoachCard from "@/components/coach/CoachCard";
+import CoachCompanion from "@/components/game/CoachCompanion";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 
@@ -193,14 +194,6 @@ function PlayPageInner() {
 
           <CheckersBoard />
 
-          {/* Coach catchphrase */}
-          <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 max-w-sm text-center">
-            <span className="text-sm italic text-white/60">
-              &ldquo;{coach.catchphrases[Math.floor(Math.random() * coach.catchphrases.length)]}&rdquo;
-            </span>
-            <div className="text-xs text-white/30 mt-1">— {coach.name}</div>
-          </div>
-
           {/* Move history */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-3 w-full max-w-sm max-h-32 overflow-y-auto">
             <div className="text-xs text-white/40 mb-2">Move history ({moveHistory.length})</div>
@@ -220,6 +213,18 @@ function PlayPageInner() {
 
         {/* Right panel */}
         <div className="flex flex-col gap-4 w-full lg:w-80">
+          {/* Coach Companion — big chess.com-style panel */}
+          <CoachCompanion
+            coach={coach}
+            gameStatus={status}
+            winner={winner}
+            playerColor={playerColor}
+            movesPlayed={moveHistory.length}
+            lastCaptureBy={moveHistory.length > 0 && moveHistory[moveHistory.length - 1].captures.length > 0
+              ? moveHistory[moveHistory.length - 1].player
+              : null}
+          />
+
           {/* Scoreboard */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
             <h3 className="text-sm font-semibold text-white/60 mb-3">Board Count</h3>
@@ -238,42 +243,23 @@ function PlayPageInner() {
             })}
           </div>
 
-          {/* AI Coach Analysis button */}
+          {/* End-of-game buttons */}
           {status === "finished" && (
-            <button
-              onClick={() => setShowAnalysis(true)}
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 py-3 rounded-xl font-semibold transition-all"
-            >
-              {coach.avatar} Get Coach Analysis
-            </button>
+            <>
+              <button
+                onClick={() => setShowAnalysis(true)}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 py-3 rounded-xl font-semibold transition-all hover:scale-[1.02]"
+              >
+                {coach.avatar} Get Coach Analysis
+              </button>
+              <button
+                onClick={() => { setShowSetup(true); setShowAnalysis(false); }}
+                className="bg-white/5 hover:bg-white/10 border border-white/10 py-3 rounded-xl font-medium transition-all"
+              >
+                🔄 Play Again
+              </button>
+            </>
           )}
-
-          {status === "finished" && (
-            <button
-              onClick={() => { setShowSetup(true); setShowAnalysis(false); }}
-              className="bg-white/5 hover:bg-white/10 border border-white/10 py-3 rounded-xl font-medium transition-all"
-            >
-              🔄 Play Again
-            </button>
-          )}
-
-          {/* Coach card */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="text-3xl">{coach.avatar}</div>
-              <div>
-                <div className="font-semibold text-sm">{coach.name}</div>
-                <div className="text-xs text-indigo-400">{coach.title}</div>
-              </div>
-            </div>
-            <p className="text-xs text-white/50">
-              {coach.id === "arman" && "Founder of nFactorial. Believes the path to mastery begins with a single diagonal move."}
-              {coach.id === "erzat" && "Built Higgsfield AI from Kazakhstan. Refused Meta's billions. Your moves should be just as bold."}
-              {coach.id === "nurdaulet" && "Pivoted from London finance to KZ VC. Every piece placement is an investment decision."}
-              {coach.id === "arlan" && "HS dropout. YC-backed. Worth millions by vibing. Trust the instinct, ship the move."}
-              {coach.id === "timur" && "Billionaire. Chess federation president. Sponsors world champions. He will not go easy on you."}
-            </p>
-          </div>
         </div>
       </div>
 
