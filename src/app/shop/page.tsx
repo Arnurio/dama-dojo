@@ -20,35 +20,45 @@ const SKINS = [
 function ShopPageInner() {
   const searchParams = useSearchParams();
   const isJudgeDemo = searchParams.get("demo") === "true";
-  const { user, profile, setProfile } = useAuthStore();
+  const { user, profile, setProfile, setLocalPro, isPro } = useAuthStore();
+  const userIsPro = isPro();
   const [activating, setActivating] = useState(false);
-  const [activated, setActivated] = useState(false);
+  const [activated, setActivated] = useState(userIsPro);
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isJudgeDemo && profile && !profile.isPro) {
+    if (isJudgeDemo && !userIsPro) {
       handleJudgeUnlock();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isJudgeDemo, profile]);
+  }, [isJudgeDemo, userIsPro]);
 
   const handleLogin = async () => {
-    await signInWithPopup(auth, googleProvider);
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (e) {
+      console.error(e);
+      alert("Sign-in unavailable on this domain — but you can still unlock Pro as a guest below!");
+    }
   };
 
   const handleJudgeUnlock = async () => {
-    if (!user || !profile) return;
     setActivating(true);
-    try {
-      const ref = doc(db, "users", user.uid);
-      await updateDoc(ref, { isPro: true });
-      setProfile({ ...profile, isPro: true });
-      setActivated(true);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setActivating(false);
+    // Always set local Pro flag (works without login)
+    setLocalPro(true);
+
+    // Also sync to Firestore if logged in (optional bonus)
+    if (user && profile) {
+      try {
+        const ref = doc(db, "users", user.uid);
+        await updateDoc(ref, { isPro: true });
+        setProfile({ ...profile, isPro: true });
+      } catch (e) {
+        console.error("Firestore sync failed (not blocking):", e);
+      }
     }
+    setActivated(true);
+    setActivating(false);
   };
 
   const handleStripeCheckout = async (item: string, price: number) => {
@@ -72,11 +82,9 @@ function ShopPageInner() {
           <span className="text-xl">♟️</span>
           <span className="font-bold gradient-text">Dama Dojo</span>
         </Link>
-        {user && profile && (
-          <div className="text-sm text-white/60">
-            {profile.isPro ? <span className="text-amber-400">✨ Pro Member</span> : "Free Plan"}
-          </div>
-        )}
+        <div className="text-sm text-white/60">
+          {userIsPro ? <span className="text-amber-400">✨ Pro Active</span> : "Free Plan"}
+        </div>
       </nav>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-12">
@@ -84,31 +92,31 @@ function ShopPageInner() {
         <p className="text-white/50 text-center mb-8">Unlock coaches, skins, and pro features</p>
 
         {/* Judge Demo Banner */}
-        {isJudgeDemo && (
-          <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 mb-8 text-center">
-            <div className="text-2xl mb-2">🧑‍⚖️</div>
-            <div className="font-semibold text-amber-300">Judge Demo Mode</div>
-            <p className="text-sm text-white/60 mt-1">
-              This button unlocks Pro for 0 ₸ so judges can evaluate all features without spending money.
-              In production, Pro costs 2,990 ₸/month via Kaspi Pay.
-            </p>
-            {activated ? (
-              <div className="mt-3 text-green-400 font-semibold">✅ Pro unlocked! All features available.</div>
-            ) : !user ? (
-              <button onClick={handleLogin} className="mt-3 bg-amber-500 hover:bg-amber-400 text-black px-6 py-2 rounded-xl font-semibold transition-all">
-                Sign in to unlock
-              </button>
-            ) : (
-              <button
-                onClick={handleJudgeUnlock}
-                disabled={activating || profile?.isPro}
-                className="mt-3 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-black px-6 py-2 rounded-xl font-semibold transition-all"
-              >
-                {activating ? "Unlocking..." : profile?.isPro ? "✅ Already Pro" : "Unlock Pro for 0 ₸"}
-              </button>
-            )}
-          </div>
-        )}
+        <div className="bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl p-5 mb-8 text-center">
+          <div className="text-3xl mb-2">🧑‍⚖️</div>
+          <div className="text-lg font-bold text-amber-300 mb-1">For nFactorial Judges</div>
+          <p className="text-sm text-white/70 max-w-md mx-auto mb-4">
+            Click below to instantly unlock all Pro features — no login, no payment, no friction.
+            Evaluate every coach, get unlimited AI analysis, and try every Pro skin.
+          </p>
+          {userIsPro || activated ? (
+            <div className="text-green-400 font-semibold flex items-center justify-center gap-2">
+              <span>✅ Pro Unlocked!</span>
+              <Link href="/play" className="text-sm underline">Play now →</Link>
+            </div>
+          ) : (
+            <button
+              onClick={handleJudgeUnlock}
+              disabled={activating}
+              className="bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-amber-950 px-8 py-3 rounded-xl font-bold transition-all text-base shadow-lg hover:scale-105 active:scale-95"
+            >
+              {activating ? "Unlocking..." : "🔓 Unlock Pro · 0 ₸"}
+            </button>
+          )}
+          <p className="text-[10px] text-white/40 mt-3">
+            In production: 2,990 ₸/month via Kaspi Pay or Stripe test card 4242 4242 4242 4242
+          </p>
+        </div>
 
         {/* Pro Plan */}
         <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-500/40 rounded-3xl p-6 mb-8">
@@ -134,10 +142,10 @@ function ShopPageInner() {
               <div className="text-xs text-white/30 mt-1">~$6 USD</div>
               <button
                 onClick={() => handleStripeCheckout("pro", 2990)}
-                disabled={checkoutLoading === "pro" || profile?.isPro}
+                disabled={checkoutLoading === "pro" || userIsPro}
                 className="mt-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 disabled:opacity-50 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all w-full"
               >
-                {profile?.isPro ? "✅ Active" : checkoutLoading === "pro" ? "Loading..." : "Upgrade Now"}
+                {userIsPro ? "✅ Active" : checkoutLoading === "pro" ? "Loading..." : "Upgrade Now"}
               </button>
               <Link href="/shop?demo=true" className="block text-xs text-amber-400/70 hover:text-amber-400 mt-2 underline">
                 🧑‍⚖️ Judge Demo (0 ₸)

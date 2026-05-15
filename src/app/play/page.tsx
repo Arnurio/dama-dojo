@@ -16,7 +16,8 @@ function PlayPageInner() {
   const searchParams = useSearchParams();
   const initMode = (searchParams.get("mode") as GameMode) ?? "local";
 
-  const { profile } = useAuthStore();
+  const { profile, isPro } = useAuthStore();
+  const userIsPro = isPro();
   const {
     status, mode, currentTurn, winner, difficulty, selectedCoach,
     moveHistory, playerColor, initGame, board,
@@ -120,7 +121,7 @@ function PlayPageInner() {
           <label className="text-sm text-white/60 mb-3 block">Your Coach</label>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {COACHES.map(c => {
-              const unlocked = !c.isPro || (profile?.isPro ?? false);
+              const unlocked = !c.isPro || userIsPro;
               return (
                 <CoachCard
                   key={c.id}
@@ -133,7 +134,7 @@ function PlayPageInner() {
               );
             })}
           </div>
-          {!profile?.isPro && (
+          {!userIsPro && (
             <p className="text-xs text-amber-400/70 mt-3 text-center">
               4 coaches locked · <Link href="/shop" className="underline">Unlock Pro</Link> or use{" "}
               <Link href="/shop?demo=true" className="underline">Judge Demo (0 ₸)</Link>
@@ -284,7 +285,7 @@ function PlayPageInner() {
           moveHistory={moveHistory}
           winner={winner}
           playerColor={playerColor}
-          isPro={profile?.isPro ?? false}
+          isPro={userIsPro}
           reviewsToday={profile?.aiReviewsToday ?? 0}
         />
       )}

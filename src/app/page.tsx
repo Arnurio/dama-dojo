@@ -7,13 +7,15 @@ import { COACHES } from "@/lib/coaches";
 import CoachCard from "@/components/coach/CoachCard";
 
 export default function Home() {
-  const { user, profile } = useAuthStore();
+  const { user, profile, localPro, isPro } = useAuthStore();
+  const userIsPro = isPro();
 
   const handleLogin = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (e) {
       console.error(e);
+      alert("Login failed. If you're on a deployed site, the domain may need to be authorized in Firebase. Try playing as a guest — no login needed!");
     }
   };
 
@@ -36,31 +38,29 @@ export default function Home() {
           <span className="text-xl font-bold gradient-text">Dama Dojo</span>
         </div>
         <div className="flex items-center gap-4">
+          <Link href="/leaderboard" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">
+            Leaderboard
+          </Link>
+          <Link href="/shop" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">
+            {userIsPro ? "✨ Pro" : "Shop"}
+          </Link>
           {user ? (
-            <>
-              <Link href="/leaderboard" className="text-sm text-white/60 hover:text-white transition-colors">
-                Leaderboard
-              </Link>
-              <Link href="/shop" className="text-sm text-white/60 hover:text-white transition-colors">
-                {profile?.isPro ? "✨ Pro" : "Shop"}
-              </Link>
-              <div className="flex items-center gap-2">
-                {user.photoURL && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full border border-indigo-500" />
-                )}
-                <span className="text-sm text-white/80">{profile?.elo ?? 1000} ELO</span>
-              </div>
-              <button onClick={handleLogout} className="text-sm text-white/40 hover:text-white/80 transition-colors">
+            <div className="flex items-center gap-2">
+              {user.photoURL && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full border border-indigo-500" />
+              )}
+              <span className="text-sm text-white/80 hidden sm:inline">{profile?.elo ?? 1000} ELO</span>
+              <button onClick={handleLogout} className="text-sm text-white/40 hover:text-white/80 transition-colors hidden sm:inline">
                 Sign out
               </button>
-            </>
+            </div>
           ) : (
             <button
               onClick={handleLogin}
-              className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              className="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
             >
-              Sign in with Google
+              Sign in (optional)
             </button>
           )}
         </div>
@@ -94,6 +94,33 @@ export default function Home() {
             Find Match 🌐
           </Link>
         </div>
+        <p className="text-xs text-white/40 mt-3">No signup required · Play instantly as guest</p>
+
+        {/* Judge Pro banner */}
+        {!userIsPro && (
+          <div className="mt-6 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-500/30 rounded-2xl px-6 py-3 flex items-center gap-3 backdrop-blur-sm">
+            <span className="text-2xl">🧑‍⚖️</span>
+            <div className="text-left">
+              <div className="text-sm font-bold text-amber-300">For nFactorial Judges</div>
+              <div className="text-xs text-white/60">Unlock all Pro features instantly — no login, no payment.</div>
+            </div>
+            <Link
+              href="/shop?demo=true"
+              className="ml-auto bg-amber-500 hover:bg-amber-400 text-amber-950 px-4 py-2 rounded-lg text-sm font-bold transition-all shrink-0"
+            >
+              Unlock Pro · 0 ₸
+            </Link>
+          </div>
+        )}
+        {userIsPro && (
+          <div className="mt-6 bg-gradient-to-r from-green-500/15 to-emerald-500/15 border border-green-500/30 rounded-2xl px-6 py-3 flex items-center gap-3">
+            <span className="text-2xl">✨</span>
+            <div className="text-left">
+              <div className="text-sm font-bold text-green-300">Pro Active</div>
+              <div className="text-xs text-white/60">All 5 coaches and unlimited AI analysis unlocked.</div>
+            </div>
+          </div>
+        )}
         <div className="flex gap-8 mt-12 text-center">
           {[
             { label: "Active Players", value: "2,847" },
@@ -124,7 +151,7 @@ export default function Home() {
             <CoachCard
               key={coach.id}
               coach={coach}
-              unlocked={!coach.isPro || (profile?.isPro ?? false)}
+              unlocked={!coach.isPro || userIsPro}
               size="md"
             />
           ))}

@@ -7,10 +7,11 @@ import CoachCard from "@/components/coach/CoachCard";
 import { cn } from "@/lib/utils";
 
 export default function CoachesPage() {
-  const { profile } = useAuthStore();
+  const { isPro } = useAuthStore();
+  const userIsPro = isPro();
   const [selected, setSelected] = useState<Coach>(COACHES[0]);
 
-  const unlocked = (c: Coach) => !c.isPro || (profile?.isPro ?? false);
+  const unlocked = (c: Coach) => !c.isPro || userIsPro;
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
@@ -38,7 +39,7 @@ export default function CoachesPage() {
             </p>
           </div>
           <div className="text-sm text-white/40 hidden md:block">
-            {profile?.isPro ? <span className="text-amber-400">✨ Pro · All unlocked</span> : "4 locked · Upgrade Pro"}
+            {userIsPro ? <span className="text-amber-400">✨ Pro · All unlocked</span> : "4 locked · Upgrade Pro"}
           </div>
         </div>
 
