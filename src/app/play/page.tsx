@@ -56,6 +56,11 @@ function PlayPageInner() {
   }, [status]);
 
   const handleStart = () => {
+    if (setupMode === "online") {
+      // Online mode lives in its own page with Firestore
+      window.location.href = "/play/online";
+      return;
+    }
     initGame(setupMode, setupDifficulty, setupCoach);
     setShowSetup(false);
     setShowAnalysis(false);
@@ -107,12 +112,12 @@ function PlayPageInner() {
                       : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
                   )}
                 >
-                  {d === "easy" ? "😊 Easy" : d === "medium" ? "🧠 Medium" : "💀 Timur"}
+                  {d === "easy" ? "😊 Easy" : d === "medium" ? "🧠 Medium" : "💀 Hard"}
                 </button>
               ))}
             </div>
             {setupDifficulty === "hard" && (
-              <p className="text-xs text-amber-400/80 mt-1 text-center">Warning: Timur Turlov difficulty is ruthless.</p>
+              <p className="text-xs text-amber-400/80 mt-1 text-center">Warning: Hard AI thinks 6 moves ahead. Brutal.</p>
             )}
           </div>
         )}

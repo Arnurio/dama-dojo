@@ -93,7 +93,7 @@ export default function Home() {
             Play Now ⚡
           </Link>
           <Link
-            href="/play?mode=online"
+            href="/play/online"
             className="bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-3 rounded-xl font-semibold text-lg transition-all"
           >
             Find Match 🌐
