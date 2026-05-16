@@ -16,9 +16,12 @@ export default function CoachCard({ coach, unlocked = true, selected = false, on
 
   const sizes = {
     sm: { card: "p-2", img: "h-24", emoji: "text-4xl", name: "text-xs", rating: "text-xs" },
-    md: { card: "p-3", img: "h-36", emoji: "text-6xl", name: "text-sm", rating: "text-sm" },
+    md: { card: "p-3", img: "h-36", emoji: "text-6xl", name: "text-[13px]", rating: "text-sm" },
     lg: { card: "p-4", img: "h-48", emoji: "text-7xl", name: "text-base", rating: "text-base" },
   }[size];
+
+  // Show full name (with last name) on md/lg, just first name on sm
+  const displayName = size === "sm" ? coach.shortName : coach.name;
 
   const locked = !unlocked && coach.isPro;
 
@@ -85,7 +88,7 @@ export default function CoachCard({ coach, unlocked = true, selected = false, on
       <div className="relative z-10 mt-2">
         <div className="flex items-center justify-between mb-1">
           <div className={cn("font-black text-white tracking-tight truncate drop-shadow", sizes.name)}>
-            {coach.shortName}
+            {displayName}
           </div>
           <div className={cn(
             "font-black tabular-nums px-2 py-0.5 rounded-md backdrop-blur-sm shrink-0",

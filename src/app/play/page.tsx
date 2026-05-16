@@ -17,8 +17,9 @@ function PlayPageInner() {
   const searchParams = useSearchParams();
   const initMode = (searchParams.get("mode") as GameMode) ?? "local";
 
-  const { profile, isPro } = useAuthStore();
+  const { profile, isPro, recordGameResult } = useAuthStore();
   const userIsPro = isPro();
+  const [eloRecorded, setEloRecorded] = useState(false);
   const {
     status, mode, currentTurn, winner, difficulty, selectedCoach,
     moveHistory, playerColor, initGame, board,
@@ -52,8 +53,20 @@ function PlayPageInner() {
   }, [currentTurn, mode, status, playerColor, triggerAiMove]);
 
   useEffect(() => {
-    if (status === "finished") setShowAnalysis(true);
-  }, [status]);
+    if (status === "finished") {
+      setShowAnalysis(true);
+      // Update ELO only for AI mode (local 2-player doesn't change ELO)
+      if (mode === "ai" && !eloRecorded) {
+        const opponentElo =
+          difficulty === "easy" ? 800 : difficulty === "medium" ? 1200 : 1700;
+        const result =
+          winner === playerColor ? "win" : winner === "draw" ? "draw" : "loss";
+        recordGameResult(opponentElo, result);
+        setEloRecorded(true);
+      }
+    }
+    if (status === "playing" && eloRecorded) setEloRecorded(false);
+  }, [status, mode, winner, playerColor, difficulty, recordGameResult, eloRecorded]);
 
   const handleStart = () => {
     if (setupMode === "online") {

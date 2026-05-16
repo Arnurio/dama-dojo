@@ -7,8 +7,9 @@ import { COACHES } from "@/lib/coaches";
 import CoachCard from "@/components/coach/CoachCard";
 
 export default function Home() {
-  const { user, profile, localPro, isPro } = useAuthStore();
+  const { user, profile, isPro, getElo } = useAuthStore();
   const userIsPro = isPro();
+  const currentElo = getElo();
 
   const handleLogin = async () => {
     if (!auth) {
@@ -30,10 +31,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
-      {/* Background glow */}
+      {/* Subtle background glow */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/10 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/10 blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
       </div>
 
       {/* Nav */}
@@ -55,7 +56,7 @@ export default function Home() {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={user.photoURL} alt="" className="w-8 h-8 rounded-full border border-indigo-500" />
               )}
-              <span className="text-sm text-white/80 hidden sm:inline">{profile?.elo ?? 1000} ELO</span>
+              <span className="text-sm text-white/80 hidden sm:inline">{currentElo} ELO</span>
               <button onClick={handleLogout} className="text-sm text-white/40 hover:text-white/80 transition-colors hidden sm:inline">
                 Sign out
               </button>
@@ -99,15 +100,15 @@ export default function Home() {
             Find Match 🌐
           </Link>
         </div>
-        <p className="text-xs text-white/40 mt-3">No signup required · Play instantly as guest</p>
+        <p className="text-sm text-white/60 mt-4">No signup required · Play instantly as guest</p>
 
         {/* Judge Pro banner */}
         {!userIsPro && (
           <div className="mt-6 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-500/30 rounded-2xl px-6 py-3 flex items-center gap-3 backdrop-blur-sm">
             <span className="text-2xl">🧑‍⚖️</span>
             <div className="text-left">
-              <div className="text-sm font-bold text-amber-300">For nFactorial Judges</div>
-              <div className="text-xs text-white/60">Unlock all Pro features instantly — no login, no payment.</div>
+              <div className="text-base font-bold text-amber-300">For nFactorial Judges</div>
+              <div className="text-sm text-white/70">Unlock all Pro features instantly — no login, no payment.</div>
             </div>
             <Link
               href="/shop?demo=true"
@@ -121,8 +122,8 @@ export default function Home() {
           <div className="mt-6 bg-gradient-to-r from-green-500/15 to-emerald-500/15 border border-green-500/30 rounded-2xl px-6 py-3 flex items-center gap-3">
             <span className="text-2xl">✨</span>
             <div className="text-left">
-              <div className="text-sm font-bold text-green-300">Pro Active</div>
-              <div className="text-xs text-white/60">All 5 coaches and unlimited AI analysis unlocked.</div>
+              <div className="text-base font-bold text-green-300">Pro Active</div>
+              <div className="text-sm text-white/70">All 5 coaches and unlimited AI analysis unlocked.</div>
             </div>
           </div>
         )}
@@ -133,8 +134,8 @@ export default function Home() {
             { label: "KZ Coaches", value: "5" },
           ].map(stat => (
             <div key={stat.label}>
-              <div className="text-2xl font-bold text-indigo-400">{stat.value}</div>
-              <div className="text-sm text-white/40">{stat.label}</div>
+              <div className="text-3xl font-bold text-indigo-400">{stat.value}</div>
+              <div className="text-sm text-white/60 mt-1">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -145,7 +146,7 @@ export default function Home() {
         <div className="flex items-end justify-between mb-6">
           <div>
             <h2 className="text-3xl md:text-4xl font-black mb-1">Top Coaches</h2>
-            <p className="text-white/50 text-sm">5 founders · AI-powered · Real personalities</p>
+            <p className="text-white/60 text-base mt-1">5 founders · AI-powered · Real personalities</p>
           </div>
           <Link href="/coaches" className="text-sm text-indigo-400 hover:text-indigo-300 hidden md:inline">
             View all →
@@ -172,10 +173,10 @@ export default function Home() {
             { icon: "📊", title: "ELO Ranking", desc: "City and global leaderboards." },
             { icon: "🎨", title: "Customize", desc: "Board skins, piece designs, coach outfits." },
           ].map(f => (
-            <div key={f.title} className="bg-white/3 border border-white/8 rounded-2xl p-5">
-              <div className="text-3xl mb-2">{f.icon}</div>
-              <div className="font-semibold text-sm mb-1">{f.title}</div>
-              <div className="text-xs text-white/50">{f.desc}</div>
+            <div key={f.title} className="bg-white/5 border border-white/10 rounded-2xl p-5">
+              <div className="text-3xl mb-3">{f.icon}</div>
+              <div className="font-semibold text-base mb-1.5">{f.title}</div>
+              <div className="text-sm text-white/60 leading-relaxed">{f.desc}</div>
             </div>
           ))}
         </div>
@@ -203,13 +204,13 @@ export default function Home() {
               🧑‍⚖️ Judge Demo — 0 ₸
             </Link>
           </div>
-          <p className="text-xs text-white/30 mt-3">
+          <p className="text-sm text-white/50 mt-4">
             Production: Kaspi Pay / Freedom Pay · Demo: test card 4242 4242 4242 4242
           </p>
         </div>
       </section>
 
-      <footer className="relative z-10 border-t border-white/5 py-8 text-center text-sm text-white/30">
+      <footer className="relative z-10 border-t border-white/10 py-8 text-center text-sm text-white/50">
         <p>Built by Arnur Kemerbek · nFactorial Incubator 2026 · 2.5 days · Vibe coded with AI 🚀</p>
       </footer>
     </main>
