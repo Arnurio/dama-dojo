@@ -62,12 +62,15 @@ export default function Home() {
               </button>
             </div>
           ) : (
-            <button
-              onClick={handleLogin}
-              className="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
-            >
-              Sign in (optional)
-            </button>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-white/70 hidden sm:inline">{currentElo} ELO</span>
+              <button
+                onClick={handleLogin}
+                className="bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors"
+              >
+                Sign in (optional)
+              </button>
+            </div>
           )}
         </div>
       </nav>

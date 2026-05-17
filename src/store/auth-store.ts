@@ -145,6 +145,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
   getElo: () => {
     const state = get();
+    // If user has played games locally, that's the authoritative number
+    // (since we don't yet persist Firestore-side on game end).
+    if (state.localStats.gamesPlayed > 0) return state.localStats.elo;
     return state.profile?.elo ?? state.localStats.elo;
   },
 }));
