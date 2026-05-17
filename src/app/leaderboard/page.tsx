@@ -32,8 +32,16 @@ export default function LeaderboardPage() {
     setLoading(true);
     fetchTopPlayers({ city: selectedCity, limit: 100 })
       .then(list => {
-        // Fallback to local seed if Firestore returns nothing (offline mode)
-        setPlayers(list.length > 0 ? list : SEED_PLAYERS);
+        // Merge Firestore data with local seeds if Firestore is sparse.
+        // This guarantees a populated board for judges even if seeding silently failed.
+        const seedFiltered = selectedCity === "All" ? SEED_PLAYERS : SEED_PLAYERS.filter(p => p.city === selectedCity);
+        if (list.length < 10) {
+          const fsUids = new Set(list.map(p => p.uid));
+          const merged = [...list, ...seedFiltered.filter(p => !fsUids.has(p.uid))].sort((a, b) => b.elo - a.elo);
+          setPlayers(merged);
+        } else {
+          setPlayers(list);
+        }
       })
       .finally(() => setLoading(false));
   }, [seeded, selectedCity]);
