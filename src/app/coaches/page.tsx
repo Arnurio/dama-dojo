@@ -5,9 +5,12 @@ import { COACHES, Coach } from "@/lib/coaches";
 import { useAuthStore } from "@/store/auth-store";
 import CoachCard from "@/components/coach/CoachCard";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n/context";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function CoachesPage() {
   const { isPro } = useAuthStore();
+  const { t } = useI18n();
   const userIsPro = isPro();
   const [selected, setSelected] = useState<Coach>(COACHES[0]);
 
@@ -25,17 +28,20 @@ export default function CoachesPage() {
           <span className="text-xl">♟️</span>
           <span className="font-bold gradient-text">Dama Dojo</span>
         </Link>
-        <Link href="/play" className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-          Play Now
-        </Link>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher compact />
+          <Link href="/play" className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            {t("home.playNow")}
+          </Link>
+        </div>
       </nav>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-end justify-between mb-6">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black mb-1">Top Coaches</h1>
-            <p className="text-white/50 text-sm">
-              {COACHES.length} founders · Choose your sensei
+            <h1 className="text-4xl md:text-5xl font-black mb-1">{t("home.coachesTitle")}</h1>
+            <p className="text-white/60 text-base">
+              {COACHES.length} {t("home.coachesDesc").split(" · ")[0].replace(/\d+\s+/, "")}
             </p>
           </div>
           <div className="text-sm text-white/40 hidden md:block">

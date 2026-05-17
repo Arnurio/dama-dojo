@@ -3,11 +3,16 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { UserProfile } from "@/store/auth-store";
+import { UserProfile, useAuthStore } from "@/store/auth-store";
+import { useI18n } from "@/lib/i18n/context";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const CITIES = ["All", "Almaty", "Astana", "Shymkent", "Karaganda", "Aktobe"];
 
 export default function LeaderboardPage() {
+  const { t } = useI18n();
+  const { user, guestId, getElo } = useAuthStore();
+  const myElo = getElo();
   const [players, setPlayers] = useState<UserProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCity, setSelectedCity] = useState("All");
@@ -47,14 +52,17 @@ export default function LeaderboardPage() {
           <span className="text-xl">♟️</span>
           <span className="font-bold gradient-text">Dama Dojo</span>
         </Link>
-        <Link href="/play" className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-          Play Now
-        </Link>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher compact />
+          <Link href="/play" className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            {t("home.playNow")}
+          </Link>
+        </div>
       </nav>
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-black text-center mb-2">Leaderboard</h1>
-        <p className="text-white/50 text-center mb-8">Top checkers players in Kazakhstan 🇰🇿</p>
+        <h1 className="text-4xl font-black text-center mb-2">{t("lb.title")}</h1>
+        <p className="text-white/60 text-center mb-8 text-base">Top dama players in Kazakhstan 🇰🇿</p>
 
         {/* City filter */}
         <div className="flex gap-2 flex-wrap justify-center mb-6">
@@ -68,13 +76,13 @@ export default function LeaderboardPage() {
                   : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
               }`}
             >
-              {city}
+              {city === "All" ? t("lb.allCities") : city}
             </button>
           ))}
         </div>
 
         {loading ? (
-          <div className="text-center text-white/40 py-12">Loading rankings...</div>
+          <div className="text-center text-white/40 py-12">{t("common.loading")}</div>
         ) : (
           <div className="space-y-2">
             {filtered.map((player, index) => (

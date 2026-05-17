@@ -8,6 +8,8 @@ import { signInWithPopup } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { COACHES } from "@/lib/coaches";
 import { Suspense } from "react";
+import { useI18n } from "@/lib/i18n/context";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const SKINS = [
   { id: "classic", name: "Classic Dojo", price: 0, emoji: "🏡", desc: "The original. Clean, timeless." },
@@ -21,6 +23,7 @@ function ShopPageInner() {
   const searchParams = useSearchParams();
   const isJudgeDemo = searchParams.get("demo") === "true";
   const { user, profile, setProfile, setLocalPro, isPro } = useAuthStore();
+  const { t } = useI18n();
   const userIsPro = isPro();
   const [activating, setActivating] = useState(false);
   const [activated, setActivated] = useState(userIsPro);
@@ -86,14 +89,17 @@ function ShopPageInner() {
           <span className="text-xl">♟️</span>
           <span className="font-bold gradient-text">Dama Dojo</span>
         </Link>
-        <div className="text-sm text-white/60">
-          {userIsPro ? <span className="text-amber-400">✨ Pro Active</span> : "Free Plan"}
+        <div className="flex items-center gap-3">
+          <div className="text-sm text-white/60">
+            {userIsPro ? <span className="text-amber-400">✨ {t("home.proActive")}</span> : "Free Plan"}
+          </div>
+          <LanguageSwitcher compact />
         </div>
       </nav>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-black text-center mb-2">Shop</h1>
-        <p className="text-white/50 text-center mb-8">Unlock coaches, skins, and pro features</p>
+        <h1 className="text-4xl font-black text-center mb-2">{t("shop.title")}</h1>
+        <p className="text-white/60 text-center mb-8 text-base">{t("shop.subtitle")}</p>
 
         {/* Judge Demo Banner */}
         <div className="bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl p-5 mb-8 text-center">

@@ -114,12 +114,69 @@ export const dict = {
   "online.howRealtime": { en: "Real-time — Moves sync instantly via Firestore. No lag.", ru: "Реалтайм — Ходы синхронизируются мгновенно через Firestore. Без лагов.", kk: "Шынайы уақыт — Қадамдар Firestore арқылы бірден синхрондалады. Лагсыз." },
   "online.fbError": { en: "Online multiplayer requires Firebase setup. The local game still works fully — try playing vs AI!", ru: "Онлайн режим требует настройки Firebase. Локальная игра работает полностью — попробуй против AI!", kk: "Онлайн режим Firebase баптауын талап етеді. Жергілікті ойын толық жұмыс істейді — AI-ға қарсы ойнап көр!" },
 
+  // ─── Coach Analysis Modal ────────────────────────────────
+  "analysis.summary": { en: "Game Summary", ru: "Итоги Партии", kk: "Партия Қорытындысы" },
+  "analysis.result": { en: "Result", ru: "Результат", kk: "Нәтиже" },
+  "analysis.win": { en: "WIN", ru: "ПОБЕДА", kk: "ЖЕҢІС" },
+  "analysis.loss": { en: "LOSS", ru: "ПОРАЖЕНИЕ", kk: "ЖЕҢІЛІС" },
+  "analysis.draw": { en: "DRAW", ru: "НИЧЬЯ", kk: "ТЕҢ" },
+  "analysis.totalMoves": { en: "Total Moves", ru: "Всего Ходов", kk: "Барлық Қадам" },
+  "analysis.yourCaptures": { en: "Your Captures", ru: "Твои Взятия", kk: "Сенің Жеулерің" },
+  "analysis.dailyLimit": { en: "Daily limit reached", ru: "Дневной лимит исчерпан", kk: "Күндік шек таусылды" },
+  "analysis.proUpsell": { en: "Upgrade to Pro for unlimited AI coach analysis", ru: "Открой Pro для безлимитного AI-разбора", kk: "Шексіз AI-талдау үшін Pro ашыңыз" },
+  "analysis.judgeUnlock": { en: "🧑‍⚖️ Judge Demo — Unlock for 0 ₸", ru: "🧑‍⚖️ Демо жюри — Открыть за 0 ₸", kk: "🧑‍⚖️ Қазылар демосы — 0 ₸-ге аш" },
+  "analysis.upgradePro": { en: "✨ Upgrade to Pro", ru: "✨ Получить Pro", kk: "✨ Pro алу" },
+  "analysis.coachSays": { en: "Coach says:", ru: "Коуч говорит:", kk: "Коуч айтады:" },
+  "analysis.analyzing": { en: "is analyzing...", ru: "анализирует...", kk: "талдауда..." },
+  "analysis.getAnalysis": { en: "Get Analysis", ru: "Получить Разбор", kk: "Талдау Алу" },
+  "analysis.remaining": { en: "free analysis remaining today", ru: "бесплатных разборов осталось сегодня", kk: "тегін талдау бүгін қалды" },
+  "analysis.fetchError": { en: "Could not get analysis.", ru: "Не удалось получить анализ.", kk: "Талдау алу мүмкін болмады." },
+
+  // ─── Online Game Room ────────────────────────────────────
+  "room.waiting": { en: "Waiting for opponent...", ru: "Ждём соперника...", kk: "Қарсыласты күтудеміз..." },
+  "room.shareCode": { en: "Share this code:", ru: "Поделись кодом:", kk: "Кодты бөліс:" },
+  "room.spectator": { en: "Spectator", ru: "Зритель", kk: "Көрермен" },
+  "room.you": { en: "You", ru: "Ты", kk: "Сен" },
+  "room.opponent": { en: "Opponent", ru: "Соперник", kk: "Қарсылас" },
+  "room.resign": { en: "Resign", ru: "Сдаться", kk: "Бағыну" },
+  "room.resignConfirm": { en: "Are you sure you want to resign?", ru: "Точно хочешь сдаться?", kk: "Бағынуға сенімдісің бе?" },
+  "room.gameOver": { en: "Game Over", ru: "Игра окончена", kk: "Ойын аяқталды" },
+  "room.youWon": { en: "🏆 You Won!", ru: "🏆 Ты Победил!", kk: "🏆 Сен Жеңдің!" },
+  "room.youLost": { en: "Better luck next time", ru: "Удачи в следующий раз", kk: "Келесі жолы сәттілік" },
+  "room.rematch": { en: "🔄 Rematch", ru: "🔄 Реванш", kk: "🔄 Реванш" },
+  "room.backToLobby": { en: "← Back to Lobby", ru: "← В Лобби", kk: "← Лоббиге" },
+  "room.copyLink": { en: "Copy Link", ru: "Копировать Ссылку", kk: "Сілтемені Көшіру" },
+  "room.shareWhatsapp": { en: "Share via WhatsApp", ru: "Поделиться в WhatsApp", kk: "WhatsApp-пен бөлісу" },
+  "room.shareTelegram": { en: "Share via Telegram", ru: "Поделиться в Telegram", kk: "Telegram-мен бөлісу" },
+
+  // ─── Shop ────────────────────────────────────────────────
+  "shop.title": { en: "Shop", ru: "Магазин", kk: "Дүкен" },
+  "shop.subtitle": { en: "Unlock coaches, skins, and Pro features", ru: "Открой коучей, скины и Pro-функции", kk: "Коучтер, скиндер және Pro мүмкіндіктер" },
+  "shop.proPlan": { en: "Pro Plan", ru: "Pro Подписка", kk: "Pro Жоспар" },
+  "shop.monthly": { en: "/month", ru: "/мес", kk: "/ай" },
+  "shop.buyPro": { en: "Get Pro", ru: "Получить Pro", kk: "Pro алу" },
+  "shop.skins": { en: "Board Skins", ru: "Скины Доски", kk: "Тақта Скиндері" },
+  "shop.judgeUnlock": { en: "🧑‍⚖️ Judge: Unlock Pro Free", ru: "🧑‍⚖️ Жюри: Открыть Pro Бесплатно", kk: "🧑‍⚖️ Қазылар: Pro-ны Тегін аш" },
+
+  // ─── Leaderboard ─────────────────────────────────────────
+  "lb.title": { en: "Leaderboard", ru: "Рейтинг", kk: "Рейтинг" },
+  "lb.global": { en: "Global", ru: "Глобальный", kk: "Жаһандық" },
+  "lb.city": { en: "City", ru: "Город", kk: "Қала" },
+  "lb.rank": { en: "Rank", ru: "Место", kk: "Орын" },
+  "lb.player": { en: "Player", ru: "Игрок", kk: "Ойыншы" },
+  "lb.elo": { en: "ELO", ru: "ELO", kk: "ELO" },
+  "lb.wins": { en: "Wins", ru: "Победы", kk: "Жеңіс" },
+  "lb.you": { en: "You", ru: "Ты", kk: "Сен" },
+  "lb.allCities": { en: "All Cities", ru: "Все Города", kk: "Барлық Қалалар" },
+
   // ─── Common ──────────────────────────────────────────────
   "common.loading": { en: "Loading...", ru: "Загрузка...", kk: "Жүктелуде..." },
   "common.error": { en: "Error", ru: "Ошибка", kk: "Қате" },
   "common.close": { en: "Close", ru: "Закрыть", kk: "Жабу" },
   "common.elo": { en: "ELO", ru: "ELO", kk: "ELO" },
   "common.language": { en: "Language", ru: "Язык", kk: "Тіл" },
+  "common.cancel": { en: "Cancel", ru: "Отмена", kk: "Болдырмау" },
+  "common.confirm": { en: "Confirm", ru: "Подтвердить", kk: "Растау" },
 } as const;
 
 export type TranslationKey = keyof typeof dict;

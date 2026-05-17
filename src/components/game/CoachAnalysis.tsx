@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Coach } from "@/lib/coaches";
 import { MoveRecord } from "@/store/game-store";
 import { PieceColor } from "@/lib/checkers-engine";
+import { useI18n } from "@/lib/i18n/context";
 
 interface Props {
   coach: Coach;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function CoachAnalysis({ coach, moveHistory, winner, playerColor, isPro, reviewsToday, onClose }: Props) {
+  const { t, locale } = useI18n();
   const [analysis, setAnalysis] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [unlocked, setUnlocked] = useState(isPro);
@@ -41,12 +43,20 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
           playerCaptures,
           playerColor,
           winner,
+          locale,
+          moveHistory: moveHistory.map(m => ({
+            from: m.from,
+            to: m.to,
+            captures: m.captures.length,
+            player: m.player,
+            piece: m.piece,
+          })),
         }),
       });
       const data = await res.json();
-      setAnalysis(data.analysis ?? "Не удалось получить анализ.");
+      setAnalysis(data.analysis ?? t("analysis.fetchError"));
     } catch {
-      setAnalysis(getOfflineAnalysis(coach, playerWon, playerCaptures, totalMoves));
+      setAnalysis(getOfflineAnalysis(coach, playerWon, playerCaptures, totalMoves, locale));
     } finally {
       setLoading(false);
     }
@@ -73,21 +83,21 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
 
         {/* Game summary */}
         <div className="bg-white/5 rounded-2xl p-4 mb-4">
-          <div className="text-sm font-semibold mb-2">Game Summary</div>
+          <div className="text-sm font-semibold mb-2">{t("analysis.summary")}</div>
           <div className="grid grid-cols-3 gap-3 text-center">
             <div>
               <div className={`text-xl font-bold ${playerWon ? "text-green-400" : "text-red-400"}`}>
-                {playerWon ? "WIN" : winner === "draw" ? "DRAW" : "LOSS"}
+                {playerWon ? t("analysis.win") : winner === "draw" ? t("analysis.draw") : t("analysis.loss")}
               </div>
-              <div className="text-xs text-white/40">Result</div>
+              <div className="text-xs text-white/40">{t("analysis.result")}</div>
             </div>
             <div>
               <div className="text-xl font-bold text-indigo-400">{totalMoves}</div>
-              <div className="text-xs text-white/40">Total Moves</div>
+              <div className="text-xs text-white/40">{t("analysis.totalMoves")}</div>
             </div>
             <div>
               <div className="text-xl font-bold text-amber-400">{playerCaptures}</div>
-              <div className="text-xs text-white/40">Your Captures</div>
+              <div className="text-xs text-white/40">{t("analysis.yourCaptures")}</div>
             </div>
           </div>
         </div>
@@ -96,23 +106,23 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
         {!canAnalyze && !unlocked ? (
           <div className="bg-indigo-600/10 border border-indigo-500/30 rounded-2xl p-4 text-center">
             <div className="text-2xl mb-2">🔒</div>
-            <div className="font-semibold mb-1">Daily limit reached ({freeLimit}/day free)</div>
-            <div className="text-sm text-white/60 mb-4">Upgrade to Pro for unlimited AI coach analysis</div>
+            <div className="font-semibold mb-1">{t("analysis.dailyLimit")} ({freeLimit}/day)</div>
+            <div className="text-sm text-white/60 mb-4">{t("analysis.proUpsell")}</div>
             <div className="flex flex-col gap-2">
               <button
                 onClick={handleJudgeUnlock}
                 className="bg-amber-500/20 border border-amber-500/40 text-amber-300 py-2 rounded-xl text-sm font-medium"
               >
-                🧑‍⚖️ Judge Demo — Unlock for 0 ₸
+                {t("analysis.judgeUnlock")}
               </button>
               <button className="bg-gradient-to-r from-indigo-600 to-purple-600 py-2 rounded-xl text-sm font-medium">
-                ✨ Upgrade to Pro
+                {t("analysis.upgradePro")}
               </button>
             </div>
           </div>
         ) : analysis ? (
           <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <div className="text-sm font-semibold text-white/60 mb-2">Coach says:</div>
+            <div className="text-sm font-semibold text-white/60 mb-2">{t("analysis.coachSays")}</div>
             <div className="text-sm leading-relaxed whitespace-pre-wrap">{analysis}</div>
           </div>
         ) : (
@@ -123,17 +133,17 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
-                <span className="animate-spin">⟳</span> {coach.name} is analyzing...
+                <span className="animate-spin">⟳</span> {coach.shortName} {t("analysis.analyzing")}
               </span>
             ) : (
-              `${coach.avatar} Get ${coach.name}'s Analysis`
+              `${coach.avatar} ${t("analysis.getAnalysis")}`
             )}
           </button>
         )}
 
         {!isPro && canAnalyze && !analysis && (
-          <p className="text-xs text-white/30 mt-2 text-center">
-            {freeLimit - reviewsToday} free analysis remaining today
+          <p className="text-xs text-white/40 mt-2 text-center">
+            {freeLimit - reviewsToday} {t("analysis.remaining")}
           </p>
         )}
       </div>
@@ -141,7 +151,7 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
   );
 }
 
-function getOfflineAnalysis(coach: Coach, playerWon: boolean, captures: number, totalMoves: number): string {
+function getOfflineAnalysis(coach: Coach, playerWon: boolean, captures: number, totalMoves: number, _locale: string): string {
   const analyses: Record<string, string[]> = {
     arman: [
       `${playerWon ? "Победа — лишь начало пути. Истинное мастерство в том, чтобы понять, почему ты победил." : "Поражение — твой лучший учитель. Не убегай от него."}

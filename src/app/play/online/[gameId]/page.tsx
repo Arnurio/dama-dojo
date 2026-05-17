@@ -15,11 +15,14 @@ import {
 } from "@/lib/multiplayer";
 import { Board, Move, PieceColor, getAllValidMoves, getMovesForPiece } from "@/lib/checkers-engine";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n/context";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function OnlineGamePage({ params }: { params: Promise<{ gameId: string }> }) {
   const { gameId } = use(params);
   const router = useRouter();
   const { user, profile, guestId } = useAuthStore();
+  const { t } = useI18n();
 
   const [game, setGame] = useState<OnlineGame | null>(null);
   const [loading, setLoading] = useState(true);
@@ -132,7 +135,7 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
       <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center text-white">
         <div className="text-center">
           <div className="text-4xl animate-spin">⟳</div>
-          <div className="mt-2 text-white/60">Loading game...</div>
+          <div className="mt-2 text-white/60">{t("common.loading")}</div>
         </div>
       </div>
     );
@@ -142,10 +145,10 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
     return (
       <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center text-white px-4">
         <div className="text-5xl mb-3">🤔</div>
-        <h1 className="text-2xl font-bold mb-2">Game not found</h1>
+        <h1 className="text-2xl font-bold mb-2">{t("common.error")}</h1>
         <p className="text-white/50 text-center mb-6">This room doesn&apos;t exist or has been closed.</p>
         <Link href="/play/online" className="bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-xl font-semibold">
-          ← Back to Lobby
+          {t("room.backToLobby")}
         </Link>
       </div>
     );
@@ -175,17 +178,20 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-4 py-3 border-b border-white/5">
-        <Link href="/play/online" className="text-indigo-400 hover:text-indigo-300 text-sm">← Lobby</Link>
+        <Link href="/play/online" className="text-indigo-400 hover:text-indigo-300 text-sm">{t("room.backToLobby")}</Link>
         <div className="flex items-center gap-2">
           <span className="text-xs bg-white/10 px-2 py-1 rounded font-mono">{game.code}</span>
           <button
             onClick={handleCopyLink}
             className="text-xs bg-white/10 hover:bg-white/20 px-2 py-1 rounded transition-all"
           >
-            {copySuccess ? "✅" : "📋 Copy Link"}
+            {copySuccess ? "✅" : `📋 ${t("room.copyLink")}`}
           </button>
         </div>
-        <Link href="/" className="text-white/40 hover:text-white text-sm">Home</Link>
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher compact />
+          <Link href="/" className="text-white/40 hover:text-white text-sm">{t("nav.home")}</Link>
+        </div>
       </nav>
 
       <div className="relative z-10 max-w-5xl mx-auto p-4">
@@ -199,13 +205,13 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
         {game.status === "waiting" && (
           <div className="bg-gradient-to-br from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl p-6 mb-4 text-center">
             <div className="text-3xl mb-2 animate-pulse">⏳</div>
-            <div className="text-lg font-bold text-amber-300">Waiting for opponent...</div>
-            <p className="text-sm text-white/60 mt-1 mb-3">Share this code: <span className="font-bold tabular-nums tracking-wider text-amber-200">{game.code}</span></p>
+            <div className="text-lg font-bold text-amber-300">{t("room.waiting")}</div>
+            <p className="text-sm text-white/60 mt-1 mb-3">{t("room.shareCode")} <span className="font-bold tabular-nums tracking-wider text-amber-200">{game.code}</span></p>
             <button
               onClick={handleCopyLink}
               className="bg-amber-500 hover:bg-amber-400 text-amber-950 px-5 py-2 rounded-xl font-bold transition-all"
             >
-              {copySuccess ? "✅ Copied!" : "📋 Copy Invite Link"}
+              {copySuccess ? t("online.copied") : t("online.copyLink")}
             </button>
           </div>
         )}
@@ -224,16 +230,16 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
               {game.winner === myColor ? "🏆" : game.winner === "draw" ? "🤝" : "💀"}
             </div>
             <div className="text-xl font-black">
-              {game.winner === myColor ? "Victory!" : game.winner === "draw" ? "Draw" : "Defeated"}
+              {game.winner === myColor ? t("room.youWon") : game.winner === "draw" ? t("analysis.draw") : t("room.gameOver")}
             </div>
             <p className="text-sm text-white/60 mt-1">
-              {game.winner === "red" ? "🔴 Red" : game.winner === "black" ? "⚫ Black" : "Both"} won the game
+              {game.winner === "red" ? t("play.redWins") : game.winner === "black" ? t("play.blackWins") : t("analysis.draw")}
             </p>
             <Link
               href="/play/online"
               className="inline-block mt-3 bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-xl font-semibold transition-all"
             >
-              🔄 Play Again
+              {t("room.rematch")}
             </Link>
           </div>
         )}
@@ -248,12 +254,12 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
           {/* Board */}
           <div className="flex flex-col items-center gap-3 mx-auto">
             <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm">
-              {game.status === "waiting" && "⏳ Waiting for opponent"}
+              {game.status === "waiting" && `⏳ ${t("room.waiting")}`}
               {game.status === "active" && (isMyTurn
-                ? <span className="text-green-400 font-semibold">✓ Your turn</span>
-                : <span className="text-white/60">Opponent&apos;s turn</span>)}
-              {game.status === "finished" && "Game over"}
-              {isSpectator && game.status === "active" && <span className="text-amber-400">👁 Spectating</span>}
+                ? <span className="text-green-400 font-semibold">✓ {t("room.you")}</span>
+                : <span className="text-white/60">{t("room.opponent")}</span>)}
+              {game.status === "finished" && t("room.gameOver")}
+              {isSpectator && game.status === "active" && <span className="text-amber-400">👁 {t("room.spectator")}</span>}
             </div>
 
             <div className="inline-block border-4 border-amber-900/60 rounded-lg overflow-hidden shadow-2xl">
@@ -307,16 +313,16 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
                 onClick={handleResign}
                 className="text-xs text-red-400/70 hover:text-red-400 mt-2"
               >
-                🏳️ Resign
+                🏳️ {t("room.resign")}
               </button>
             )}
           </div>
 
           {/* Sidebar: Move log */}
           <div className="w-full lg:w-72 bg-white/5 border border-white/10 rounded-2xl p-4 max-h-96 overflow-y-auto">
-            <h3 className="text-sm font-semibold text-white/60 mb-2">Move history ({game.moves.length})</h3>
+            <h3 className="text-sm font-semibold text-white/60 mb-2">{t("play.moveHistory")} ({game.moves.length})</h3>
             {game.moves.length === 0 ? (
-              <p className="text-xs text-white/30">No moves yet.</p>
+              <p className="text-xs text-white/30">—</p>
             ) : (
               <div className="space-y-1">
                 {game.moves.slice().reverse().map((m, i) => {
