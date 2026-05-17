@@ -2,11 +2,11 @@
 
 # ♟️ Dama Dojo
 
-### The modern home for Kazakh checkers.
+### Современная платформа для казахской дамки.
 
-**Play online · Train with AI coaches · Climb the ELO ladder**
+**Играй онлайн · Тренируйся с AI-коучами · Поднимайся в ELO-рейтинге**
 
-[🎮 **Play Live**](https://dama-dojo.vercel.app) · 🇰🇿 Made in Kazakhstan
+[🎮 **Открыть сайт**](https://dama-dojo.vercel.app) · 🇰🇿 Сделано в Казахстане
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
@@ -18,131 +18,135 @@
 
 ---
 
-## 🎯 What is Dama Dojo?
+## 🎯 Что это
 
-**Dama Dojo** is a modern web platform for `dama` — Kazakh checkers — built for the millions of players who grew up with the game but have nowhere decent to play it online.
+**Dama Dojo** — современная веб-платформа для игры в **дамку** (казахские/русские шашки). Сделана для миллионов казахстанцев, которые выросли играя в дамку, но в интернете до сих пор нет приличного места, где в неё можно играть.
 
-Every existing dama app is from 2014 and looks like Windows XP. We're fixing that.
+Все существующие приложения для дамки — из 2014 года и выглядят как Windows XP. Мы это исправляем.
 
-- 🤖 **Train against AI coaches** with distinct personalities, openings, and play styles
-- 🌐 **Play friends online** in realtime — Quick Match or share an invite code
-- 🧠 **Get post-game analysis** from your coach: turning points, missed combinations, lessons
-- 🏆 **Climb the ELO ladder** with global and city-level leaderboards (Almaty, Astana, Shymkent...)
-- 🇰🇿 **Localized fully** in English, Russian, and Kazakh
-- ✨ **Daily streaks, challenges, achievements** keep you coming back
-
----
-
-## ⚡ Try It
-
-- **Play instantly →** [dama-dojo.vercel.app](https://dama-dojo.vercel.app) — no signup required
-- **Online multiplayer →** Quick Match auto-pairs you, or create a private room and share a `DAMA-XXXXX` code via WhatsApp / Telegram
-- **Free Pro trial →** 3 days of full Pro access, no card required
+- 🤖 **Играй против AI-коучей** с уникальными характерами, дебютами и стилями игры
+- 🌐 **Играй с друзьями онлайн** в реальном времени — Quick Match или приватная комната по ссылке
+- 🧠 **Получай разбор партии** от своего коуча: ключевые моменты, упущенные комбинации, уроки
+- 🏆 **Поднимайся в ELO** — глобальный и городской рейтинги (Алматы, Астана, Шымкент…)
+- 🇰🇿 **Три языка**: English / Русский / Қазақша
+- ✨ **Стрики, дневные челленджи, ачивки** — заставляют возвращаться
 
 ---
 
-## 🌟 What Makes It Different
+## ⚡ Попробовать
 
-| | Other dama apps | Dama Dojo |
+- **Играть сразу →** [dama-dojo.vercel.app](https://dama-dojo.vercel.app) — без регистрации
+- **Онлайн с другом →** Quick Match подбирает соперника автоматически, либо создаёшь приватную комнату и кидаешь код `DAMA-XXXXX` в WhatsApp / Telegram
+- **Бесплатный Pro на 3 дня →** все функции открыты, карта не нужна
+
+---
+
+## 🌟 В чём отличие
+
+| | Другие приложения для дамки | Dama Dojo |
 |---|---|---|
-| **Coaches** | Generic engines | 5 distinct coach personalities with their own play style & voice |
-| **Multiplayer** | Email a PGN to your friend | Realtime Firestore sync, Quick Match, invite codes, link-share |
-| **AI** | Stockfish, no commentary | GPT-4o-mini post-game review in your coach's voice |
-| **Localization** | English/Russian flags | Full RU/KK/EN — built for the KZ market |
-| **Payments** | International only | Kaspi Pay & Freedom Pay on the roadmap (₸ pricing) |
-| **Retention** | None | Daily streaks, daily challenges, 10 achievements, free Pro trial |
+| **Коучи** | Безликие движки | 5 коучей с характером, своей манерой игры и голосом |
+| **Мультиплеер** | Скинь другу PGN-файл | Realtime Firestore-синк, Quick Match, приглашение по коду/ссылке |
+| **AI** | Stockfish, без объяснений | GPT-4o-mini делает разбор партии **голосом твоего коуча** |
+| **Локализация** | Только русский | Полные RU / KK / EN — заточено под KZ-рынок |
+| **Платежи** | Только международные | Kaspi Pay и Freedom Pay в дорожной карте, цены в ₸ |
+| **Удержание** | Нет | Стрики, дневные челленджи, 10 ачивок, бесплатный Pro-триал |
 
 ---
 
-## 🥷 The Coaches
+## 🥷 Коучи
 
-Each coach is a distinct archetype with their own opening style, board temperament, and signature voice. Speech bubbles update live based on what's happening on the board.
+Каждый коуч — отдельный архетип со своим стилем, темпераментом доски и характерной речью. Реплики в диалоге обновляются в реальном времени в зависимости от того, что происходит на доске.
 
-| Coach | Tier | Style |
+| Коуч | Тариф | Стиль |
 |---|---|---|
-| 🟢 **Arman the Patient** | Free | Slow positional play. *"Don't rush. The board tells you when."* |
-| 🔵 **Erzat the Strategist** | Pro | Long-term planning. Calculates 6 moves ahead. |
-| 🟣 **Nurdaulet the Calculator** | Pro | Pure tactics. Sees every capture chain. |
-| 🟡 **Arlan the Hype Founder** | Pro | Trusts the gut. Casual, energetic, ships fast. |
-| 🔴 **Timur the Dominator** | Pro | Aggressive king-hunter. Crushes early. |
+| 🟢 **Арман Сулейменов · Сэнсэй** | Free | Медленная позиционная игра. *«Не торопись. Доска сама подскажет, когда»* |
+| 🔵 **Эрзат Дулат · Бунтарь** | Pro | Долгосрочный план. Считает на 6 ходов вперёд. |
+| 🟣 **Нурдаулет Базылбеков · Стратег** | Pro | Чистая тактика. Видит каждую серию взятий. |
+| 🟡 **Арлан Рахметжанов · Хайп-фаундер** | Pro | Доверяет интуиции. Casual-стиль, шиппит быстро. |
+| 🔴 **Тимур Турлов · Гроссмейстер** | Pro | Агрессивная охота за дамкой. Давит сразу. |
 
 ---
 
-## 🛠️ Built With
+## 🛠️ Стек
 
 **Frontend**
 - **Next.js 16** (App Router, Turbopack)
-- **TypeScript** (strict mode, fully typed end-to-end)
-- **Tailwind CSS** (hand-tuned components, no UI lib)
-- **Zustand** for game + auth state
+- **TypeScript** (strict mode, типы по всему проекту)
+- **Tailwind CSS** (без UI-библиотек, каждый компонент собран вручную)
+- **Zustand** — состояние игры и авторизации
 
 **Backend / Infra**
-- **Firebase Auth** — Google sign-in, optional (guest mode is first-class)
-- **Firestore** — realtime multiplayer sync via `onSnapshot`
-- **Vercel** — CI/CD on every push to `main`
+- **Firebase Auth** — Google sign-in (опционально, гостевой режим — first-class)
+- **Firestore** — реалтайм-синхронизация мультиплеера через `onSnapshot`
+- **Vercel** — CI/CD на каждый пуш в `main`
 
-**Game Engine**
-- Hand-written **Russian checkers engine** (8×8, mandatory captures, king promotion, multi-jumps)
-- **Minimax + alpha-beta pruning** AI (depths: easy=1 · medium=3 · hard=6 plies)
-- **Position evaluation** weights pieces, kings, center control, advancement, mobility
+**Игровой движок**
+- Свой **движок дамки** (8×8, обязательные взятия, превращение в дамку, серии)
+- **Minimax + alpha-beta pruning** AI (глубины: easy=1 · medium=3 · hard=6 полуходов)
+- **Оценка позиции** учитывает фишки, дамки, центр, продвижение, мобильность
 
-**AI Analysis**
-- **OpenAI GPT-4o-mini** for post-game commentary in each coach's voice
-- Graceful **offline fallback** — template-based analysis when no API key
+**AI-анализ**
+- **OpenAI GPT-4o-mini** для разбора партии голосом каждого коуча
+- **Offline-fallback** — шаблонный анализ, если API-ключ не настроен
 
 ---
 
-## 🧠 Technical Highlights
+## 🧠 Технические особенности
 
-### Bulletproof Firebase init
-Firebase config is **lazy + nullable** — the app runs perfectly without any backend env vars set. Build succeeds even before secrets are configured. Guest mode is a first-class citizen, not a fallback.
+### Устойчивая инициализация Firebase
+Конфиг Firebase **ленивый и nullable** — приложение работает без бэкенда. Build на Vercel проходит даже когда секреты ещё не настроены. Гостевой режим — равноправный игрок, а не fallback.
 
 ```ts
-const fb = initFirebase(); // returns null if env missing
+const fb = initFirebase(); // вернёт null, если env не задан
 export const auth = fb?.auth ?? null;
 export const db = fb?.db ?? null;
 export const isFirebaseReady = () => fb !== null;
 ```
 
-### Realtime multiplayer
-Two players → one Firestore doc → `onSnapshot` syncs every move in <100ms. Game state lives in the cloud, the client is just a view layer. Resign, draw offers, reconnection all work.
+### Реалтайм-мультиплеер
+Два игрока → один Firestore-документ → `onSnapshot` синхронизирует каждый ход за <100 мс. Состояние партии живёт в облаке, клиент — только view-слой. Капитуляция, предложение ничьей и переподключение — работают.
 
-### KZ-aware monetization
-Three tiers — Free / Pro (2,990 ₸/mo) / Pro+ (5,990 ₸/mo) — plus add-on purchases (Gift Pro, single Coach Pack, Tournament Entry). Kaspi Pay & Freedom Pay integration on the roadmap as the production payment path for the Kazakhstani market.
+### Монетизация под KZ
+Три тарифа — Free / Pro (2 990 ₸/мес) / Pro+ (5 990 ₸/мес) + дополнения (Подари Pro, Coach-Pack, билет в турнир). Интеграция с Kaspi Pay и Freedom Pay — в дорожной карте как основной канал оплаты для казахстанского рынка.
 
 ---
 
-## 📂 Project Structure
+## 📂 Структура проекта
 
 ```
 src/
 ├── app/
-│   ├── page.tsx                  # Landing
-│   ├── play/                     # Single-player + setup
-│   ├── play/online/              # Multiplayer lobby + game room
-│   ├── coaches/                  # Coach showcase
-│   ├── shop/                     # Pro / skins / free trial
-│   ├── leaderboard/              # ELO ranking with city filter
-│   └── api/coach-analysis/       # POST endpoint for GPT analysis
+│   ├── page.tsx                  # Главная
+│   ├── play/                     # Одиночная игра + сетап
+│   ├── play/online/              # Лобби и комната мультиплеера
+│   ├── coaches/                  # Витрина коучей
+│   ├── profile/                  # Профиль с никнеймом, аватаром, статами
+│   ├── settings/                 # Тема доски, дефолтный коуч, сложность
+│   ├── shop/                     # Pro / скины / триал
+│   ├── leaderboard/              # ELO-рейтинг с фильтром по городам
+│   └── api/coach-analysis/       # POST-эндпоинт для GPT-разбора
 ├── components/
 │   ├── game/                     # CheckersBoard, CoachCompanion, CoachAnalysis
-│   └── coach/                    # CoachCard
+│   ├── coach/                    # CoachCard
+│   └── SiteBackground.tsx        # Общий фоновый слой (чекер + глифы)
 ├── lib/
-│   ├── checkers-engine.ts        # Game rules + minimax AI
-│   ├── coaches.ts                # 5 coach profiles + AI prompts
-│   ├── multiplayer.ts            # Firestore realtime ops
-│   ├── retention.ts              # Streaks, challenges, achievements
-│   ├── leaderboard.ts            # ELO leaderboard
-│   ├── i18n/                     # EN / RU / KK dictionary + context
-│   └── firebase.ts               # Lazy init
+│   ├── checkers-engine.ts        # Правила + minimax AI
+│   ├── coaches.ts                # 5 коучей и их AI-промпты
+│   ├── multiplayer.ts            # Firestore-операции
+│   ├── retention.ts              # Стрики, челленджи, ачивки
+│   ├── leaderboard.ts            # ELO-рейтинг (+120 фейковых игроков)
+│   ├── preferences.ts            # localStorage-настройки игрока
+│   ├── i18n/                     # Словарь EN / RU / KK + контекст
+│   └── firebase.ts               # Ленивая инициализация
 └── store/
-    ├── auth-store.ts             # User, profile, Pro flag (Zustand)
-    └── game-store.ts             # Board, turn, history, AI control
+    ├── auth-store.ts             # Пользователь, профиль, Pro-флаг (Zustand)
+    └── game-store.ts             # Доска, ходы, история, AI
 ```
 
 ---
 
-## 🚀 Running Locally
+## 🚀 Запуск локально
 
 ```bash
 git clone https://github.com/Arnurio/dama-dojo
@@ -151,11 +155,11 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). **It works out of the box** — Firebase + OpenAI are optional.
+Открой [http://localhost:3000](http://localhost:3000). **Работает из коробки** — Firebase и OpenAI опциональны.
 
-### Optional: enable multiplayer + AI analysis
+### Опционально: подключить мультиплеер и AI-анализ
 
-Add to `.env.local`:
+Создай `.env.local`:
 ```env
 NEXT_PUBLIC_FIREBASE_API_KEY=...
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
@@ -166,7 +170,7 @@ NEXT_PUBLIC_FIREBASE_APP_ID=...
 OPENAI_API_KEY=...
 ```
 
-Then publish these Firestore rules:
+И опубликуй эти правила Firestore:
 ```js
 rules_version = '2';
 service cloud.firestore {
@@ -189,40 +193,41 @@ service cloud.firestore {
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Дорожная карта
 
-- [x] Russian checkers engine + minimax AI
-- [x] 5 coach personalities
-- [x] Realtime Firestore multiplayer + Quick Match + invite link
-- [x] Coach companion with live speech bubbles
-- [x] 3-tier Pro pricing + free trial
-- [x] GPT-4o-mini post-game analysis
-- [x] Global + city-level ELO leaderboards
-- [x] Daily streaks, challenges, achievements
-- [x] Full EN / RU / KK localization
-- [x] Surrender + draw offer flow
-- [ ] Kaspi Pay / Freedom Pay (production payment)
-- [ ] Tournaments + clans
-- [ ] Mobile app (React Native, shared engine)
-- [ ] Voice commentary during games (TTS)
+- [x] Движок русских шашек + minimax AI
+- [x] 5 коучей с уникальными характерами
+- [x] Реалтайм Firestore-мультиплеер + Quick Match + приглашение по ссылке
+- [x] Speech-bubble компаньон-коуч во время партии
+- [x] 3 тарифа Pro + бесплатный триал
+- [x] GPT-4o-mini разбор партии
+- [x] Глобальный и городской ELO-лидерборд
+- [x] Стрики, дневные челленджи, 10 ачивок
+- [x] Полная локализация EN / RU / KK
+- [x] Капитуляция и предложение ничьей
+- [x] Профиль (никнейм, аватар, город), пресет настроек (тема доски, дефолтный коуч)
+- [ ] Kaspi Pay / Freedom Pay (production-канал)
+- [ ] Турниры и кланы
+- [ ] Мобильное приложение (React Native, общий движок)
+- [ ] Голосовая озвучка партии (TTS)
 
 ---
 
-## 📄 License
+## 📄 Лицензия
 
-MIT — see [LICENSE](LICENSE).
+MIT — см. [LICENSE](LICENSE).
 
 ---
 
 <details>
-<summary><strong>About this submission</strong></summary>
+<summary><strong>О заявке</strong></summary>
 
-Dama Dojo was built by **Arnur Kemerbek**, an 11th-grader from Almaty, as a submission for **nFactorial Incubator 2026**. The product is designed not as a hackathon throwaway but as the first working version of a real service for the Kazakhstani gaming market.
+Dama Dojo сделал **Арнур Кемербек**, 11-классник из Алматы, в рамках заявки в **nFactorial Incubator 2026**. Проект задуман не как одноразовая хакатон-сборка, а как первая рабочая версия реального сервиса для казахстанского игрового рынка.
 
 </details>
 
 <div align="center">
 
-♟️ [Play Now](https://dama-dojo.vercel.app)
+♟️ [Играть](https://dama-dojo.vercel.app)
 
 </div>
