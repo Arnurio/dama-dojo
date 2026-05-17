@@ -87,12 +87,29 @@ export default function OnlineLobbyPage() {
     }
   };
 
+  const inviteLink = () => {
+    if (typeof window === "undefined" || !createdGameId) return "";
+    return `${window.location.origin}/play/online/${createdGameId}`;
+  };
+
   const handleCopyLink = () => {
     if (!createdGameId || typeof window === "undefined") return;
-    const link = `${window.location.origin}/play/online/${createdGameId}`;
+    const link = inviteLink();
     navigator.clipboard.writeText(link);
     setCopySuccess(true);
     setTimeout(() => setCopySuccess(false), 2000);
+  };
+
+  const shareViaWhatsApp = () => {
+    const link = inviteLink();
+    const msg = encodeURIComponent(`Сыграй со мной в дамку! ${link}`);
+    window.open(`https://wa.me/?text=${msg}`, "_blank");
+  };
+
+  const shareViaTelegram = () => {
+    const link = inviteLink();
+    const msg = encodeURIComponent("Сыграй со мной в дамку!");
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${msg}`, "_blank");
   };
 
   const handleGoToRoom = () => {
@@ -159,7 +176,7 @@ export default function OnlineLobbyPage() {
             <div className="bg-black/30 rounded-2xl py-4 px-6 mb-4">
               <div className="text-3xl font-black tabular-nums tracking-wider text-emerald-200">{createdCode}</div>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2 justify-center">
+            <div className="flex flex-col sm:flex-row gap-2 justify-center mb-2">
               <button
                 onClick={handleCopyLink}
                 className="bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2.5 rounded-xl font-medium transition-all flex-1"
@@ -171,6 +188,20 @@ export default function OnlineLobbyPage() {
                 className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2.5 rounded-xl font-semibold transition-all flex-1"
               >
                 {t("online.enterRoom")}
+              </button>
+            </div>
+            <div className="flex gap-2 justify-center">
+              <button
+                onClick={shareViaWhatsApp}
+                className="bg-green-600/20 hover:bg-green-600/30 border border-green-600/40 text-green-300 px-3 py-2 rounded-lg text-sm font-medium transition-all flex-1"
+              >
+                💬 WhatsApp
+              </button>
+              <button
+                onClick={shareViaTelegram}
+                className="bg-sky-600/20 hover:bg-sky-600/30 border border-sky-600/40 text-sky-300 px-3 py-2 rounded-lg text-sm font-medium transition-all flex-1"
+              >
+                ✈️ Telegram
               </button>
             </div>
           </div>

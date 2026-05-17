@@ -120,9 +120,21 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
     setTimeout(() => setCopySuccess(false), 2000);
   };
 
+  const shareWhatsApp = () => {
+    if (typeof window === "undefined") return;
+    const msg = encodeURIComponent(`Сыграй со мной в дамку! ${window.location.href}`);
+    window.open(`https://wa.me/?text=${msg}`, "_blank");
+  };
+
+  const shareTelegram = () => {
+    if (typeof window === "undefined") return;
+    const msg = encodeURIComponent("Сыграй со мной в дамку!");
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${msg}`, "_blank");
+  };
+
   const handleResign = async () => {
     if (!myColor || !game || game.status !== "active") return;
-    if (!confirm("Resign this game?")) return;
+    if (!confirm(t("room.resignConfirm"))) return;
     try {
       await resignGame(gameId, myColor);
     } catch (e) {
@@ -207,12 +219,26 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
             <div className="text-3xl mb-2 animate-pulse">⏳</div>
             <div className="text-lg font-bold text-amber-300">{t("room.waiting")}</div>
             <p className="text-sm text-white/60 mt-1 mb-3">{t("room.shareCode")} <span className="font-bold tabular-nums tracking-wider text-amber-200">{game.code}</span></p>
-            <button
-              onClick={handleCopyLink}
-              className="bg-amber-500 hover:bg-amber-400 text-amber-950 px-5 py-2 rounded-xl font-bold transition-all"
-            >
-              {copySuccess ? t("online.copied") : t("online.copyLink")}
-            </button>
+            <div className="flex flex-wrap gap-2 justify-center">
+              <button
+                onClick={handleCopyLink}
+                className="bg-amber-500 hover:bg-amber-400 text-amber-950 px-4 py-2 rounded-xl font-bold transition-all text-sm"
+              >
+                {copySuccess ? t("online.copied") : `📋 ${t("online.copyLink")}`}
+              </button>
+              <button
+                onClick={shareWhatsApp}
+                className="bg-green-600/30 hover:bg-green-600/40 border border-green-600/50 text-green-200 px-4 py-2 rounded-xl font-medium transition-all text-sm"
+              >
+                💬 WhatsApp
+              </button>
+              <button
+                onClick={shareTelegram}
+                className="bg-sky-600/30 hover:bg-sky-600/40 border border-sky-600/50 text-sky-200 px-4 py-2 rounded-xl font-medium transition-all text-sm"
+              >
+                ✈️ Telegram
+              </button>
+            </div>
           </div>
         )}
 
