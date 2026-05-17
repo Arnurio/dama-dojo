@@ -20,12 +20,13 @@
 
 ## 🎯 The Pitch
 
-**Chess.com made chess cool again with 1500 bots.** Lichess made it free.
-**Nobody did this for `dama` (Kazakh checkers).** Every dama app on the store is from 2014 and looks like Windows XP.
+**What it is:** a modern web platform for `dama` (Kazakh checkers) where you don't learn from anonymous engines — you learn from **5 real Kazakhstani tech founders**, each with their own play style, voice, and post-game AI analysis.
 
-So I built a checkers platform that doesn't just clone chess.com — it has a **niche nobody else has**: you don't learn from anonymous engines, you learn from **real Kazakhstani tech founders** with distinct personalities and play styles. Patient. Aggressive. Vibes-only.
+**Who it's for:** the millions of Kazakhstanis who grew up playing dama at home but have no decent app to keep playing it. Every existing dama app on the store is from 2014 and looks like Windows XP. Chess.com made chess cool again with 1500 bots. Lichess made it free. Nobody did this for dama.
 
-Built solo in **2.5 days** for nFactorial Incubator 2026.
+**Why it's valuable:** it's not a toy — it's a **fully shipped product** with realtime multiplayer, ELO ranking, monetization (3-tier Pro), retention loops (daily streak, daily challenge, achievements), full RU/KK/EN localization, and a clear path to a Kazakhstani tech business via Kaspi/Freedom Pay.
+
+Built solo for nFactorial Incubator 2026.
 
 ---
 
@@ -58,7 +59,7 @@ Each coach is a **real archetype** of a KZ tech founder, with their own opening,
 | 🟢 **Arman the Patient** | Free | Slow positional grind. *"Don't rush. The board tells you when."* |
 | 🔵 **Erzat the Strategist** | Pro | Long-term planning. Calculates 6 moves ahead. |
 | 🟣 **Nurdaulet the Calculator** | Pro | Pure tactics. Sees every capture chain. |
-| 🟡 **Arlan the Vibe Coder** | Pro | Trusts the vibes. *"Bro just trust the move."* |
+| 🟡 **Arlan the Hype Founder** | Pro | Trusts the gut. *"Bro just trust the move."* |
 | 🔴 **Timur the Dominator** | Pro | Aggressive king-hunter. Crushes early. |
 
 ---
@@ -107,6 +108,20 @@ Stripe doesn't operate in Kazakhstan. So the Pro tier has **three paths**:
 1. **Stripe test mode** for international users (`4242 4242 4242 4242`)
 2. **Kaspi Pay / Freedom Pay** roadmap (production path for KZ)
 3. **Judge Demo (0 ₸)** — `localStorage` flag unlocks Pro instantly with no login, so nFactorial judges can review the full product without payment
+
+---
+
+## 🏆 nFactorial Rubric — "Великий" Tier Checklist
+
+| Rubric requirement | How Dama Dojo delivers |
+|---|---|
+| **Multiplayer w/ friend by link** | Realtime Firestore room with `DAMA-XXXXX` invite code + WhatsApp/Telegram share buttons |
+| **AI coach that explains moves** | GPT-4o-mini post-game analysis: turning points, 3 lessons, in each coach's voice (RU/KK/EN) |
+| **Social layer — city leaderboard** | Global + city filter (Almaty / Astana / Shymkent / Karaganda / Aktobe), 50 seeded KZ players, real ELO tracking |
+| **Unique niche** | Not "yet another checkers" — it's **dama specifically**, with KZ founder coaches as the hook |
+| **Monetization (Stripe / Pro)** | 3-tier pricing (Free / Pro 2990₸ / Pro+ 5990₸), Stripe test mode, Kaspi/Freedom Pay roadmap, judge demo path |
+| **Retention** | Daily streak, daily challenge with progress bar, 10 achievements, Pro 3-day free trial |
+| **Polish** | 3 languages (en/ru/kk), responsive UI, animated speech bubbles, surrender/draw flow, ELO-aware AI matchmaking |
 
 ---
 
@@ -199,7 +214,7 @@ service cloud.firestore {
 ## 👨‍💻 Built by
 
 **Arnur Kemerbek** — 11th grader, Almaty 🇰🇿
-*nFactorial Incubator 2026 applicant · 2.5 days · vibe coded with Claude*
+*nFactorial Incubator 2026 applicant · built with AI assistance*
 
 Inspired by [chess.com](https://chess.com) bot system, fueled by the fact that *dama* (Kazakh checkers) deserves the same love. Built in public, shipped fast.
 
