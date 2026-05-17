@@ -20,7 +20,7 @@ export const dict = {
   "nav.backHome": { en: "← Back to home", ru: "← На главную", kk: "← Басты бетке" },
 
   // ─── Home / Landing ──────────────────────────────────────
-  "home.badge": { en: "🇰🇿 Built by a KZ vibe coder · nFactorial 2026", ru: "🇰🇿 Сделано казахстанским vibe-кодером · nFactorial 2026", kk: "🇰🇿 Қазақстандық vibe-кодер жасаған · nFactorial 2026" },
+  "home.badge": { en: "🇰🇿 Made in Kazakhstan · nFactorial 2026", ru: "🇰🇿 Сделано в Казахстане · nFactorial 2026", kk: "🇰🇿 Қазақстанда жасалған · nFactorial 2026" },
   "home.title1": { en: "Learn Checkers From", ru: "Учись играть в шашки у", kk: "Дамканы үйрен — ұстаз" },
   "home.title2": { en: "KZ Tech Legends", ru: "Tech-Легенд Казахстана", kk: "Қазақстан Tech-Аңыздары" },
   "home.subtitle": { en: "Play online, get coached by Kazakhstan's top founders, climb the ELO ladder.", ru: "Играй онлайн, тренируйся у топ-фаундеров Казахстана, поднимайся в рейтинге ELO.", kk: "Онлайн ойна, Қазақстанның үздік құрылтайшыларынан үйрен, ELO рейтингіне көтеріл." },
@@ -52,7 +52,7 @@ export const dict = {
   "home.proCta.upgrade": { en: "Upgrade to Pro ✨", ru: "Получить Pro ✨", kk: "Pro алу ✨" },
   "home.proCta.demo": { en: "🧑‍⚖️ Judge Demo — 0 ₸", ru: "🧑‍⚖️ Демо для жюри — 0 ₸", kk: "🧑‍⚖️ Қазылар үшін демо — 0 ₸" },
   "home.proCta.note": { en: "Production: Kaspi Pay / Freedom Pay · Demo: test card 4242 4242 4242 4242", ru: "Прод: Kaspi Pay / Freedom Pay · Демо: тест-карта 4242 4242 4242 4242", kk: "Прод: Kaspi Pay / Freedom Pay · Демо: тест-карта 4242 4242 4242 4242" },
-  "home.footer": { en: "Built by Arnur Kemerbek · nFactorial Incubator 2026 · 2.5 days · Vibe coded with AI 🚀", ru: "Сделал Арнур Кемербек · nFactorial Incubator 2026 · 2.5 дня · Vibe-кодинг с AI 🚀", kk: "Арнұр Кемербек жасады · nFactorial Incubator 2026 · 2.5 күн · AI-мен vibe-кодинг 🚀" },
+  "home.footer": { en: "Built by Arnur Kemerbek · nFactorial Incubator 2026 · Built with AI 🚀", ru: "Сделал Арнур Кемербек · nFactorial Incubator 2026 · Создано с AI 🚀", kk: "Арнұр Кемербек жасады · nFactorial Incubator 2026 · AI көмегімен жасалды 🚀" },
 
   // ─── Play / Game Setup ───────────────────────────────────
   "play.newGame": { en: "New Game", ru: "Новая Игра", kk: "Жаңа Ойын" },
