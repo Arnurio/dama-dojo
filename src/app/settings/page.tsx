@@ -128,7 +128,7 @@ export default function SettingsPage() {
                   <div className="font-bold tracking-tight text-sm">{theme.label[locale]}</div>
                   {selected && (
                     <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-indigo-300 mt-1">
-                      ✓ {t("common.confirm")}
+                      ✓ {t("common.selected")}
                     </div>
                   )}
                 </button>
