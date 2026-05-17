@@ -19,7 +19,7 @@ export default function DailyWidget() {
 
   const todayCh = getTodayChallenge();
   const progressPct = Math.min(100, (challenge.progress / todayCh.goalValue) * 100);
-  const localized = (k: keyof (typeof todayCh)["title"]) => todayCh[k][locale as "en" | "ru" | "kk"];
+  const localized = (field: "title" | "desc") => todayCh[field][locale];
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto px-4 mb-12">

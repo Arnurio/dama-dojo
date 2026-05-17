@@ -34,10 +34,11 @@ const COLLECTION = "leaderboard";
  * Works for both authenticated users and guests.
  */
 export async function recordLeaderboardEntry(entry: Omit<LeaderboardEntry, "lastSeen">): Promise<void> {
-  if (!db) return;
+  const fs = db;
+  if (!fs) return;
   try {
     await setDoc(
-      doc(db, COLLECTION, entry.uid),
+      doc(fs, COLLECTION, entry.uid),
       { ...entry, lastSeen: serverTimestamp() },
       { merge: true }
     );
@@ -51,11 +52,12 @@ export async function recordLeaderboardEntry(entry: Omit<LeaderboardEntry, "last
  */
 export async function fetchTopPlayers(opts: { city?: string; limit?: number } = {}): Promise<LeaderboardEntry[]> {
   const { city, limit: lim = 100 } = opts;
-  if (!db) return [];
+  const fs = db;
+  if (!fs) return [];
   try {
     const baseQuery = city && city !== "All"
-      ? query(collection(db, COLLECTION), where("city", "==", city), orderBy("elo", "desc"), limit(lim))
-      : query(collection(db, COLLECTION), orderBy("elo", "desc"), limit(lim));
+      ? query(collection(fs, COLLECTION), where("city", "==", city), orderBy("elo", "desc"), limit(lim))
+      : query(collection(fs, COLLECTION), orderBy("elo", "desc"), limit(lim));
     const snap = await getDocs(baseQuery);
     return snap.docs.map(d => d.data() as LeaderboardEntry);
   } catch (e) {
@@ -68,13 +70,14 @@ export async function fetchTopPlayers(opts: { city?: string; limit?: number } = 
  * Get a single player's rank globally.
  */
 export async function getPlayerRank(uid: string): Promise<number | null> {
-  if (!db) return null;
+  const fs = db;
+  if (!fs) return null;
   try {
-    const meRef = doc(db, COLLECTION, uid);
+    const meRef = doc(fs, COLLECTION, uid);
     const meSnap = await getDoc(meRef);
     if (!meSnap.exists()) return null;
     const me = meSnap.data() as LeaderboardEntry;
-    const q = query(collection(db, COLLECTION), where("elo", ">", me.elo));
+    const q = query(collection(fs, COLLECTION), where("elo", ">", me.elo));
     const snap = await getDocs(q);
     return snap.size + 1;
   } catch {
@@ -141,13 +144,15 @@ export const SEED_PLAYERS: LeaderboardEntry[] = [
  * Marked client-only via a localStorage flag so we don't spam Firestore.
  */
 export async function seedLeaderboardOnce(): Promise<void> {
-  if (typeof window === "undefined" || !db) return;
+  if (typeof window === "undefined") return;
+  const fs = db;
+  if (!fs) return;
   const KEY = "dama-dojo-seeded-v1";
   if (localStorage.getItem(KEY) === "true") return;
   try {
     await Promise.all(
       SEED_PLAYERS.map(p =>
-        setDoc(doc(db, COLLECTION, p.uid), { ...p, lastSeen: serverTimestamp() }, { merge: true })
+        setDoc(doc(fs, COLLECTION, p.uid), { ...p, lastSeen: serverTimestamp() }, { merge: true })
       )
     );
     localStorage.setItem(KEY, "true");
