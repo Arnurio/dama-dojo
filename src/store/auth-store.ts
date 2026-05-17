@@ -119,7 +119,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   },
   recordGameResult: (opponentElo, result) => {
     const state = get();
-    const currentElo = state.profile?.elo ?? state.localStats.elo;
+    const currentElo = state.localStats.gamesPlayed > 0
+      ? state.localStats.elo
+      : (state.profile?.elo ?? state.localStats.elo);
     const change = calcEloChange(currentElo, opponentElo, result);
     const newStats: LocalStats = {
       elo: Math.max(100, currentElo + change),
@@ -142,6 +144,28 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         },
       });
     }
+    // Write to global leaderboard (async, non-blocking)
+    void (async () => {
+      try {
+        const { recordLeaderboardEntry } = await import("@/lib/leaderboard");
+        const uid = state.user?.uid ?? state.guestId;
+        const displayName = state.user?.displayName ?? state.profile?.displayName ?? `Guest ${state.guestId.slice(-4)}`;
+        await recordLeaderboardEntry({
+          uid,
+          displayName,
+          city: state.profile?.city ?? "Almaty",
+          elo: newStats.elo,
+          wins: newStats.wins,
+          losses: newStats.losses,
+          draws: newStats.draws,
+          gamesPlayed: newStats.gamesPlayed,
+          isPro: state.localPro || (state.profile?.isPro ?? false),
+          selectedCoach: state.profile?.selectedCoach ?? "arman",
+        });
+      } catch {
+        // Firestore not configured — fine for dev/guest
+      }
+    })();
   },
   getElo: () => {
     const state = get();

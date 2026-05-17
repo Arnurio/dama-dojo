@@ -1,45 +1,70 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { collection, query, orderBy, limit, getDocs } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import { UserProfile, useAuthStore } from "@/store/auth-store";
+import { fetchTopPlayers, seedLeaderboardOnce, SEED_PLAYERS, LeaderboardEntry } from "@/lib/leaderboard";
+import { useAuthStore } from "@/store/auth-store";
 import { useI18n } from "@/lib/i18n/context";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { COACHES } from "@/lib/coaches";
+import { cn } from "@/lib/utils";
 
 const CITIES = ["All", "Almaty", "Astana", "Shymkent", "Karaganda", "Aktobe"];
 
 export default function LeaderboardPage() {
   const { t } = useI18n();
   const { user, guestId, getElo } = useAuthStore();
+  const myUid = user?.uid ?? guestId;
   const myElo = getElo();
-  const [players, setPlayers] = useState<UserProfile[]>([]);
+
+  const [players, setPlayers] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCity, setSelectedCity] = useState("All");
+  const [seeded, setSeeded] = useState(false);
 
+  // Seed once
   useEffect(() => {
-    const fetchPlayers = async () => {
-      if (!db) {
-        setPlayers(DEMO_PLAYERS);
-        setLoading(false);
-        return;
-      }
-      try {
-        const q = query(collection(db, "users"), orderBy("elo", "desc"), limit(50));
-        const snap = await getDocs(q);
-        const data = snap.docs.map(d => d.data() as UserProfile);
-        setPlayers(data.length > 0 ? data : DEMO_PLAYERS);
-      } catch (e) {
-        console.error(e);
-        setPlayers(DEMO_PLAYERS);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPlayers();
+    seedLeaderboardOnce().finally(() => setSeeded(true));
   }, []);
 
-  const filtered = selectedCity === "All" ? players : players.filter(p => p.city === selectedCity);
+  // Load players
+  useEffect(() => {
+    if (!seeded) return;
+    setLoading(true);
+    fetchTopPlayers({ city: selectedCity, limit: 100 })
+      .then(list => {
+        // Fallback to local seed if Firestore returns nothing (offline mode)
+        setPlayers(list.length > 0 ? list : SEED_PLAYERS);
+      })
+      .finally(() => setLoading(false));
+  }, [seeded, selectedCity]);
+
+  // Filter by city locally too (in case fallback didn't filter)
+  const filtered = selectedCity === "All"
+    ? players
+    : players.filter(p => p.city === selectedCity);
+
+  // Inject "me" into the list if I'm not already there
+  const myEntry = filtered.find(p => p.uid === myUid);
+  const meInjected: LeaderboardEntry | null = myEntry
+    ? null
+    : (myElo > 0 && (selectedCity === "All" || selectedCity === "Almaty"))
+      ? {
+          uid: myUid,
+          displayName: user?.displayName ?? `Guest ${guestId.slice(-4)}`,
+          city: "Almaty",
+          elo: myElo,
+          wins: 0,
+          losses: 0,
+          draws: 0,
+          gamesPlayed: 0,
+          isPro: false,
+          selectedCoach: "arman",
+        }
+      : null;
+
+  const fullList = meInjected
+    ? [...filtered, meInjected].sort((a, b) => b.elo - a.elo).slice(0, 100)
+    : filtered;
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
@@ -61,8 +86,13 @@ export default function LeaderboardPage() {
       </nav>
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-black text-center mb-2">{t("lb.title")}</h1>
-        <p className="text-white/60 text-center mb-8 text-base">Top dama players in Kazakhstan 🇰🇿</p>
+        <h1 className="text-4xl md:text-5xl font-black text-center mb-2">🏆 {t("lb.title")}</h1>
+        <p className="text-white/60 text-center mb-2 text-base">Top dama players in Kazakhstan 🇰🇿</p>
+        {myElo > 0 && (
+          <p className="text-center text-sm text-indigo-300 mb-6">
+            {t("lb.you")}: <span className="font-bold">{myElo} ELO</span>
+          </p>
+        )}
 
         {/* City filter */}
         <div className="flex gap-2 flex-wrap justify-center mb-6">
@@ -70,13 +100,14 @@ export default function LeaderboardPage() {
             <button
               key={city}
               onClick={() => setSelectedCity(city)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all border ${
+              className={cn(
+                "px-4 py-1.5 rounded-full text-sm font-medium transition-all border",
                 selectedCity === city
                   ? "bg-indigo-600 border-indigo-500 text-white"
                   : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
-              }`}
+              )}
             >
-              {city === "All" ? t("lb.allCities") : city}
+              {city === "All" ? `🌍 ${t("lb.allCities")}` : city}
             </button>
           ))}
         </div>
@@ -85,43 +116,57 @@ export default function LeaderboardPage() {
           <div className="text-center text-white/40 py-12">{t("common.loading")}</div>
         ) : (
           <div className="space-y-2">
-            {filtered.map((player, index) => (
-              <div
-                key={player.uid}
-                className={`flex items-center gap-4 p-4 rounded-2xl border transition-all ${
-                  index < 3
-                    ? "bg-gradient-to-r from-amber-600/10 to-transparent border-amber-500/20"
-                    : "bg-white/3 border-white/8"
-                }`}
-              >
-                <div className="w-8 text-center font-bold">
-                  {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
-                </div>
-                <div className="w-10 h-10 rounded-full bg-indigo-600/30 flex items-center justify-center text-sm font-bold">
-                  {player.displayName?.charAt(0) ?? "?"}
-                </div>
-                <div className="flex-1">
-                  <div className="font-semibold text-sm">{player.displayName}</div>
-                  <div className="text-xs text-white/40">{player.city ?? "Almaty"}</div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-indigo-400">{player.elo}</div>
-                  <div className="text-xs text-white/40">ELO</div>
-                </div>
-                <div className="text-right hidden md:block">
-                  <div className="text-sm">{player.wins}W / {player.losses}L</div>
-                  <div className="text-xs text-white/40">
-                    {player.wins + player.losses > 0
-                      ? `${Math.round((player.wins / (player.wins + player.losses)) * 100)}%`
-                      : "—"} WR
+            {fullList.map((player, index) => {
+              const isMe = player.uid === myUid;
+              const coach = COACHES.find(c => c.id === player.selectedCoach);
+              const wr = player.wins + player.losses > 0
+                ? Math.round((player.wins / (player.wins + player.losses)) * 100)
+                : 0;
+              return (
+                <div
+                  key={player.uid}
+                  className={cn(
+                    "flex items-center gap-3 p-3 sm:p-4 rounded-2xl border transition-all",
+                    isMe
+                      ? "bg-gradient-to-r from-indigo-600/30 to-purple-600/20 border-indigo-400/50 shadow-[0_0_30px_rgba(99,102,241,0.25)]"
+                      : index < 3
+                      ? "bg-gradient-to-r from-amber-600/15 to-transparent border-amber-500/30"
+                      : "bg-white/5 border-white/10"
+                  )}
+                >
+                  <div className="w-10 text-center font-bold text-lg shrink-0">
+                    {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `#${index + 1}`}
                   </div>
+                  <div className={cn(
+                    "w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold shrink-0",
+                    isMe ? "bg-indigo-500" : "bg-indigo-600/30"
+                  )}>
+                    {player.displayName.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-sm truncate">
+                      {player.displayName}
+                      {isMe && <span className="ml-2 text-xs text-indigo-300">({t("lb.you")})</span>}
+                    </div>
+                    <div className="text-xs text-white/50 truncate">
+                      {player.city} {coach && `· ${coach.shortName}`}
+                    </div>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <div className="font-bold text-indigo-400 text-base sm:text-lg">{player.elo}</div>
+                    <div className="text-[10px] uppercase text-white/40 tracking-wider">{t("lb.elo")}</div>
+                  </div>
+                  <div className="text-right hidden md:block shrink-0 min-w-[60px]">
+                    <div className="text-sm font-medium">{player.wins}W</div>
+                    <div className="text-xs text-white/40">{wr}% WR</div>
+                  </div>
+                  {player.isPro && <span className="text-amber-400 text-sm shrink-0">✨</span>}
                 </div>
-                {player.isPro && <span className="text-xs text-amber-400">✨</span>}
-              </div>
-            ))}
-            {filtered.length === 0 && (
+              );
+            })}
+            {fullList.length === 0 && (
               <div className="text-center text-white/40 py-12">
-                No players from {selectedCity} yet. Be the first! 🚀
+                No players in {selectedCity} yet. 🚀
               </div>
             )}
           </div>
@@ -130,13 +175,3 @@ export default function LeaderboardPage() {
     </div>
   );
 }
-
-const DEMO_PLAYERS: UserProfile[] = [
-  { uid: "1", displayName: "Dias K.", email: "", photoURL: "", elo: 1842, wins: 47, losses: 12, isPro: true, selectedCoach: "timur", selectedSkin: "freedom", city: "Almaty", gamesPlayed: 59, aiReviewsToday: 0 },
-  { uid: "2", displayName: "Aizat M.", email: "", photoURL: "", elo: 1791, wins: 38, losses: 15, isPro: true, selectedCoach: "erzat", selectedSkin: "higgsfield", city: "Astana", gamesPlayed: 53, aiReviewsToday: 0 },
-  { uid: "3", displayName: "Bekzat N.", email: "", photoURL: "", elo: 1724, wins: 31, losses: 18, isPro: false, selectedCoach: "arman", selectedSkin: "sakura", city: "Almaty", gamesPlayed: 49, aiReviewsToday: 0 },
-  { uid: "4", displayName: "Kamila S.", email: "", photoURL: "", elo: 1689, wins: 29, losses: 20, isPro: true, selectedCoach: "arlan", selectedSkin: "neon", city: "Shymkent", gamesPlayed: 49, aiReviewsToday: 0 },
-  { uid: "5", displayName: "Yerlan B.", email: "", photoURL: "", elo: 1654, wins: 25, losses: 22, isPro: false, selectedCoach: "arman", selectedSkin: "classic", city: "Almaty", gamesPlayed: 47, aiReviewsToday: 0 },
-  { uid: "6", displayName: "Alina Z.", email: "", photoURL: "", elo: 1621, wins: 22, losses: 24, isPro: false, selectedCoach: "nurdaulet", selectedSkin: "classic", city: "Karaganda", gamesPlayed: 46, aiReviewsToday: 0 },
-  { uid: "7", displayName: "Arnur K.", email: "", photoURL: "", elo: 1598, wins: 20, losses: 25, isPro: true, selectedCoach: "arlan", selectedSkin: "neon", city: "Almaty", gamesPlayed: 45, aiReviewsToday: 0 },
-];
