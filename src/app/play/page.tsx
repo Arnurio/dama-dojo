@@ -14,7 +14,9 @@ import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import SiteBackground from "@/components/SiteBackground";
 import { updateChallengeProgress, unlockAchievement } from "@/lib/retention";
+import { readPreferences } from "@/lib/preferences";
 
 function PlayPageInner() {
   const searchParams = useSearchParams();
@@ -34,6 +36,13 @@ function PlayPageInner() {
   const [setupMode, setSetupMode] = useState<GameMode>(initMode);
   const [setupDifficulty, setSetupDifficulty] = useState<Difficulty>("medium");
   const [setupCoach, setSetupCoach] = useState(profile?.selectedCoach ?? "arman");
+
+  // Hydrate from preferences on mount
+  useEffect(() => {
+    const prefs = readPreferences();
+    setSetupDifficulty(prefs.defaultDifficulty);
+    if (!profile?.selectedCoach) setSetupCoach(prefs.defaultCoach);
+  }, [profile?.selectedCoach]);
   const [showAnalysis, setShowAnalysis] = useState(false);
 
   const makeMove = useGameStore(s => s.makeMove);
@@ -95,11 +104,7 @@ function PlayPageInner() {
   if (showSetup) {
     return (
       <div className="relative min-h-screen bg-[#0a0a0f] text-white flex flex-col items-center justify-center px-4 py-12 overflow-hidden">
-        {/* Background glow */}
-        <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
-        </div>
+        <SiteBackground />
         <div className="absolute top-4 right-4 z-10"><LanguageSwitcher compact /></div>
         <Link href="/" className="relative z-10 text-indigo-400 hover:text-indigo-300 mb-8 text-sm transition-colors">{t("nav.backHome")}</Link>
         <h1 className="relative z-10 text-3xl md:text-4xl font-black tracking-tight mb-2">{t("play.newGame")}</h1>
@@ -189,11 +194,7 @@ function PlayPageInner() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
-      {/* Background */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
-      </div>
+      <SiteBackground />
 
       {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between px-4 py-3 border-b border-white/5 gap-2">
@@ -362,7 +363,7 @@ function PlayPageInner() {
             <>
               <button
                 onClick={() => setShowAnalysis(true)}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 py-3 rounded-xl font-semibold transition-all hover:scale-[1.02]"
+                className="bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl font-semibold transition-all hover:scale-[1.02]"
               >
                 {coach.avatar} {t("play.getAnalysis")}
               </button>

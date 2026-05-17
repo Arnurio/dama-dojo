@@ -10,6 +10,7 @@ import { COACHES } from "@/lib/coaches";
 import { Suspense } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import SiteBackground from "@/components/SiteBackground";
 import { cn } from "@/lib/utils";
 
 const SKINS = [
@@ -81,10 +82,7 @@ function ShopPageInner() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
-      </div>
+      <SiteBackground />
 
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
         <Link href="/" className="flex items-center gap-2">
@@ -104,7 +102,7 @@ function ShopPageInner() {
         <p className="text-white/60 text-center mb-8 text-sm md:text-base">{t("shop.subtitle")}</p>
 
         {/* Free Trial Banner */}
-        <div className="bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl p-5 mb-8 text-center">
+        <div className="bg-amber-500/[0.08] border border-amber-500/30 rounded-2xl p-5 mb-8 text-center">
           <div className="text-3xl mb-2">🎁</div>
           <div className="text-lg font-bold text-amber-300 mb-1">Try Pro Free for 3 Days</div>
           <p className="text-sm text-white/70 max-w-md mx-auto mb-4">
@@ -140,27 +138,27 @@ function ShopPageInner() {
             <div
               key={tier.tier}
               className={cn(
-                "rounded-2xl p-5 flex flex-col border bg-gradient-to-br",
-                tier.tier === "Pro" ? "from-indigo-600/15 to-purple-600/10 border-indigo-500/40 ring-2 ring-indigo-500/20" :
-                tier.tier === "Pro+" ? "from-amber-500/15 to-yellow-500/10 border-amber-500/40" :
-                "from-white/5 to-white/0 border-white/10"
+                "rounded-2xl p-5 flex flex-col border bg-white/[0.03]",
+                tier.tier === "Pro" ? "border-indigo-500/40 ring-1 ring-indigo-500/20" :
+                tier.tier === "Pro+" ? "border-amber-500/40" :
+                "border-white/10"
               )}
             >
               <div className="flex items-center justify-between mb-1">
-                <div className="font-bold text-lg">{tier.tier}</div>
-                {tier.badge && <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded-full uppercase tracking-wider">{tier.badge}</span>}
+                <div className="font-bold text-lg tracking-tight">{tier.tier}</div>
+                {tier.badge && <span className="text-[10px] font-bold bg-white/10 px-2 py-0.5 rounded-full uppercase tracking-[0.08em]">{tier.badge}</span>}
               </div>
-              <div className="text-2xl font-black mb-3">{tier.price}</div>
+              <div className="text-2xl font-black tabular-nums tracking-tight mb-3">{tier.price}</div>
               <ul className="text-sm text-white/70 space-y-1.5 mb-4 flex-1">
                 {tier.features.map(f => (
                   <li key={f} className="flex items-start gap-2">
-                    <span className="text-green-400 shrink-0">✓</span>
+                    <span className="text-emerald-400 shrink-0">✓</span>
                     <span>{f}</span>
                   </li>
                 ))}
               </ul>
               {tier.tier === "Free" ? (
-                <div className="text-xs text-white/40 text-center">Current default</div>
+                <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 text-center">Current default</div>
               ) : (
                 <button
                   onClick={() => handleStripeCheckout(tier.tier.toLowerCase(), tier.tier === "Pro" ? 2990 : 5990)}
@@ -169,7 +167,7 @@ function ShopPageInner() {
                     "w-full py-2.5 rounded-xl font-semibold text-sm transition-all",
                     tier.tier === "Pro+"
                       ? "bg-amber-500 hover:bg-amber-400 text-amber-950"
-                      : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90"
+                      : "bg-indigo-600 hover:bg-indigo-500"
                   )}
                 >
                   {checkoutLoading === tier.tier.toLowerCase() ? "..." : `Get ${tier.tier}`}
@@ -205,31 +203,31 @@ function ShopPageInner() {
         </div>
 
         {/* Pro Plan */}
-        <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-500/40 rounded-3xl p-6 mb-8">
+        <div className="bg-white/[0.03] border border-indigo-500/40 rounded-3xl p-6 mb-8">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-2xl">✨</span>
-                <span className="text-xl font-bold">Pro Plan</span>
-                <span className="bg-indigo-600/30 text-indigo-300 text-xs px-2 py-0.5 rounded-full">Most Popular</span>
+                <span className="text-xl font-bold tracking-tight">Pro Plan</span>
+                <span className="bg-indigo-600/30 text-indigo-300 text-[10px] font-bold uppercase tracking-[0.08em] px-2 py-0.5 rounded-full">Most Popular</span>
               </div>
               <p className="text-white/60 text-sm mb-3">Everything in free + all coaches + unlimited AI analysis + exclusive skins</p>
               <ul className="text-sm text-white/70 space-y-1">
                 {["All 5 KZ founder coaches", "Unlimited AI Coach analysis", "Exclusive Pro board skins", "Priority matchmaking", "Extended move history"].map(f => (
                   <li key={f} className="flex items-center gap-2">
-                    <span className="text-indigo-400">✓</span> {f}
+                    <span className="text-emerald-400">✓</span> {f}
                   </li>
                 ))}
               </ul>
             </div>
             <div className="text-center shrink-0">
-              <div className="text-3xl font-black text-white">2,990 ₸</div>
-              <div className="text-xs text-white/40">per month</div>
-              <div className="text-xs text-white/30 mt-1">~$6 USD</div>
+              <div className="text-3xl font-black text-white tabular-nums tracking-tight">2,990 ₸</div>
+              <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 mt-1">per month</div>
+              <div className="text-xs text-white/30 mt-0.5">~$6 USD</div>
               <button
                 onClick={() => handleStripeCheckout("pro", 2990)}
                 disabled={checkoutLoading === "pro" || userIsPro}
-                className="mt-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 disabled:opacity-50 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all w-full"
+                className="mt-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all w-full"
               >
                 {userIsPro ? "✅ Active" : checkoutLoading === "pro" ? "Loading..." : "Upgrade Now"}
               </button>

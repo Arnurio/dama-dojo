@@ -5,6 +5,7 @@ import { fetchTopPlayers, seedLeaderboardOnce, SEED_PLAYERS, LeaderboardEntry } 
 import { useAuthStore } from "@/store/auth-store";
 import { useI18n } from "@/lib/i18n/context";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import SiteBackground from "@/components/SiteBackground";
 import { COACHES } from "@/lib/coaches";
 import { cn } from "@/lib/utils";
 
@@ -76,11 +77,7 @@ export default function LeaderboardPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-amber-500/5 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
-      </div>
+      <SiteBackground />
 
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
         <Link href="/" className="flex items-center gap-2">

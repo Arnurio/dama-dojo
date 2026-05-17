@@ -1,7 +1,9 @@
 "use client";
+import { useEffect, useState } from "react";
 import { useGameStore } from "@/store/game-store";
-import { Position, Move } from "@/lib/checkers-engine";
+import { Move } from "@/lib/checkers-engine";
 import { cn } from "@/lib/utils";
+import { readPreferences, BOARD_THEMES, BoardTheme } from "@/lib/preferences";
 
 interface Props {
   onMoveComplete?: (move: Move) => void;
@@ -10,6 +12,16 @@ interface Props {
 
 export default function CheckersBoard({ onMoveComplete, flipped = false }: Props) {
   const { board, currentTurn, selectedPiece, validMoves, selectPiece, makeMove, status, playerColor, mode } = useGameStore();
+  const [theme, setTheme] = useState<BoardTheme>("classic");
+  const [showHints, setShowHints] = useState(true);
+
+  useEffect(() => {
+    const p = readPreferences();
+    setTheme(p.boardTheme);
+    setShowHints(p.showMoveHints);
+  }, []);
+
+  const themeColors = BOARD_THEMES[theme];
 
   const isMyTurn = mode === "online" ? currentTurn === playerColor : true;
   const isValidMoveTarget = (row: number, col: number) =>
@@ -34,7 +46,7 @@ export default function CheckersBoard({ onMoveComplete, flipped = false }: Props
   const cols = flipped ? [...Array(8)].map((_, i) => 7 - i) : [...Array(8)].map((_, i) => i);
 
   return (
-    <div className="inline-block border-4 border-amber-900/60 rounded-lg overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
+    <div className="inline-block rounded-lg overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.5)]" style={{ border: `4px solid ${themeColors.frame}` }}>
       {rows.map((row) => (
         <div key={row} className="flex">
           {cols.map((col) => {
@@ -47,14 +59,14 @@ export default function CheckersBoard({ onMoveComplete, flipped = false }: Props
               <div
                 key={col}
                 onClick={() => handleCellClick(row, col)}
+                style={{ background: isDark ? themeColors.dark : themeColors.light }}
                 className={cn(
                   "board-cell w-14 h-14 md:w-16 md:h-16 flex items-center justify-center relative cursor-pointer",
-                  isDark ? "bg-[#b58863]" : "bg-[#f0d9b5]",
                   isDark && "hover:brightness-110",
                 )}
               >
                 {/* Valid move hint */}
-                {isTarget && isDark && (
+                {isTarget && isDark && showHints && (
                   <div className="valid-move-hint absolute inset-0 flex items-center justify-center">
                     <div className="w-5 h-5 rounded-full bg-yellow-400/60 border-2 border-yellow-400 shadow-[0_0_16px_rgba(250,204,21,0.5)]" />
                   </div>

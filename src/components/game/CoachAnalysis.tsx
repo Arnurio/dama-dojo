@@ -115,7 +115,7 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
               >
                 {t("analysis.judgeUnlock")}
               </button>
-              <button className="bg-gradient-to-r from-indigo-600 to-purple-600 py-2 rounded-xl text-sm font-medium">
+              <button className="bg-indigo-600 hover:bg-indigo-500 py-2 rounded-xl text-sm font-medium transition-colors">
                 {t("analysis.upgradePro")}
               </button>
             </div>
@@ -129,7 +129,7 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
           <button
             onClick={fetchAnalysis}
             disabled={loading}
-            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 disabled:opacity-50 py-3 rounded-xl font-semibold transition-all"
+            className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 py-3 rounded-xl font-semibold transition-all"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">

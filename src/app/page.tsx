@@ -7,6 +7,7 @@ import { COACHES } from "@/lib/coaches";
 import CoachCard from "@/components/coach/CoachCard";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import DailyWidget from "@/components/DailyWidget";
+import SiteBackground from "@/components/SiteBackground";
 import { useI18n } from "@/lib/i18n/context";
 
 export default function Home() {
@@ -35,11 +36,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
-      {/* Subtle background glow */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
-      </div>
+      <SiteBackground />
 
       {/* Nav */}
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
@@ -53,6 +50,9 @@ export default function Home() {
           </Link>
           <Link href="/shop" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">
             {userIsPro ? `✨ ${t("nav.pro")}` : t("nav.shop")}
+          </Link>
+          <Link href="/settings" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">
+            {t("nav.settings")}
           </Link>
           <LanguageSwitcher compact />
           {user ? (
@@ -112,7 +112,7 @@ export default function Home() {
 
         {/* Free trial banner */}
         {!userIsPro && (
-          <div className="mt-6 bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl px-6 py-3 flex items-center gap-3 backdrop-blur-sm">
+          <div className="mt-6 bg-amber-500/[0.08] border border-amber-500/25 rounded-2xl px-6 py-3 flex items-center gap-3 backdrop-blur-sm">
             <span className="text-2xl">🎁</span>
             <div className="text-left">
               <div className="text-base font-bold text-amber-300">{t("home.judgeBannerTitle")}</div>
@@ -127,7 +127,7 @@ export default function Home() {
           </div>
         )}
         {userIsPro && (
-          <div className="mt-6 bg-gradient-to-r from-green-500/15 to-emerald-500/15 border border-green-500/30 rounded-2xl px-6 py-3 flex items-center gap-3">
+          <div className="mt-6 bg-emerald-500/[0.08] border border-emerald-500/25 rounded-2xl px-6 py-3 flex items-center gap-3">
             <span className="text-2xl">✨</span>
             <div className="text-left">
               <div className="text-base font-bold text-green-300">{t("home.proActive")}</div>
@@ -142,8 +142,8 @@ export default function Home() {
             { label: t("home.stats.coaches"), value: "5" },
           ].map(stat => (
             <div key={stat.label}>
-              <div className="text-3xl md:text-4xl font-black text-indigo-400 tabular-nums tracking-tight">{stat.value}</div>
-              <div className="text-xs sm:text-sm text-white/60 mt-1.5">{stat.label}</div>
+              <div className="text-3xl md:text-4xl font-black text-white tabular-nums tracking-tight">{stat.value}</div>
+              <div className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.08em] text-white/40 mt-2">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -195,7 +195,7 @@ export default function Home() {
 
       {/* Pro CTA */}
       <section className="relative z-10 px-4 py-16 max-w-2xl mx-auto text-center">
-        <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-500/30 rounded-3xl p-8 md:p-10">
+        <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-8 md:p-10">
           <div className="text-4xl mb-4">✨</div>
           <h3 className="text-2xl md:text-3xl font-black tracking-tight mb-3">{t("home.proCta.title")}</h3>
           <p className="text-white/60 text-base mb-6 max-w-md mx-auto leading-relaxed">
@@ -204,7 +204,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/shop"
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 px-6 py-3 rounded-xl font-semibold transition-all"
+              className="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-xl font-semibold transition-all"
             >
               {t("home.proCta.upgrade")}
             </Link>

@@ -188,6 +188,21 @@ export const dict = {
   "play.aiSurrendered": { en: "Opponent surrendered 🏳️ You win!", ru: "Соперник сдался 🏳️ Победа!", kk: "Қарсылас берілді 🏳️ Жеңіс!" },
   "play.aiRefusedSurrender": { en: "Opponent refused to surrender", ru: "Соперник отказался сдаваться", kk: "Қарсылас берілуден бас тартты" },
   "play.actions": { en: "Actions", ru: "Действия", kk: "Әрекеттер" },
+
+  // ─── Settings / Preferences ──────────────────────────────
+  "settings.title": { en: "Preferences", ru: "Настройки", kk: "Параметрлер" },
+  "settings.subtitle": { en: "Personalize your dojo", ru: "Настрой своё додзё", kk: "Өз додзёңды баптап ал" },
+  "settings.defaultCoach": { en: "Default Coach", ru: "Коуч по умолчанию", kk: "Әдепкі Коуч" },
+  "settings.defaultCoachDesc": { en: "Pre-selected when starting a new game.", ru: "Выбирается автоматически в новой игре.", kk: "Жаңа ойынды бастағанда автоматты түрде таңдалады." },
+  "settings.boardTheme": { en: "Board Theme", ru: "Тема Доски", kk: "Тақта Тақырыбы" },
+  "settings.boardThemeDesc": { en: "Choose the look of your board.", ru: "Выбери внешний вид доски.", kk: "Тақтаның сыртқы көрінісін таңда." },
+  "settings.defaultDifficulty": { en: "Default Difficulty", ru: "Сложность по умолчанию", kk: "Әдепкі Қиындық" },
+  "settings.soundEnabled": { en: "Sound Effects", ru: "Звуковые Эффекты", kk: "Дыбыс Эффектілері" },
+  "settings.showMoveHints": { en: "Show Move Hints", ru: "Подсказки Ходов", kk: "Жүрістер Кеңесі" },
+  "settings.saved": { en: "Saved", ru: "Сохранено", kk: "Сақталды" },
+  "settings.reset": { en: "Reset to defaults", ru: "Сбросить настройки", kk: "Әдепкіге қайтару" },
+
+  "nav.settings": { en: "Settings", ru: "Настройки", kk: "Параметрлер" },
 } as const;
 
 export type TranslationKey = keyof typeof dict;

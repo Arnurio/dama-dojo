@@ -9,6 +9,7 @@ import { createGame, joinGameByCode, findOrCreateQuickMatch, PlayerInfo } from "
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/lib/i18n/context";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import SiteBackground from "@/components/SiteBackground";
 
 export default function OnlineLobbyPage() {
   const router = useRouter();
@@ -118,10 +119,7 @@ export default function OnlineLobbyPage() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
-      </div>
+      <SiteBackground />
 
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
         <Link href="/" className="flex items-center gap-2">
@@ -170,7 +168,7 @@ export default function OnlineLobbyPage() {
 
         {/* Created game waiting room */}
         {createdGameId && createdCode && (
-          <div className="bg-gradient-to-br from-emerald-500/15 to-cyan-500/15 border border-emerald-500/30 rounded-3xl p-6 mb-6 text-center">
+          <div className="bg-emerald-500/[0.08] border border-emerald-500/30 rounded-3xl p-6 mb-6 text-center">
             <div className="text-3xl mb-2">⏳</div>
             <div className="text-lg font-bold text-emerald-300 mb-1">{t("online.roomCreated")}</div>
             <p className="text-sm text-white/60 mb-4">{t("online.shareCode")}</p>
@@ -215,7 +213,7 @@ export default function OnlineLobbyPage() {
               onClick={handleQuickMatch}
               disabled={mode === "matching"}
               className={cn(
-                "w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 px-6 py-5 rounded-2xl font-bold text-lg transition-all mb-3",
+                "w-full bg-indigo-600 hover:bg-indigo-500 px-6 py-5 rounded-2xl font-bold text-lg transition-all mb-3 tracking-tight",
                 mode === "matching" && "opacity-70 cursor-wait"
               )}
             >
