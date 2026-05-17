@@ -102,17 +102,17 @@ function ShopPageInner() {
         <h1 className="text-4xl font-black text-center mb-2">{t("shop.title")}</h1>
         <p className="text-white/60 text-center mb-8 text-base">{t("shop.subtitle")}</p>
 
-        {/* Judge Demo Banner */}
+        {/* Free Trial Banner */}
         <div className="bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl p-5 mb-8 text-center">
-          <div className="text-3xl mb-2">🧑‍⚖️</div>
-          <div className="text-lg font-bold text-amber-300 mb-1">For nFactorial Judges</div>
+          <div className="text-3xl mb-2">🎁</div>
+          <div className="text-lg font-bold text-amber-300 mb-1">Try Pro Free for 3 Days</div>
           <p className="text-sm text-white/70 max-w-md mx-auto mb-4">
-            Click below to instantly unlock all Pro features — no login, no payment, no friction.
-            Evaluate every coach, get unlimited AI analysis, and try every Pro skin.
+            Unlock all 5 coaches, unlimited AI analysis, and every Pro skin.
+            No card required. Cancel anytime.
           </p>
           {userIsPro || activated ? (
             <div className="text-green-400 font-semibold flex items-center justify-center gap-2">
-              <span>✅ Pro Unlocked!</span>
+              <span>✅ Pro Active</span>
               <Link href="/play" className="text-sm underline">Play now →</Link>
             </div>
           ) : (
@@ -121,11 +121,11 @@ function ShopPageInner() {
               disabled={activating}
               className="bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-amber-950 px-8 py-3 rounded-xl font-bold transition-all text-base shadow-lg hover:scale-105 active:scale-95"
             >
-              {activating ? "Unlocking..." : "🔓 Unlock Pro · 0 ₸"}
+              {activating ? "Activating..." : "🎁 Start Free Trial"}
             </button>
           )}
           <p className="text-[10px] text-white/40 mt-3">
-            In production: 2,990 ₸/month via Kaspi Pay or Stripe test card 4242 4242 4242 4242
+            After trial: 2,990 ₸/month · Kaspi Pay & Freedom Pay supported
           </p>
         </div>
 
@@ -233,7 +233,7 @@ function ShopPageInner() {
                 {userIsPro ? "✅ Active" : checkoutLoading === "pro" ? "Loading..." : "Upgrade Now"}
               </button>
               <Link href="/shop?demo=true" className="block text-xs text-amber-400/70 hover:text-amber-400 mt-2 underline">
-                🧑‍⚖️ Judge Demo (0 ₸)
+                🎁 Start free 3-day trial
               </Link>
             </div>
           </div>

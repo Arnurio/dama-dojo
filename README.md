@@ -2,11 +2,11 @@
 
 # ♟️ Dama Dojo
 
-### Learn checkers from Kazakhstan's top tech founders.
+### The modern home for Kazakh checkers.
 
-**Play online · Get coached by KZ legends · Climb the ELO ladder**
+**Play online · Train with AI coaches · Climb the ELO ladder**
 
-[🎮 **Play Live**](https://dama-dojo.vercel.app) · 🇰🇿 nFactorial Incubator 2026
+[🎮 **Play Live**](https://dama-dojo.vercel.app) · 🇰🇿 Made in Kazakhstan
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
@@ -18,48 +18,52 @@
 
 ---
 
-## 🎯 The Pitch
+## 🎯 What is Dama Dojo?
 
-**What it is:** a modern web platform for `dama` (Kazakh checkers) where you don't learn from anonymous engines — you learn from **5 real Kazakhstani tech founders**, each with their own play style, voice, and post-game AI analysis.
+**Dama Dojo** is a modern web platform for `dama` — Kazakh checkers — built for the millions of players who grew up with the game but have nowhere decent to play it online.
 
-**Who it's for:** the millions of Kazakhstanis who grew up playing dama at home but have no decent app to keep playing it. Every existing dama app on the store is from 2014 and looks like Windows XP. Chess.com made chess cool again with 1500 bots. Lichess made it free. Nobody did this for dama.
+Every existing dama app is from 2014 and looks like Windows XP. We're fixing that.
 
-**Why it's valuable:** it's not a toy — it's a **fully shipped product** with realtime multiplayer, ELO ranking, monetization (3-tier Pro), retention loops (daily streak, daily challenge, achievements), full RU/KK/EN localization, and a clear path to a Kazakhstani tech business via Kaspi/Freedom Pay.
-
-Built solo for nFactorial Incubator 2026.
-
----
-
-## ⚡ Try It Right Now
-
-- **Play instantly →** [dama-dojo.vercel.app](https://dama-dojo.vercel.app) (no signup, guest mode works)
-- **Judge demo Pro →** [/shop?demo=true](https://dama-dojo.vercel.app/shop?demo=true) — unlock all 5 coaches and AI analysis for **0 ₸** (Stripe doesn't operate in KZ, so this is the judge path)
-- **Online multiplayer →** Quick Match auto-pairs you with a random player, or create a private room and share a `DAMA-XXXXX` code
+- 🤖 **Train against AI coaches** with distinct personalities, openings, and play styles
+- 🌐 **Play friends online** in realtime — Quick Match or share an invite code
+- 🧠 **Get post-game analysis** from your coach: turning points, missed combinations, lessons
+- 🏆 **Climb the ELO ladder** with global and city-level leaderboards (Almaty, Astana, Shymkent...)
+- 🇰🇿 **Localized fully** in English, Russian, and Kazakh
+- ✨ **Daily streaks, challenges, achievements** keep you coming back
 
 ---
 
-## 🌟 What Makes It Stand Out
+## ⚡ Try It
+
+- **Play instantly →** [dama-dojo.vercel.app](https://dama-dojo.vercel.app) — no signup required
+- **Online multiplayer →** Quick Match auto-pairs you, or create a private room and share a `DAMA-XXXXX` code via WhatsApp / Telegram
+- **Free Pro trial →** 3 days of full Pro access, no card required
+
+---
+
+## 🌟 What Makes It Different
 
 | | Other dama apps | Dama Dojo |
 |---|---|---|
-| **Coaches** | Generic engines | **5 real KZ founders** with personalities, voice lines & AI analysis |
-| **Multiplayer** | Email a friend a PGN | **Realtime Firestore** sync + Quick Match + invite codes |
-| **AI** | Stockfish, no commentary | **GPT-4o-mini** post-game review *in your coach's voice* |
-| **Vibes** | 2014 wood texture | Chess.com-inspired gradient UI, animated speech bubbles |
-| **Localization** | English/Russian flags | Built for KZ — Kaspi/Freedom Pay roadmap, ₸ pricing, KZ city leaderboards |
+| **Coaches** | Generic engines | 5 distinct coach personalities with their own play style & voice |
+| **Multiplayer** | Email a PGN to your friend | Realtime Firestore sync, Quick Match, invite codes, link-share |
+| **AI** | Stockfish, no commentary | GPT-4o-mini post-game review in your coach's voice |
+| **Localization** | English/Russian flags | Full RU/KK/EN — built for the KZ market |
+| **Payments** | International only | Kaspi Pay & Freedom Pay on the roadmap (₸ pricing) |
+| **Retention** | None | Daily streaks, daily challenges, 10 achievements, free Pro trial |
 
 ---
 
 ## 🥷 The Coaches
 
-Each coach is a **real archetype** of a KZ tech founder, with their own opening, play style, and signature catchphrase. Speech bubbles update live based on what happens on the board.
+Each coach is a distinct archetype with their own opening style, board temperament, and signature voice. Speech bubbles update live based on what's happening on the board.
 
-| Coach | Tier | Vibe |
+| Coach | Tier | Style |
 |---|---|---|
-| 🟢 **Arman the Patient** | Free | Slow positional grind. *"Don't rush. The board tells you when."* |
+| 🟢 **Arman the Patient** | Free | Slow positional play. *"Don't rush. The board tells you when."* |
 | 🔵 **Erzat the Strategist** | Pro | Long-term planning. Calculates 6 moves ahead. |
 | 🟣 **Nurdaulet the Calculator** | Pro | Pure tactics. Sees every capture chain. |
-| 🟡 **Arlan the Hype Founder** | Pro | Trusts the gut. *"Bro just trust the move."* |
+| 🟡 **Arlan the Hype Founder** | Pro | Trusts the gut. Casual, energetic, ships fast. |
 | 🔴 **Timur the Dominator** | Pro | Aggressive king-hunter. Crushes early. |
 
 ---
@@ -68,8 +72,8 @@ Each coach is a **real archetype** of a KZ tech founder, with their own opening,
 
 **Frontend**
 - **Next.js 16** (App Router, Turbopack)
-- **TypeScript** (strict mode, end-to-end typed)
-- **Tailwind CSS** (no UI lib — every component hand-tuned)
+- **TypeScript** (strict mode, fully typed end-to-end)
+- **Tailwind CSS** (hand-tuned components, no UI lib)
 - **Zustand** for game + auth state
 
 **Backend / Infra**
@@ -91,7 +95,7 @@ Each coach is a **real archetype** of a KZ tech founder, with their own opening,
 ## 🧠 Technical Highlights
 
 ### Bulletproof Firebase init
-Firebase config is **lazy + nullable** — the app runs perfectly without any backend env vars set. Build succeeds on Vercel even before secrets are configured. Guest mode is a first-class citizen, not a fallback.
+Firebase config is **lazy + nullable** — the app runs perfectly without any backend env vars set. Build succeeds even before secrets are configured. Guest mode is a first-class citizen, not a fallback.
 
 ```ts
 const fb = initFirebase(); // returns null if env missing
@@ -101,27 +105,10 @@ export const isFirebaseReady = () => fb !== null;
 ```
 
 ### Realtime multiplayer
-Two players → one Firestore doc → `onSnapshot` syncs every move in <100ms. Game state lives in the cloud, the client is just a view layer. Resign, spectator mode, reconnection all work.
+Two players → one Firestore doc → `onSnapshot` syncs every move in <100ms. Game state lives in the cloud, the client is just a view layer. Resign, draw offers, reconnection all work.
 
 ### KZ-aware monetization
-Stripe doesn't operate in Kazakhstan. So the Pro tier has **three paths**:
-1. **Stripe test mode** for international users (`4242 4242 4242 4242`)
-2. **Kaspi Pay / Freedom Pay** roadmap (production path for KZ)
-3. **Judge Demo (0 ₸)** — `localStorage` flag unlocks Pro instantly with no login, so nFactorial judges can review the full product without payment
-
----
-
-## 🏆 nFactorial Rubric — "Великий" Tier Checklist
-
-| Rubric requirement | How Dama Dojo delivers |
-|---|---|
-| **Multiplayer w/ friend by link** | Realtime Firestore room with `DAMA-XXXXX` invite code + WhatsApp/Telegram share buttons |
-| **AI coach that explains moves** | GPT-4o-mini post-game analysis: turning points, 3 lessons, in each coach's voice (RU/KK/EN) |
-| **Social layer — city leaderboard** | Global + city filter (Almaty / Astana / Shymkent / Karaganda / Aktobe), 50 seeded KZ players, real ELO tracking |
-| **Unique niche** | Not "yet another checkers" — it's **dama specifically**, with KZ founder coaches as the hook |
-| **Monetization (Stripe / Pro)** | 3-tier pricing (Free / Pro 2990₸ / Pro+ 5990₸), Stripe test mode, Kaspi/Freedom Pay roadmap, judge demo path |
-| **Retention** | Daily streak, daily challenge with progress bar, 10 achievements, Pro 3-day free trial |
-| **Polish** | 3 languages (en/ru/kk), responsive UI, animated speech bubbles, surrender/draw flow, ELO-aware AI matchmaking |
+Three tiers — Free / Pro (2,990 ₸/mo) / Pro+ (5,990 ₸/mo) — plus add-on purchases (Gift Pro, single Coach Pack, Tournament Entry). Kaspi Pay & Freedom Pay integration on the roadmap as the production payment path for the Kazakhstani market.
 
 ---
 
@@ -134,17 +121,20 @@ src/
 │   ├── play/                     # Single-player + setup
 │   ├── play/online/              # Multiplayer lobby + game room
 │   ├── coaches/                  # Coach showcase
-│   ├── shop/                     # Pro / skins / judge demo
+│   ├── shop/                     # Pro / skins / free trial
 │   ├── leaderboard/              # ELO ranking with city filter
 │   └── api/coach-analysis/       # POST endpoint for GPT analysis
 ├── components/
 │   ├── game/                     # CheckersBoard, CoachCompanion, CoachAnalysis
-│   └── coach/                    # CoachCard (chess.com bot style)
+│   └── coach/                    # CoachCard
 ├── lib/
 │   ├── checkers-engine.ts        # Game rules + minimax AI
 │   ├── coaches.ts                # 5 coach profiles + AI prompts
 │   ├── multiplayer.ts            # Firestore realtime ops
-│   └── firebase.ts               # Bulletproof lazy init
+│   ├── retention.ts              # Streaks, challenges, achievements
+│   ├── leaderboard.ts            # ELO leaderboard
+│   ├── i18n/                     # EN / RU / KK dictionary + context
+│   └── firebase.ts               # Lazy init
 └── store/
     ├── auth-store.ts             # User, profile, Pro flag (Zustand)
     └── game-store.ts             # Board, turn, history, AI control
@@ -155,7 +145,7 @@ src/
 ## 🚀 Running Locally
 
 ```bash
-git clone https://github.com/arnurkemer/dama-dojo
+git clone https://github.com/Arnurio/dama-dojo
 cd dama-dojo
 npm install
 npm run dev
@@ -189,6 +179,10 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth != null && request.auth.uid == userId;
     }
+    match /leaderboard/{uid} {
+      allow read: if true;
+      allow write: if true;
+    }
   }
 }
 ```
@@ -198,32 +192,37 @@ service cloud.firestore {
 ## 🗺️ Roadmap
 
 - [x] Russian checkers engine + minimax AI
-- [x] 5 KZ founder coaches with unique voices
-- [x] Realtime Firestore multiplayer + Quick Match
-- [x] Coach companion w/ live speech bubbles
-- [x] Pro tier + Judge Demo (0 ₸)
+- [x] 5 coach personalities
+- [x] Realtime Firestore multiplayer + Quick Match + invite link
+- [x] Coach companion with live speech bubbles
+- [x] 3-tier Pro pricing + free trial
 - [x] GPT-4o-mini post-game analysis
-- [x] ELO leaderboard with city filter
-- [ ] Kaspi Pay / Freedom Pay integration (production)
+- [x] Global + city-level ELO leaderboards
+- [x] Daily streaks, challenges, achievements
+- [x] Full EN / RU / KK localization
+- [x] Surrender + draw offer flow
+- [ ] Kaspi Pay / Freedom Pay (production payment)
 - [ ] Tournaments + clans
 - [ ] Mobile app (React Native, shared engine)
-- [ ] Voice commentary during games (TTS in coach's voice)
+- [ ] Voice commentary during games (TTS)
 
 ---
 
-## 👨‍💻 Built by
+## 📄 License
 
-**Arnur Kemerbek** — 11th grader, Almaty 🇰🇿
-*nFactorial Incubator 2026 applicant · built with AI assistance*
-
-Inspired by [chess.com](https://chess.com) bot system, fueled by the fact that *dama* (Kazakh checkers) deserves the same love. Built in public, shipped fast.
+MIT — see [LICENSE](LICENSE).
 
 ---
+
+<details>
+<summary><strong>About this submission</strong></summary>
+
+Dama Dojo was built by **Arnur Kemerbek**, an 11th-grader from Almaty, as a submission for **nFactorial Incubator 2026**. The product is designed not as a hackathon throwaway but as the first working version of a real service for the Kazakhstani gaming market.
+
+</details>
 
 <div align="center">
 
-**Don't rush. The board tells you when.** — *Arman the Patient*
-
-♟️ [Play Now](https://dama-dojo.vercel.app) · ⚖️ [Judge Demo](https://dama-dojo.vercel.app/shop?demo=true)
+♟️ [Play Now](https://dama-dojo.vercel.app)
 
 </div>
