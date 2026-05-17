@@ -12,12 +12,15 @@ import CoachCard from "@/components/coach/CoachCard";
 import CoachCompanion from "@/components/game/CoachCompanion";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
+import { useI18n } from "@/lib/i18n/context";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 function PlayPageInner() {
   const searchParams = useSearchParams();
   const initMode = (searchParams.get("mode") as GameMode) ?? "local";
 
   const { profile, isPro, recordGameResult } = useAuthStore();
+  const { t } = useI18n();
   const userIsPro = isPro();
   const [eloRecorded, setEloRecorded] = useState(false);
   const {
@@ -83,14 +86,15 @@ function PlayPageInner() {
 
   if (showSetup) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col items-center justify-center px-4">
-        <Link href="/" className="text-indigo-400 hover:text-indigo-300 mb-8 text-sm">← Back to home</Link>
-        <h1 className="text-3xl font-bold mb-2">New Game</h1>
-        <p className="text-white/50 mb-8">Choose your settings</p>
+      <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col items-center justify-center px-4 py-12">
+        <div className="absolute top-4 right-4"><LanguageSwitcher compact /></div>
+        <Link href="/" className="text-indigo-400 hover:text-indigo-300 mb-8 text-sm">{t("nav.backHome")}</Link>
+        <h1 className="text-3xl font-bold mb-2">{t("play.newGame")}</h1>
+        <p className="text-white/50 mb-8">{t("play.chooseSettings")}</p>
 
         {/* Mode */}
         <div className="w-full max-w-md mb-6">
-          <label className="text-sm text-white/60 mb-2 block">Game Mode</label>
+          <label className="text-sm text-white/60 mb-2 block">{t("play.gameMode")}</label>
           <div className="grid grid-cols-3 gap-2">
             {(["local", "ai", "online"] as GameMode[]).map(m => (
               <button
@@ -103,7 +107,7 @@ function PlayPageInner() {
                     : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
                 )}
               >
-                {m === "local" ? "🤝 2 Players" : m === "ai" ? "🤖 vs AI" : "🌐 Online"}
+                {m === "local" ? t("play.mode.local") : m === "ai" ? t("play.mode.ai") : t("play.mode.online")}
               </button>
             ))}
           </div>
@@ -112,32 +116,32 @@ function PlayPageInner() {
         {/* Difficulty (AI only) */}
         {setupMode === "ai" && (
           <div className="w-full max-w-md mb-6">
-            <label className="text-sm text-white/60 mb-2 block">Difficulty</label>
+            <label className="text-sm text-white/60 mb-2 block">{t("play.difficulty")}</label>
             <div className="grid grid-cols-3 gap-2">
               {(["easy", "medium", "hard"] as Difficulty[]).map(d => (
                 <button
                   key={d}
                   onClick={() => setSetupDifficulty(d)}
                   className={cn(
-                    "py-3 rounded-xl text-sm font-medium border transition-all capitalize",
+                    "py-3 rounded-xl text-sm font-medium border transition-all",
                     setupDifficulty === d
                       ? "bg-indigo-600 border-indigo-500 text-white"
                       : "bg-white/5 border-white/10 text-white/60 hover:border-white/30"
                   )}
                 >
-                  {d === "easy" ? "😊 Easy" : d === "medium" ? "🧠 Medium" : "💀 Hard"}
+                  {d === "easy" ? t("play.difficulty.easy") : d === "medium" ? t("play.difficulty.medium") : t("play.difficulty.hard")}
                 </button>
               ))}
             </div>
             {setupDifficulty === "hard" && (
-              <p className="text-xs text-amber-400/80 mt-1 text-center">Warning: Hard AI thinks 6 moves ahead. Brutal.</p>
+              <p className="text-xs text-amber-400/80 mt-2 text-center">{t("play.hardWarning")}</p>
             )}
           </div>
         )}
 
         {/* Coach */}
         <div className="w-full max-w-2xl mb-8">
-          <label className="text-sm text-white/60 mb-3 block">Your Coach</label>
+          <label className="text-sm text-white/60 mb-3 block">{t("play.yourCoach")}</label>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
             {COACHES.map(c => {
               const unlocked = !c.isPro || userIsPro;
@@ -155,8 +159,7 @@ function PlayPageInner() {
           </div>
           {!userIsPro && (
             <p className="text-xs text-amber-400/70 mt-3 text-center">
-              4 coaches locked · <Link href="/shop" className="underline">Unlock Pro</Link> or use{" "}
-              <Link href="/shop?demo=true" className="underline">Judge Demo (0 ₸)</Link>
+              {t("play.locked")} · <Link href="/shop" className="underline">{t("play.unlockPro")}</Link> · <Link href="/shop?demo=true" className="underline">{t("play.judgeDemo")}</Link>
             </p>
           )}
         </div>
@@ -165,7 +168,7 @@ function PlayPageInner() {
           onClick={handleStart}
           className="bg-indigo-600 hover:bg-indigo-500 px-8 py-3 rounded-xl font-semibold text-lg transition-all hover:scale-105 active:scale-95"
         >
-          {setupMode === "online" ? "Find Match 🌐" : "Start Game ⚡"}
+          {setupMode === "online" ? t("play.findMatch") : t("play.startGame")}
         </button>
       </div>
     );
@@ -179,16 +182,19 @@ function PlayPageInner() {
       </div>
 
       {/* Top bar */}
-      <div className="relative z-10 flex items-center justify-between px-4 py-3 border-b border-white/5">
+      <div className="relative z-10 flex items-center justify-between px-4 py-3 border-b border-white/5 gap-2">
         <button onClick={() => setShowSetup(true)} className="text-indigo-400 hover:text-indigo-300 text-sm">
-          ← New Game
+          {t("play.newGameBtn")}
         </button>
-        <div className="flex items-center gap-2">
-          <span className="text-lg">{coach.avatar}</span>
-          <span className="text-sm font-medium">{coach.name}</span>
-          <span className="text-xs text-white/40">coaching</span>
+        <div className="flex items-center gap-2 min-w-0">
+          <span className="text-lg shrink-0">{coach.avatar}</span>
+          <span className="text-sm font-medium truncate">{coach.name}</span>
+          <span className="text-xs text-white/40 hidden sm:inline">{t("play.coaching")}</span>
         </div>
-        <Link href="/" className="text-white/40 hover:text-white/80 text-sm">Home</Link>
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher compact />
+          <Link href="/" className="text-white/40 hover:text-white/80 text-sm">{t("nav.home")}</Link>
+        </div>
       </div>
 
       <div className="relative z-10 flex flex-col lg:flex-row items-start justify-center gap-6 p-4 md:p-8">
@@ -202,11 +208,11 @@ function PlayPageInner() {
             )} />
             <span className="text-sm">
               {status === "finished"
-                ? `${winner === "red" ? "🔴 Red" : "⚫ Black"} wins!`
-                : `${currentTurn === "red" ? "🔴 Red" : "⚫ Black"}'s turn`}
+                ? (winner === "red" ? t("play.redWins") : t("play.blackWins"))
+                : (currentTurn === "red" ? t("play.redsTurn") : t("play.blacksTurn"))}
             </span>
             {mode === "ai" && status === "playing" && currentTurn !== playerColor && (
-              <span className="text-xs text-white/40">AI thinking...</span>
+              <span className="text-xs text-white/40">{t("play.aiThinking")}</span>
             )}
           </div>
 
@@ -214,7 +220,7 @@ function PlayPageInner() {
 
           {/* Move history */}
           <div className="bg-white/5 border border-white/10 rounded-xl p-3 w-full max-w-sm max-h-32 overflow-y-auto">
-            <div className="text-xs text-white/40 mb-2">Move history ({moveHistory.length})</div>
+            <div className="text-xs text-white/40 mb-2">{t("play.moveHistory")} ({moveHistory.length})</div>
             <div className="space-y-0.5">
               {moveHistory.slice(-10).map((m, i) => (
                 <div key={i} className="text-xs text-white/60 flex gap-2">
@@ -245,7 +251,7 @@ function PlayPageInner() {
 
           {/* Scoreboard */}
           <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <h3 className="text-sm font-semibold text-white/60 mb-3">Board Count</h3>
+            <h3 className="text-sm font-semibold text-white/60 mb-3">{t("play.boardCount")}</h3>
             {["red", "black"].map(color => {
               const count = board.flat().filter(p => p?.color === color).length;
               const kings = board.flat().filter(p => p?.color === color && p.type === "king").length;
@@ -253,9 +259,9 @@ function PlayPageInner() {
                 <div key={color} className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <div className={cn("w-5 h-5 rounded-full border-2", color === "red" ? "bg-red-600 border-red-300" : "bg-gray-900 border-gray-500")} />
-                    <span className="text-sm capitalize">{color}</span>
+                    <span className="text-sm">{color === "red" ? t("play.red") : t("play.black")}</span>
                   </div>
-                  <span className="text-sm font-mono">{count} pieces {kings > 0 && <span className="text-amber-400">({kings}♛)</span>}</span>
+                  <span className="text-sm font-mono">{count} {t("play.pieces")} {kings > 0 && <span className="text-amber-400">({kings}♛)</span>}</span>
                 </div>
               );
             })}
@@ -268,13 +274,13 @@ function PlayPageInner() {
                 onClick={() => setShowAnalysis(true)}
                 className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90 py-3 rounded-xl font-semibold transition-all hover:scale-[1.02]"
               >
-                {coach.avatar} Get Coach Analysis
+                {coach.avatar} {t("play.getAnalysis")}
               </button>
               <button
                 onClick={() => { setShowSetup(true); setShowAnalysis(false); }}
                 className="bg-white/5 hover:bg-white/10 border border-white/10 py-3 rounded-xl font-medium transition-all"
               >
-                🔄 Play Again
+                {t("play.playAgain")}
               </button>
             </>
           )}
@@ -299,7 +305,7 @@ function PlayPageInner() {
 
 export default function PlayPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center text-white">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center text-white">⏳</div>}>
       <PlayPageInner />
     </Suspense>
   );

@@ -7,10 +7,13 @@ import { auth, googleProvider, isFirebaseReady } from "@/lib/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { createGame, joinGameByCode, findOrCreateQuickMatch, PlayerInfo } from "@/lib/multiplayer";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n/context";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function OnlineLobbyPage() {
   const router = useRouter();
   const { user, profile, guestId } = useAuthStore();
+  const { t } = useI18n();
   const [mode, setMode] = useState<"select" | "creating" | "joining" | "matching">("select");
   const [code, setCode] = useState("");
   const [createdCode, setCreatedCode] = useState<string | null>(null);
@@ -29,7 +32,7 @@ export default function OnlineLobbyPage() {
 
   const requireFirebase = () => {
     if (!isFirebaseReady()) {
-      setError("Online multiplayer requires Firebase setup. The local game still works fully — try playing vs AI!");
+      setError(t("online.fbError"));
       return false;
     }
     return true;
@@ -107,12 +110,15 @@ export default function OnlineLobbyPage() {
           <span className="text-xl">♟️</span>
           <span className="font-bold gradient-text">Dama Dojo</span>
         </Link>
-        <Link href="/play" className="text-sm text-white/60 hover:text-white">← Single Player</Link>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher compact />
+          <Link href="/play" className="text-sm text-white/60 hover:text-white">← {t("play.newGame")}</Link>
+        </div>
       </nav>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-5xl font-black text-center mb-2">Play Online 🌐</h1>
-        <p className="text-white/50 text-center mb-8">Quick match, invite a friend, or join with a code</p>
+        <h1 className="text-4xl md:text-5xl font-black text-center mb-2">{t("online.title")}</h1>
+        <p className="text-white/60 text-center mb-8 text-base">{t("online.subtitle")}</p>
 
         {/* Player info */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6 flex items-center gap-3">
@@ -121,8 +127,8 @@ export default function OnlineLobbyPage() {
           </div>
           <div className="flex-1">
             <div className="font-semibold">{playerInfo.name}</div>
-            <div className="text-xs text-white/40">
-              {user ? "Signed in" : "Guest"} · {playerInfo.elo} ELO · {playerInfo.city}
+            <div className="text-sm text-white/60">
+              {user ? t("online.signedIn") : t("online.guest")} · {playerInfo.elo} ELO · {playerInfo.city}
             </div>
           </div>
           {!user && (
@@ -133,7 +139,7 @@ export default function OnlineLobbyPage() {
               }}
               className="text-xs bg-white/10 hover:bg-white/20 border border-white/20 px-3 py-1.5 rounded-lg"
             >
-              Sign in
+              {t("nav.signIn")}
             </button>
           )}
         </div>
@@ -148,8 +154,8 @@ export default function OnlineLobbyPage() {
         {createdGameId && createdCode && (
           <div className="bg-gradient-to-br from-emerald-500/15 to-cyan-500/15 border border-emerald-500/30 rounded-3xl p-6 mb-6 text-center">
             <div className="text-3xl mb-2">⏳</div>
-            <div className="text-lg font-bold text-emerald-300 mb-1">Room Created!</div>
-            <p className="text-sm text-white/60 mb-4">Share this code or link with a friend:</p>
+            <div className="text-lg font-bold text-emerald-300 mb-1">{t("online.roomCreated")}</div>
+            <p className="text-sm text-white/60 mb-4">{t("online.shareCode")}</p>
             <div className="bg-black/30 rounded-2xl py-4 px-6 mb-4">
               <div className="text-3xl font-black tabular-nums tracking-wider text-emerald-200">{createdCode}</div>
             </div>
@@ -158,13 +164,13 @@ export default function OnlineLobbyPage() {
                 onClick={handleCopyLink}
                 className="bg-white/10 hover:bg-white/20 border border-white/20 px-4 py-2.5 rounded-xl font-medium transition-all flex-1"
               >
-                {copySuccess ? "✅ Copied!" : "📋 Copy Invite Link"}
+                {copySuccess ? t("online.copied") : t("online.copyLink")}
               </button>
               <button
                 onClick={handleGoToRoom}
                 className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2.5 rounded-xl font-semibold transition-all flex-1"
               >
-                Enter Room →
+                {t("online.enterRoom")}
               </button>
             </div>
           </div>
@@ -183,35 +189,35 @@ export default function OnlineLobbyPage() {
             >
               {mode === "matching" ? (
                 <span className="flex items-center justify-center gap-3">
-                  <span className="animate-spin">⟳</span> Searching for opponent...
+                  <span className="animate-spin">⟳</span> {t("online.searching")}
                 </span>
               ) : (
-                <>⚡ Quick Match</>
+                <>{t("online.quickMatch")}</>
               )}
             </button>
-            <p className="text-xs text-white/40 text-center mb-6">Get matched with a random player worldwide</p>
+            <p className="text-sm text-white/50 text-center mb-6">{t("online.quickMatchDesc")}</p>
 
             {/* Two-column actions */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Create */}
               <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
                 <div className="text-2xl mb-2">🎮</div>
-                <div className="font-bold mb-1">Play with Friend</div>
-                <p className="text-xs text-white/50 mb-4">Create a private room and share the link.</p>
+                <div className="font-bold mb-1 text-base">{t("online.playFriend")}</div>
+                <p className="text-sm text-white/60 mb-4">{t("online.playFriendDesc")}</p>
                 <button
                   onClick={handleCreateGame}
                   disabled={mode === "creating"}
                   className="w-full bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 px-4 py-2.5 rounded-xl font-semibold transition-all"
                 >
-                  {mode === "creating" ? "Creating..." : "Create Room"}
+                  {mode === "creating" ? t("online.creating") : t("online.createRoom")}
                 </button>
               </div>
 
               {/* Join */}
               <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
                 <div className="text-2xl mb-2">🔑</div>
-                <div className="font-bold mb-1">Join Room</div>
-                <p className="text-xs text-white/50 mb-4">Got a code from a friend?</p>
+                <div className="font-bold mb-1 text-base">{t("online.joinRoom")}</div>
+                <p className="text-sm text-white/60 mb-4">{t("online.joinRoomDesc")}</p>
                 <input
                   type="text"
                   value={code}
@@ -226,7 +232,7 @@ export default function OnlineLobbyPage() {
                   disabled={mode === "joining" || !code.trim()}
                   className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 px-4 py-2.5 rounded-xl font-semibold transition-all"
                 >
-                  {mode === "joining" ? "Joining..." : "Join"}
+                  {mode === "joining" ? t("online.joining") : t("online.join")}
                 </button>
               </div>
             </div>
@@ -234,11 +240,11 @@ export default function OnlineLobbyPage() {
         )}
 
         {/* Info */}
-        <div className="mt-8 bg-white/3 border border-white/8 rounded-2xl p-4 text-xs text-white/40">
-          <p className="font-semibold text-white/60 mb-1">💡 How it works</p>
-          <p>• <strong>Quick Match</strong> — Auto-matches you with any waiting player. Public games.</p>
-          <p>• <strong>Play with Friend</strong> — Creates a private room with a 5-letter code. Share it.</p>
-          <p>• <strong>Real-time</strong> — Moves sync instantly via Firestore. No lag.</p>
+        <div className="mt-8 bg-white/5 border border-white/10 rounded-2xl p-4 text-sm text-white/60 leading-relaxed">
+          <p className="font-semibold text-white/80 mb-2">{t("online.howItWorks")}</p>
+          <p className="mb-1">• {t("online.howQuick")}</p>
+          <p className="mb-1">• {t("online.howFriend")}</p>
+          <p>• {t("online.howRealtime")}</p>
         </div>
       </div>
     </div>
