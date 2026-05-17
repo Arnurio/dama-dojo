@@ -51,6 +51,9 @@ export default function Home() {
           <Link href="/shop" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">
             {userIsPro ? `✨ ${t("nav.pro")}` : t("nav.shop")}
           </Link>
+          <Link href="/profile" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">
+            {t("nav.profile")}
+          </Link>
           <Link href="/settings" className="text-sm text-white/60 hover:text-white transition-colors hidden sm:inline">
             {t("nav.settings")}
           </Link>

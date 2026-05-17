@@ -203,6 +203,28 @@ export const dict = {
   "settings.reset": { en: "Reset to defaults", ru: "Сбросить настройки", kk: "Әдепкіге қайтару" },
 
   "nav.settings": { en: "Settings", ru: "Настройки", kk: "Параметрлер" },
+  "nav.profile": { en: "Profile", ru: "Профиль", kk: "Профиль" },
+
+  // ─── Profile ─────────────────────────────────────────────
+  "profile.title": { en: "Profile", ru: "Профиль", kk: "Профиль" },
+  "profile.editName": { en: "Display Name", ru: "Никнейм", kk: "Лақап ат" },
+  "profile.editNamePlaceholder": { en: "Your nickname", ru: "Твой ник", kk: "Лақап атың" },
+  "profile.avatar": { en: "Avatar", ru: "Аватар", kk: "Аватар" },
+  "profile.avatarDesc": { en: "Pick an emoji that represents you.", ru: "Выбери эмодзи, который тебя представляет.", kk: "Сені бейнелейтін эмодзи таңда." },
+  "profile.city": { en: "City", ru: "Город", kk: "Қала" },
+  "profile.stats": { en: "Stats", ru: "Статистика", kk: "Статистика" },
+  "profile.elo": { en: "ELO", ru: "ELO", kk: "ELO" },
+  "profile.wins": { en: "Wins", ru: "Победы", kk: "Жеңістер" },
+  "profile.losses": { en: "Losses", ru: "Поражения", kk: "Жеңілістер" },
+  "profile.draws": { en: "Draws", ru: "Ничьи", kk: "Тең ойындар" },
+  "profile.winRate": { en: "Win Rate", ru: "Процент Побед", kk: "Жеңіс Пайызы" },
+  "profile.gamesPlayed": { en: "Games", ru: "Партий", kk: "Партиялар" },
+  "profile.rank": { en: "Global Rank", ru: "Место в Рейтинге", kk: "Рейтингтегі Орын" },
+  "profile.coach": { en: "Selected Coach", ru: "Выбранный Коуч", kk: "Таңдалған Коуч" },
+  "profile.guest": { en: "Playing as guest", ru: "Играешь как гость", kk: "Қонақ ретінде ойнайсың" },
+  "profile.signedIn": { en: "Signed in", ru: "Авторизован", kk: "Кірген" },
+  "profile.save": { en: "Save", ru: "Сохранить", kk: "Сақтау" },
+  "profile.saved": { en: "Saved ✓", ru: "Сохранено ✓", kk: "Сақталды ✓" },
 } as const;
 
 export type TranslationKey = keyof typeof dict;

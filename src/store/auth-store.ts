@@ -26,6 +26,12 @@ interface LocalStats {
   gamesPlayed: number;
 }
 
+export interface LocalProfile {
+  displayName: string;
+  avatarEmoji: string;     // emoji used as avatar (e.g. "🥷", "🐱", "🦅")
+  city: string;
+}
+
 interface AuthState {
   user: User | null;
   profile: UserProfile | null;
@@ -34,6 +40,7 @@ interface AuthState {
   localPro: boolean;
   guestId: string;
   localStats: LocalStats;
+  localProfile: LocalProfile;
   setUser: (user: User | null) => void;
   setProfile: (profile: UserProfile | null) => void;
   setLoading: (loading: boolean) => void;
@@ -45,11 +52,37 @@ interface AuthState {
   recordGameResult: (opponentElo: number, result: "win" | "loss" | "draw") => void;
   // Get current ELO (profile if logged in, else local)
   getElo: () => number;
+  // Update local profile (works for guests + overrides logged-in displayName/city locally)
+  updateLocalProfile: (patch: Partial<LocalProfile>) => void;
 }
 
 const STORAGE_KEY_PRO = "dama-dojo-pro";
 const STORAGE_KEY_GUEST = "dama-dojo-guest-id";
 const STORAGE_KEY_STATS = "dama-dojo-stats";
+const STORAGE_KEY_LOCAL_PROFILE = "dama-dojo-local-profile";
+
+const DEFAULT_LOCAL_PROFILE: LocalProfile = {
+  displayName: "",
+  avatarEmoji: "🥷",
+  city: "Almaty",
+};
+
+function readLocalProfile(): LocalProfile {
+  if (typeof window === "undefined") return DEFAULT_LOCAL_PROFILE;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_LOCAL_PROFILE);
+    if (!raw) return DEFAULT_LOCAL_PROFILE;
+    return { ...DEFAULT_LOCAL_PROFILE, ...JSON.parse(raw) };
+  } catch {
+    return DEFAULT_LOCAL_PROFILE;
+  }
+}
+
+function writeLocalProfile(p: LocalProfile) {
+  if (typeof window !== "undefined") {
+    localStorage.setItem(STORAGE_KEY_LOCAL_PROFILE, JSON.stringify(p));
+  }
+}
 
 function readLocalPro(): boolean {
   if (typeof window === "undefined") return false;
@@ -98,6 +131,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   localPro: false,
   guestId: "",
   localStats: DEFAULT_STATS,
+  localProfile: DEFAULT_LOCAL_PROFILE,
   setUser: (user) => set({ user }),
   setProfile: (profile) => set({ profile }),
   setLoading: (loading) => set({ loading }),
@@ -111,7 +145,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const localPro = readLocalPro();
     const guestId = readGuestId();
     const localStats = readLocalStats();
-    set({ localPro, guestId, localStats });
+    const localProfile = readLocalProfile();
+    set({ localPro, guestId, localStats, localProfile });
+  },
+  updateLocalProfile: (patch) => {
+    const current = get().localProfile;
+    const next: LocalProfile = { ...current, ...patch };
+    writeLocalProfile(next);
+    set({ localProfile: next });
   },
   isPro: () => {
     const state = get();
@@ -149,11 +190,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       try {
         const { recordLeaderboardEntry } = await import("@/lib/leaderboard");
         const uid = state.user?.uid ?? state.guestId;
-        const displayName = state.user?.displayName ?? state.profile?.displayName ?? `Guest ${state.guestId.slice(-4)}`;
+        const displayName = state.localProfile.displayName
+          || state.user?.displayName
+          || state.profile?.displayName
+          || `Guest ${state.guestId.slice(-4)}`;
         await recordLeaderboardEntry({
           uid,
           displayName,
-          city: state.profile?.city ?? "Almaty",
+          city: state.localProfile.city || state.profile?.city || "Almaty",
           elo: newStats.elo,
           wins: newStats.wins,
           losses: newStats.losses,
