@@ -177,6 +177,17 @@ export const dict = {
   "common.language": { en: "Language", ru: "Язык", kk: "Тіл" },
   "common.cancel": { en: "Cancel", ru: "Отмена", kk: "Болдырмау" },
   "common.confirm": { en: "Confirm", ru: "Подтвердить", kk: "Растау" },
+
+  // ─── Game actions ────────────────────────────────────────
+  "play.surrender": { en: "Surrender", ru: "Сдаться", kk: "Берілу" },
+  "play.offerDraw": { en: "Offer Draw", ru: "Предложить ничью", kk: "Тең ойын ұсыну" },
+  "play.askSurrender": { en: "Ask Opponent to Surrender", ru: "Предложить сдаться", kk: "Қарсыласқа берілуді ұсыну" },
+  "play.confirmSurrender": { en: "Surrender this game? Your opponent wins.", ru: "Сдаться? Победа достанется сопернику.", kk: "Берілесіз бе? Жеңіс қарсыласқа кетеді." },
+  "play.drawAccepted": { en: "Opponent accepted the draw 🤝", ru: "Соперник принял ничью 🤝", kk: "Қарсылас тең ойынды қабылдады 🤝" },
+  "play.drawDeclined": { en: "Opponent declined the draw", ru: "Соперник отклонил ничью", kk: "Қарсылас тең ойынды қабылдамады" },
+  "play.aiSurrendered": { en: "Opponent surrendered 🏳️ You win!", ru: "Соперник сдался 🏳️ Победа!", kk: "Қарсылас берілді 🏳️ Жеңіс!" },
+  "play.aiRefusedSurrender": { en: "Opponent refused to surrender", ru: "Соперник отказался сдаваться", kk: "Қарсылас берілуден бас тартты" },
+  "play.actions": { en: "Actions", ru: "Действия", kk: "Әрекеттер" },
 } as const;
 
 export type TranslationKey = keyof typeof dict;

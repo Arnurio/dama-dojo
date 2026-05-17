@@ -26,8 +26,9 @@ function PlayPageInner() {
   const [eloRecorded, setEloRecorded] = useState(false);
   const {
     status, mode, currentTurn, winner, difficulty, selectedCoach,
-    moveHistory, playerColor, initGame, board,
+    moveHistory, playerColor, initGame, board, surrender, declareDraw,
   } = useGameStore();
+  const [actionMsg, setActionMsg] = useState<string | null>(null);
 
   const [showSetup, setShowSetup] = useState(true);
   const [setupMode, setSetupMode] = useState<GameMode>(initMode);
@@ -273,6 +274,74 @@ function PlayPageInner() {
               );
             })}
           </div>
+
+          {/* In-game actions: surrender / draw / ask surrender */}
+          {status === "playing" && (
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+              <h3 className="text-sm font-semibold text-white/60 mb-3">{t("play.actions")}</h3>
+              <div className="grid grid-cols-1 gap-2">
+                <button
+                  onClick={() => {
+                    if (!confirm(t("play.confirmSurrender"))) return;
+                    surrender(playerColor);
+                  }}
+                  className="bg-red-600/20 hover:bg-red-600/30 border border-red-500/40 text-red-200 py-2 rounded-xl text-sm font-medium transition-all"
+                >
+                  🏳️ {t("play.surrender")}
+                </button>
+                <button
+                  onClick={() => {
+                    if (mode === "local") {
+                      declareDraw();
+                      return;
+                    }
+                    // AI mode: piece-count heuristic
+                    const aiColor = playerColor === "red" ? "black" : "red";
+                    const myCount = board.flat().filter(p => p?.color === playerColor).length;
+                    const aiCount = board.flat().filter(p => p?.color === aiColor).length;
+                    const aiAhead = aiCount - myCount;
+                    // AI accepts if not clearly winning
+                    if (aiAhead < 2) {
+                      setActionMsg(t("play.drawAccepted"));
+                      setTimeout(() => declareDraw(), 600);
+                    } else {
+                      setActionMsg(t("play.drawDeclined"));
+                      setTimeout(() => setActionMsg(null), 2500);
+                    }
+                  }}
+                  className="bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-200 py-2 rounded-xl text-sm font-medium transition-all"
+                >
+                  🤝 {t("play.offerDraw")}
+                </button>
+                {mode === "ai" && (
+                  <button
+                    onClick={() => {
+                      const aiColor = playerColor === "red" ? "black" : "red";
+                      const myCount = board.flat().filter(p => p?.color === playerColor).length;
+                      const aiCount = board.flat().filter(p => p?.color === aiColor).length;
+                      const myAdvantage = myCount - aiCount;
+                      // AI surrenders only if far behind
+                      if (myAdvantage >= 4) {
+                        setActionMsg(t("play.aiSurrendered"));
+                        setTimeout(() => surrender(aiColor), 600);
+                      } else {
+                        setActionMsg(t("play.aiRefusedSurrender"));
+                        setTimeout(() => setActionMsg(null), 2500);
+                      }
+                    }}
+                    className="bg-indigo-500/15 hover:bg-indigo-500/25 border border-indigo-500/40 text-indigo-200 py-2 rounded-xl text-sm font-medium transition-all"
+                  >
+                    🫣 {t("play.askSurrender")}
+                  </button>
+                )}
+                {actionMsg && (
+                  <div className="text-xs text-center text-white/70 bg-white/5 rounded-lg py-2 px-3 mt-1">
+                    {actionMsg}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* End-of-game buttons */}
           {status === "finished" && (

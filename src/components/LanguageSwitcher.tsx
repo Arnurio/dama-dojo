@@ -2,26 +2,55 @@
 import { useI18n } from "@/lib/i18n/context";
 import { LOCALES, Locale } from "@/lib/i18n/dictionary";
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { cn } from "@/lib/utils";
 
 export default function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
   const { locale, setLocale } = useI18n();
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const current = LOCALES.find(l => l.code === locale) ?? LOCALES[0];
 
+  useEffect(() => { setMounted(true); }, []);
+
+  // Position dropdown via fixed coords so it escapes parent stacking contexts
   useEffect(() => {
-    function onClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    if (!open || !btnRef.current) return;
+    const rect = btnRef.current.getBoundingClientRect();
+    const menuWidth = 160;
+    setCoords({
+      top: rect.bottom + 8,
+      left: Math.max(8, rect.right - menuWidth),
+    });
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return;
+    function onDown(e: MouseEvent) {
+      const t = e.target as Node;
+      if (btnRef.current?.contains(t)) return;
+      if (menuRef.current?.contains(t)) return;
+      setOpen(false);
     }
-    if (open) document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    function onScroll() { setOpen(false); }
+    document.addEventListener("mousedown", onDown);
+    window.addEventListener("scroll", onScroll, true);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      window.removeEventListener("scroll", onScroll, true);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [open]);
 
   return (
-    <div ref={ref} className="relative">
+    <>
       <button
+        ref={btnRef}
         onClick={() => setOpen(o => !o)}
         className={cn(
           "flex items-center gap-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors",
@@ -35,8 +64,12 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
           <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </button>
-      {open && (
-        <div className="absolute right-0 top-full mt-2 bg-[#161620] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 min-w-[140px]">
+      {mounted && open && coords && createPortal(
+        <div
+          ref={menuRef}
+          style={{ position: "fixed", top: coords.top, left: coords.left, width: 160, zIndex: 9999 }}
+          className="bg-[#161620] border border-white/10 rounded-xl shadow-2xl overflow-hidden"
+        >
           {LOCALES.map(l => (
             <button
               key={l.code}
@@ -53,8 +86,9 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
               {l.code === locale && <span className="text-indigo-400">✓</span>}
             </button>
           ))}
-        </div>
+        </div>,
+        document.body
       )}
-    </div>
+    </>
   );
 }

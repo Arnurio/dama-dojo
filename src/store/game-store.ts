@@ -43,6 +43,8 @@ interface GameState {
   resetGame: () => void;
   setRoomId: (id: string | null) => void;
   applyRemoteMove: (move: Move) => void;
+  surrender: (loser: PieceColor) => void;
+  declareDraw: () => void;
 }
 
 export const useGameStore = create<GameState>((set, get) => ({
@@ -156,4 +158,13 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
 
   setRoomId: (id) => set({ roomId: id }),
+
+  surrender: (loser) => {
+    const winner: PieceColor = loser === "red" ? "black" : "red";
+    set({ winner, status: "finished", selectedPiece: null, validMoves: [] });
+  },
+
+  declareDraw: () => {
+    set({ winner: "draw", status: "finished", selectedPiece: null, validMoves: [] });
+  },
 }));
