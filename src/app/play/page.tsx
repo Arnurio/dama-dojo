@@ -94,11 +94,16 @@ function PlayPageInner() {
 
   if (showSetup) {
     return (
-      <div className="min-h-screen bg-[#0a0a0f] text-white flex flex-col items-center justify-center px-4 py-12">
-        <div className="absolute top-4 right-4"><LanguageSwitcher compact /></div>
-        <Link href="/" className="text-indigo-400 hover:text-indigo-300 mb-8 text-sm">{t("nav.backHome")}</Link>
-        <h1 className="text-3xl font-bold mb-2">{t("play.newGame")}</h1>
-        <p className="text-white/50 mb-8">{t("play.chooseSettings")}</p>
+      <div className="relative min-h-screen bg-[#0a0a0f] text-white flex flex-col items-center justify-center px-4 py-12 overflow-hidden">
+        {/* Background glow */}
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
+        </div>
+        <div className="absolute top-4 right-4 z-10"><LanguageSwitcher compact /></div>
+        <Link href="/" className="relative z-10 text-indigo-400 hover:text-indigo-300 mb-8 text-sm transition-colors">{t("nav.backHome")}</Link>
+        <h1 className="relative z-10 text-3xl md:text-4xl font-black tracking-tight mb-2">{t("play.newGame")}</h1>
+        <p className="relative z-10 text-white/60 mb-8 text-sm md:text-base">{t("play.chooseSettings")}</p>
 
         {/* Mode */}
         <div className="w-full max-w-md mb-6">
@@ -186,7 +191,8 @@ function PlayPageInner() {
     <div className="min-h-screen bg-[#0a0a0f] text-white">
       {/* Background */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/8 blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
       </div>
 
       {/* Top bar */}

@@ -85,12 +85,12 @@ export default function Home() {
         <div className="inline-flex items-center gap-2 bg-indigo-600/10 border border-indigo-500/30 rounded-full px-4 py-1.5 text-sm text-indigo-300 mb-6">
           {t("home.badge")}
         </div>
-        <h1 className="text-5xl md:text-7xl font-black mb-4 leading-tight">
+        <h1 className="text-[clamp(2.5rem,5.2vw,4.5rem)] font-black leading-[1.05] tracking-[-0.02em] mb-5">
           {t("home.title1")}
           <br />
           <span className="gradient-text">{t("home.title2")}</span>
         </h1>
-        <p className="text-lg text-white/60 max-w-2xl mb-8">
+        <p className="text-base md:text-lg text-white/70 max-w-2xl mb-8 leading-relaxed">
           {t("home.subtitle")}
           <br />{t("home.subtitle2")}
         </p>
@@ -110,10 +110,10 @@ export default function Home() {
         </div>
         <p className="text-sm text-white/60 mt-4">{t("home.noSignup")}</p>
 
-        {/* Judge Pro banner */}
+        {/* Free trial banner */}
         {!userIsPro && (
-          <div className="mt-6 bg-gradient-to-r from-amber-500/15 to-yellow-500/15 border border-amber-500/30 rounded-2xl px-6 py-3 flex items-center gap-3 backdrop-blur-sm">
-            <span className="text-2xl">🧑‍⚖️</span>
+          <div className="mt-6 bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl px-6 py-3 flex items-center gap-3 backdrop-blur-sm">
+            <span className="text-2xl">🎁</span>
             <div className="text-left">
               <div className="text-base font-bold text-amber-300">{t("home.judgeBannerTitle")}</div>
               <div className="text-sm text-white/70">{t("home.judgeBannerDesc")}</div>
@@ -135,15 +135,15 @@ export default function Home() {
             </div>
           </div>
         )}
-        <div className="flex gap-8 mt-12 text-center">
+        <div className="grid grid-cols-3 gap-6 sm:gap-12 mt-12 text-center">
           {[
             { label: t("home.stats.activePlayers"), value: "2,847" },
             { label: t("home.stats.gamesPlayed"), value: "14,203" },
             { label: t("home.stats.coaches"), value: "5" },
           ].map(stat => (
             <div key={stat.label}>
-              <div className="text-3xl font-bold text-indigo-400">{stat.value}</div>
-              <div className="text-sm text-white/60 mt-1">{stat.label}</div>
+              <div className="text-3xl md:text-4xl font-black text-indigo-400 tabular-nums tracking-tight">{stat.value}</div>
+              <div className="text-xs sm:text-sm text-white/60 mt-1.5">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -156,8 +156,8 @@ export default function Home() {
       <section className="relative z-10 px-4 md:px-8 py-12 max-w-6xl mx-auto">
         <div className="flex items-end justify-between mb-6">
           <div>
-            <h2 className="text-3xl md:text-4xl font-black mb-1">{t("home.coachesTitle")}</h2>
-            <p className="text-white/60 text-base mt-1">{t("home.coachesDesc")}</p>
+            <h2 className="text-2xl md:text-3xl font-black tracking-tight mb-1">{t("home.coachesTitle")}</h2>
+            <p className="text-white/60 text-sm md:text-base mt-1">{t("home.coachesDesc")}</p>
           </div>
           <Link href="/coaches" className="text-sm text-indigo-400 hover:text-indigo-300 hidden md:inline">
             {t("home.viewAll")}
@@ -184,9 +184,9 @@ export default function Home() {
             { icon: "📊", title: t("home.features.elo.title"), desc: t("home.features.elo.desc") },
             { icon: "🎨", title: t("home.features.custom.title"), desc: t("home.features.custom.desc") },
           ].map(f => (
-            <div key={f.title} className="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <div key={f.title} className="bg-white/5 border border-white/10 rounded-2xl p-5 transition-all hover:border-white/20 hover:bg-white/[0.07]">
               <div className="text-3xl mb-3">{f.icon}</div>
-              <div className="font-semibold text-base mb-1.5">{f.title}</div>
+              <div className="font-bold text-lg mb-1.5 tracking-tight">{f.title}</div>
               <div className="text-sm text-white/60 leading-relaxed">{f.desc}</div>
             </div>
           ))}
@@ -195,10 +195,10 @@ export default function Home() {
 
       {/* Pro CTA */}
       <section className="relative z-10 px-4 py-16 max-w-2xl mx-auto text-center">
-        <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-500/30 rounded-3xl p-8">
+        <div className="bg-gradient-to-br from-indigo-600/20 to-purple-600/20 border border-indigo-500/30 rounded-3xl p-8 md:p-10">
           <div className="text-4xl mb-4">✨</div>
-          <h3 className="text-2xl font-bold mb-2">{t("home.proCta.title")}</h3>
-          <p className="text-white/60 mb-6">
+          <h3 className="text-2xl md:text-3xl font-black tracking-tight mb-3">{t("home.proCta.title")}</h3>
+          <p className="text-white/60 text-base mb-6 max-w-md mx-auto leading-relaxed">
             {t("home.proCta.desc")}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -221,7 +221,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="relative z-10 border-t border-white/10 py-8 text-center text-sm text-white/50">
+      <footer className="relative z-10 border-t border-white/5 py-8 text-center text-xs text-white/40 tracking-wide">
         <p>{t("home.footer")}</p>
       </footer>
     </main>

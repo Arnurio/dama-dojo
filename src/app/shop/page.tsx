@@ -82,7 +82,8 @@ function ShopPageInner() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-purple-600/10 blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
@@ -99,8 +100,8 @@ function ShopPageInner() {
       </nav>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-12">
-        <h1 className="text-4xl font-black text-center mb-2">{t("shop.title")}</h1>
-        <p className="text-white/60 text-center mb-8 text-base">{t("shop.subtitle")}</p>
+        <h1 className="text-3xl md:text-5xl font-black text-center tracking-tight mb-2">{t("shop.title")}</h1>
+        <p className="text-white/60 text-center mb-8 text-sm md:text-base">{t("shop.subtitle")}</p>
 
         {/* Free Trial Banner */}
         <div className="bg-gradient-to-r from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl p-5 mb-8 text-center">

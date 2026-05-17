@@ -77,7 +77,9 @@ export default function LeaderboardPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
       <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full bg-amber-500/5 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
@@ -94,11 +96,11 @@ export default function LeaderboardPage() {
       </nav>
 
       <div className="relative z-10 max-w-3xl mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-5xl font-black text-center mb-2">🏆 {t("lb.title")}</h1>
-        <p className="text-white/60 text-center mb-2 text-base">Top dama players in Kazakhstan 🇰🇿</p>
+        <h1 className="text-3xl md:text-5xl font-black text-center tracking-tight mb-2">🏆 {t("lb.title")}</h1>
+        <p className="text-white/60 text-center mb-2 text-sm md:text-base">Top dama players in Kazakhstan 🇰🇿</p>
         {myElo > 0 && (
           <p className="text-center text-sm text-indigo-300 mb-6">
-            {t("lb.you")}: <span className="font-bold">{myElo} ELO</span>
+            {t("lb.you")}: <span className="font-black tabular-nums">{myElo}</span> ELO
           </p>
         )}
 
@@ -161,8 +163,8 @@ export default function LeaderboardPage() {
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="font-bold text-indigo-400 text-base sm:text-lg">{player.elo}</div>
-                    <div className="text-[10px] uppercase text-white/40 tracking-wider">{t("lb.elo")}</div>
+                    <div className="font-black text-indigo-400 text-base sm:text-lg tabular-nums">{player.elo}</div>
+                    <div className="text-[10px] font-bold uppercase text-white/40 tracking-[0.08em]">{t("lb.elo")}</div>
                   </div>
                   <div className="text-right hidden md:block shrink-0 min-w-[60px]">
                     <div className="text-sm font-medium">{player.wins}W</div>
