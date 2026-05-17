@@ -67,23 +67,26 @@ export default function LanguageSwitcher({ compact = false }: { compact?: boolea
       {mounted && open && coords && createPortal(
         <div
           ref={menuRef}
-          style={{ position: "fixed", top: coords.top, left: coords.left, width: 160, zIndex: 9999 }}
-          className="bg-[#161620] border border-white/10 rounded-xl shadow-2xl overflow-hidden"
+          style={{ position: "fixed", top: coords.top, left: coords.left, width: 168, zIndex: 9999 }}
+          className="bg-[#161620] border border-white/10 rounded-xl shadow-[0_20px_40px_rgba(0,0,0,0.5)] overflow-hidden backdrop-blur-sm"
         >
+          <div className="px-3 py-2 text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 border-b border-white/5">
+            Language
+          </div>
           {LOCALES.map(l => (
             <button
               key={l.code}
               onClick={() => { setLocale(l.code as Locale); setOpen(false); }}
               className={cn(
-                "w-full flex items-center gap-2 px-3 py-2 text-sm transition-colors text-left",
+                "w-full flex items-center gap-2.5 px-3 py-2.5 text-sm transition-colors text-left",
                 l.code === locale
-                  ? "bg-indigo-600/20 text-indigo-200"
+                  ? "bg-indigo-600/20 text-indigo-100 font-semibold"
                   : "hover:bg-white/5 text-white/80"
               )}
             >
-              <span className="text-base">{l.flag}</span>
+              <span className="text-base leading-none">{l.flag}</span>
               <span className="flex-1">{l.name}</span>
-              {l.code === locale && <span className="text-indigo-400">✓</span>}
+              {l.code === locale && <span className="text-indigo-400 text-xs">✓</span>}
             </button>
           ))}
         </div>,

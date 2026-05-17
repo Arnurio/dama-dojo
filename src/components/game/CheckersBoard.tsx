@@ -34,7 +34,7 @@ export default function CheckersBoard({ onMoveComplete, flipped = false }: Props
   const cols = flipped ? [...Array(8)].map((_, i) => 7 - i) : [...Array(8)].map((_, i) => i);
 
   return (
-    <div className="inline-block border-4 border-amber-900/60 rounded-lg overflow-hidden shadow-2xl">
+    <div className="inline-block border-4 border-amber-900/60 rounded-lg overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
       {rows.map((row) => (
         <div key={row} className="flex">
           {cols.map((col) => {
@@ -56,7 +56,7 @@ export default function CheckersBoard({ onMoveComplete, flipped = false }: Props
                 {/* Valid move hint */}
                 {isTarget && isDark && (
                   <div className="valid-move-hint absolute inset-0 flex items-center justify-center">
-                    <div className="w-5 h-5 rounded-full bg-yellow-400/60 border-2 border-yellow-400" />
+                    <div className="w-5 h-5 rounded-full bg-yellow-400/60 border-2 border-yellow-400 shadow-[0_0_16px_rgba(250,204,21,0.5)]" />
                   </div>
                 )}
 
