@@ -6,6 +6,7 @@ import { signInWithPopup, signOut } from "firebase/auth";
 import { COACHES } from "@/lib/coaches";
 import CoachCard from "@/components/coach/CoachCard";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import DailyWidget from "@/components/DailyWidget";
 import { useI18n } from "@/lib/i18n/context";
 
 export default function Home() {
@@ -147,6 +148,9 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Daily Streak + Challenge widgets */}
+      <DailyWidget />
 
       {/* Coach Roster */}
       <section className="relative z-10 px-4 md:px-8 py-12 max-w-6xl mx-auto">

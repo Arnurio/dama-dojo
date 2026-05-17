@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { Suspense } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { updateChallengeProgress, unlockAchievement } from "@/lib/retention";
 
 function PlayPageInner() {
   const searchParams = useSearchParams();
@@ -65,6 +66,12 @@ function PlayPageInner() {
         const result =
           winner === playerColor ? "win" : winner === "draw" ? "draw" : "loss";
         recordGameResult(opponentElo, result);
+        // Retention hooks
+        updateChallengeProgress(1);
+        if (result === "win") {
+          unlockAchievement("first_win");
+          if (difficulty === "hard") unlockAchievement("beat_hard");
+        }
         setEloRecorded(true);
       }
     }

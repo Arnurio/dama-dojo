@@ -10,6 +10,7 @@ import { COACHES } from "@/lib/coaches";
 import { Suspense } from "react";
 import { useI18n } from "@/lib/i18n/context";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { cn } from "@/lib/utils";
 
 const SKINS = [
   { id: "classic", name: "Classic Dojo", price: 0, emoji: "🏡", desc: "The original. Clean, timeless." },
@@ -126,6 +127,80 @@ function ShopPageInner() {
           <p className="text-[10px] text-white/40 mt-3">
             In production: 2,990 ₸/month via Kaspi Pay or Stripe test card 4242 4242 4242 4242
           </p>
+        </div>
+
+        {/* Tier comparison: Free / Pro / Pro+ */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          {[
+            { tier: "Free", price: "0 ₸", color: "white/10", border: "white/10", features: ["1 free coach (Arman)", "3 AI analyses/day", "Local + AI play", "Classic skin"] },
+            { tier: "Pro", price: "2,990 ₸/мес", color: "indigo-600/15", border: "indigo-500/40", badge: "Most Popular", features: ["All 5 KZ coaches", "Unlimited AI analysis", "All Pro skins", "Priority matchmaking", "Tournament entries"] },
+            { tier: "Pro+", price: "5,990 ₸/мес", color: "amber-500/15", border: "amber-500/40", badge: "Premium", features: ["Everything in Pro", "Live AI analysis", "Private tournaments", "Custom coach voice", "Early access features", "Direct support"] },
+          ].map(tier => (
+            <div
+              key={tier.tier}
+              className={cn(
+                "rounded-2xl p-5 flex flex-col border bg-gradient-to-br",
+                tier.tier === "Pro" ? "from-indigo-600/15 to-purple-600/10 border-indigo-500/40 ring-2 ring-indigo-500/20" :
+                tier.tier === "Pro+" ? "from-amber-500/15 to-yellow-500/10 border-amber-500/40" :
+                "from-white/5 to-white/0 border-white/10"
+              )}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <div className="font-bold text-lg">{tier.tier}</div>
+                {tier.badge && <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded-full uppercase tracking-wider">{tier.badge}</span>}
+              </div>
+              <div className="text-2xl font-black mb-3">{tier.price}</div>
+              <ul className="text-sm text-white/70 space-y-1.5 mb-4 flex-1">
+                {tier.features.map(f => (
+                  <li key={f} className="flex items-start gap-2">
+                    <span className="text-green-400 shrink-0">✓</span>
+                    <span>{f}</span>
+                  </li>
+                ))}
+              </ul>
+              {tier.tier === "Free" ? (
+                <div className="text-xs text-white/40 text-center">Current default</div>
+              ) : (
+                <button
+                  onClick={() => handleStripeCheckout(tier.tier.toLowerCase(), tier.tier === "Pro" ? 2990 : 5990)}
+                  disabled={!!checkoutLoading}
+                  className={cn(
+                    "w-full py-2.5 rounded-xl font-semibold text-sm transition-all",
+                    tier.tier === "Pro+"
+                      ? "bg-amber-500 hover:bg-amber-400 text-amber-950"
+                      : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:opacity-90"
+                  )}
+                >
+                  {checkoutLoading === tier.tier.toLowerCase() ? "..." : `Get ${tier.tier}`}
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Extras row: Gift Pro, Coach Pack, Tournament Entry */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          {[
+            { id: "gift", emoji: "🎁", title: "Gift Pro", desc: "Send 1 month of Pro to a friend", price: "1,990 ₸" },
+            { id: "coach_pack", emoji: "👑", title: "Coach Pack", desc: "Unlock 1 coach without full Pro", price: "990 ₸" },
+            { id: "tournament", emoji: "🎫", title: "Tournament Entry", desc: "Enter weekly tournament (prize: 1mo Pro)", price: "490 ₸" },
+          ].map(item => (
+            <div key={item.id} className="bg-white/5 border border-white/10 rounded-2xl p-4 flex flex-col">
+              <div className="text-3xl mb-2">{item.emoji}</div>
+              <div className="font-bold text-base mb-1">{item.title}</div>
+              <p className="text-xs text-white/60 mb-3 flex-1">{item.desc}</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-bold">{item.price}</span>
+                <button
+                  onClick={() => handleStripeCheckout(item.id, parseInt(item.price))}
+                  disabled={!!checkoutLoading}
+                  className="text-xs bg-indigo-600/30 hover:bg-indigo-600/50 border border-indigo-500/40 px-3 py-1.5 rounded-lg transition-all disabled:opacity-50"
+                >
+                  {checkoutLoading === item.id ? "..." : "Buy"}
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Pro Plan */}
