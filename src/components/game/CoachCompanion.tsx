@@ -64,13 +64,13 @@ export default function CoachCompanion({ coach, gameStatus, winner, playerColor,
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent" />
         {/* Name overlay */}
         <div className="absolute bottom-2 left-3 right-3">
-          <div className="text-white font-black text-lg drop-shadow-lg">{coach.name}</div>
-          <div className="text-white/90 text-xs font-semibold uppercase tracking-wider drop-shadow">
-            {coach.title} · {coach.rating} ELO
+          <div className="text-white font-black text-lg tracking-tight drop-shadow-lg">{coach.name}</div>
+          <div className="text-white/90 text-[10px] font-bold uppercase tracking-[0.08em] drop-shadow">
+            {coach.title} · <span className="tabular-nums">{coach.rating}</span> ELO
           </div>
         </div>
         {coach.isPro && (
-          <div className="absolute top-2 right-2 bg-amber-400 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider shadow-lg">
+          <div className="absolute top-2 right-2 bg-amber-400 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded-full tracking-[0.08em] shadow-lg">
             PRO
           </div>
         )}

@@ -119,7 +119,8 @@ export default function OnlineLobbyPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-indigo-600/10 blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
@@ -134,18 +135,18 @@ export default function OnlineLobbyPage() {
       </nav>
 
       <div className="relative z-10 max-w-2xl mx-auto px-4 py-12">
-        <h1 className="text-4xl md:text-5xl font-black text-center mb-2">{t("online.title")}</h1>
-        <p className="text-white/60 text-center mb-8 text-base">{t("online.subtitle")}</p>
+        <h1 className="text-3xl md:text-5xl font-black tracking-tight text-center mb-2">{t("online.title")}</h1>
+        <p className="text-white/60 text-center mb-8 text-sm md:text-base">{t("online.subtitle")}</p>
 
         {/* Player info */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6 flex items-center gap-3">
           <div className="w-12 h-12 rounded-full bg-indigo-600/30 flex items-center justify-center text-lg font-bold">
             {playerInfo.name.charAt(0).toUpperCase()}
           </div>
-          <div className="flex-1">
-            <div className="font-semibold">{playerInfo.name}</div>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold truncate">{playerInfo.name}</div>
             <div className="text-sm text-white/60">
-              {user ? t("online.signedIn") : t("online.guest")} · {playerInfo.elo} ELO · {playerInfo.city}
+              {user ? t("online.signedIn") : t("online.guest")} · <span className="font-black tabular-nums">{playerInfo.elo}</span> ELO · {playerInfo.city}
             </div>
           </div>
           {!user && (

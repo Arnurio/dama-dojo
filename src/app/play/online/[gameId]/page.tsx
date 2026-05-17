@@ -157,8 +157,8 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
     return (
       <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center text-white px-4">
         <div className="text-5xl mb-3">🤔</div>
-        <h1 className="text-2xl font-bold mb-2">{t("common.error")}</h1>
-        <p className="text-white/50 text-center mb-6">This room doesn&apos;t exist or has been closed.</p>
+        <h1 className="text-2xl md:text-3xl font-black tracking-tight mb-2">{t("common.error")}</h1>
+        <p className="text-white/60 text-center mb-6 text-sm md:text-base">This room doesn&apos;t exist or has been closed.</p>
         <Link href="/play/online" className="bg-indigo-600 hover:bg-indigo-500 px-6 py-2.5 rounded-xl font-semibold">
           {t("room.backToLobby")}
         </Link>
@@ -186,7 +186,8 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-indigo-600/8 blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-purple-600/5 blur-3xl" />
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-4 py-3 border-b border-white/5">
@@ -217,8 +218,8 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
         {game.status === "waiting" && (
           <div className="bg-gradient-to-br from-amber-500/15 to-yellow-500/10 border border-amber-500/30 rounded-2xl p-6 mb-4 text-center">
             <div className="text-3xl mb-2 animate-pulse">⏳</div>
-            <div className="text-lg font-bold text-amber-300">{t("room.waiting")}</div>
-            <p className="text-sm text-white/60 mt-1 mb-3">{t("room.shareCode")} <span className="font-bold tabular-nums tracking-wider text-amber-200">{game.code}</span></p>
+            <div className="text-lg font-bold tracking-tight text-amber-300">{t("room.waiting")}</div>
+            <p className="text-sm text-white/60 mt-1 mb-3">{t("room.shareCode")} <span className="font-black tabular-nums tracking-[0.05em] text-amber-200">{game.code}</span></p>
             <div className="flex flex-wrap gap-2 justify-center">
               <button
                 onClick={handleCopyLink}
@@ -255,7 +256,7 @@ export default function OnlineGamePage({ params }: { params: Promise<{ gameId: s
             <div className="text-4xl mb-1">
               {game.winner === myColor ? "🏆" : game.winner === "draw" ? "🤝" : "💀"}
             </div>
-            <div className="text-xl font-black">
+            <div className="text-xl md:text-2xl font-black tracking-tight">
               {game.winner === myColor ? t("room.youWon") : game.winner === "draw" ? t("analysis.draw") : t("room.gameOver")}
             </div>
             <p className="text-sm text-white/60 mt-1">
@@ -409,7 +410,7 @@ function PlayerCard({
           {player.name} {isMe && <span className="text-indigo-400 text-xs">(You)</span>}
         </div>
         <div className="text-xs text-white/40 truncate">
-          {player.elo} ELO · {coach.shortName}
+          <span className="font-black tabular-nums text-white/60">{player.elo}</span> ELO · {coach.shortName}
         </div>
       </div>
       {isTurn && <div className="text-xs text-green-400 font-bold animate-pulse shrink-0">●</div>}

@@ -53,7 +53,7 @@ export default function CoachCard({ coach, unlocked = true, selected = false, on
 
       {/* PRO badge */}
       {coach.isPro && (
-        <div className="absolute top-2 right-2 z-20 bg-amber-400 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded-full tracking-wider shadow-lg">
+        <div className="absolute top-2 right-2 z-20 bg-amber-400 text-amber-900 text-[10px] font-black px-2 py-0.5 rounded-full tracking-[0.08em] shadow-lg">
           PRO
         </div>
       )}
@@ -98,7 +98,7 @@ export default function CoachCard({ coach, unlocked = true, selected = false, on
             {coach.rating}
           </div>
         </div>
-        <div className="text-[10px] uppercase tracking-wider text-white/80 font-bold drop-shadow truncate">
+        <div className="text-[10px] uppercase tracking-[0.08em] text-white/80 font-bold drop-shadow truncate">
           {coach.title}
         </div>
         {size !== "sm" && (
@@ -110,7 +110,7 @@ export default function CoachCard({ coach, unlocked = true, selected = false, on
 
       {/* Selected indicator */}
       {selected && (
-        <div className="absolute bottom-2 left-2 right-2 z-20 bg-yellow-400 text-yellow-900 text-center text-[10px] font-black py-1 rounded-md tracking-wider shadow-lg">
+        <div className="absolute bottom-2 left-2 right-2 z-20 bg-yellow-400 text-yellow-900 text-center text-[10px] font-black py-1 rounded-md tracking-[0.08em] shadow-lg">
           ✓ SELECTED
         </div>
       )}

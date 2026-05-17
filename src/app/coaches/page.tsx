@@ -19,8 +19,8 @@ export default function CoachesPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white">
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full bg-indigo-600/10 blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-fuchsia-600/10 blur-3xl" />
+        <div className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-indigo-600/5 blur-3xl" />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 rounded-full bg-fuchsia-600/5 blur-3xl" />
       </div>
 
       <nav className="relative z-10 flex items-center justify-between px-6 py-4 border-b border-white/5">
@@ -39,8 +39,8 @@ export default function CoachesPage() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 py-8">
         <div className="flex items-end justify-between mb-6">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black mb-1">{t("home.coachesTitle")}</h1>
-            <p className="text-white/60 text-base">
+            <h1 className="text-3xl md:text-5xl font-black tracking-tight mb-1">{t("home.coachesTitle")}</h1>
+            <p className="text-white/60 text-sm md:text-base">
               {COACHES.length} {t("home.coachesDesc").split(" · ")[0].replace(/\d+\s+/, "")}
             </p>
           </div>
@@ -89,12 +89,12 @@ export default function CoachesPage() {
             </div>
 
             <div className="flex items-center justify-between mb-1">
-              <h2 className="text-2xl font-black">{selected.name}</h2>
+              <h2 className="text-2xl font-black tracking-tight">{selected.name}</h2>
               <div className="bg-indigo-600/30 text-indigo-300 font-black tabular-nums px-3 py-1 rounded-lg border border-indigo-500/30">
                 {selected.rating}
               </div>
             </div>
-            <div className="text-sm uppercase tracking-wider text-indigo-400 font-bold mb-1">
+            <div className="text-xs uppercase tracking-[0.08em] text-indigo-400 font-bold mb-1">
               {selected.title}
             </div>
             <div className="text-xs text-white/50 mb-4">{selected.company}</div>
@@ -108,7 +108,7 @@ export default function CoachesPage() {
             </div>
 
             <div className="bg-black/30 rounded-xl p-3 mb-4 border border-white/5">
-              <div className="text-[10px] uppercase tracking-wider text-white/40 mb-1">Catchphrase</div>
+              <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 mb-1">Catchphrase</div>
               <div className="text-sm italic text-white/80">&ldquo;{selected.catchphrase}&rdquo;</div>
             </div>
 
