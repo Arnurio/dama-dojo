@@ -33,15 +33,15 @@ export default function DailyWidget() {
           : "bg-white/5 border-white/10"
       )}>
         <div className="text-5xl">🔥</div>
-        <div className="flex-1">
-          <div className="text-3xl font-black tabular-nums">
-            {streak.current} <span className="text-sm font-normal text-white/60">
+        <div className="flex-1 min-w-0">
+          <div className="text-3xl font-black tabular-nums tracking-tight leading-none">
+            {streak.current} <span className="text-xs font-medium text-white/60 ml-1">
               {locale === "ru" ? "дней подряд" : locale === "kk" ? "күн қатарынан" : "day streak"}
             </span>
           </div>
-          <div className="text-xs text-white/50 mt-1">
-            {locale === "ru" ? "Лучшая серия" : locale === "kk" ? "Ең үздік серия" : "Best"}: {streak.longest} ·{" "}
-            {locale === "ru" ? "Всего" : locale === "kk" ? "Барлығы" : "Total"}: {streak.totalDays}
+          <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 mt-2">
+            {locale === "ru" ? "Лучшая" : locale === "kk" ? "Үздік" : "Best"}: <span className="tabular-nums text-white/60">{streak.longest}</span> ·{" "}
+            {locale === "ru" ? "Всего" : locale === "kk" ? "Барлығы" : "Total"}: <span className="tabular-nums text-white/60">{streak.totalDays}</span>
           </div>
         </div>
       </div>
@@ -59,14 +59,14 @@ export default function DailyWidget() {
         <div className="text-4xl">{challenge.completed ? "✅" : todayCh.emoji}</div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2">
-            <div className="font-bold text-sm uppercase tracking-wider text-indigo-300">
+            <div className="font-bold text-[10px] uppercase tracking-[0.08em] text-indigo-300">
               {locale === "ru" ? "Дневной челлендж" : locale === "kk" ? "Күнделікті челлендж" : "Daily Challenge"}
             </div>
-            <div className="text-xs font-bold text-amber-300 shrink-0">+{todayCh.reward} 🪙</div>
+            <div className="text-xs font-black text-amber-300 shrink-0 tabular-nums">+{todayCh.reward} 🪙</div>
           </div>
-          <div className="font-bold text-base mt-0.5">{localized("title")}</div>
-          <div className="text-xs text-white/60">{localized("desc")}</div>
-          <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <div className="font-bold text-base mt-1 tracking-tight">{localized("title")}</div>
+          <div className="text-xs text-white/60 leading-relaxed">{localized("desc")}</div>
+          <div className="mt-2.5 h-1.5 rounded-full bg-white/10 overflow-hidden">
             <div
               className={cn(
                 "h-full transition-all",
@@ -75,7 +75,7 @@ export default function DailyWidget() {
               style={{ width: `${progressPct}%` }}
             />
           </div>
-          <div className="text-[10px] text-white/40 mt-1">
+          <div className="text-[10px] font-bold tabular-nums text-white/40 mt-1.5 tracking-wide">
             {challenge.progress}/{todayCh.goalValue}
           </div>
         </div>

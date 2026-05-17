@@ -68,36 +68,36 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
 
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-[#111118] border border-white/10 rounded-3xl p-6 max-w-lg w-full">
+      <div className="bg-[#111118] border border-white/10 rounded-3xl p-6 max-w-lg w-full shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="text-4xl">{coach.avatar}</div>
             <div>
-              <div className="font-bold">{coach.name}</div>
-              <div className="text-xs text-indigo-400">{coach.title}</div>
+              <div className="font-black tracking-tight">{coach.name}</div>
+              <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-indigo-400">{coach.title}</div>
             </div>
           </div>
-          <button onClick={onClose} className="text-white/40 hover:text-white text-xl">×</button>
+          <button onClick={onClose} className="text-white/40 hover:text-white text-2xl leading-none transition-colors" aria-label="Close">×</button>
         </div>
 
         {/* Game summary */}
-        <div className="bg-white/5 rounded-2xl p-4 mb-4">
-          <div className="text-sm font-semibold mb-2">{t("analysis.summary")}</div>
+        <div className="bg-white/5 border border-white/5 rounded-2xl p-4 mb-4">
+          <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 mb-3">{t("analysis.summary")}</div>
           <div className="grid grid-cols-3 gap-3 text-center">
             <div>
-              <div className={`text-xl font-bold ${playerWon ? "text-green-400" : "text-red-400"}`}>
+              <div className={`text-xl font-black tracking-tight ${playerWon ? "text-green-400" : "text-red-400"}`}>
                 {playerWon ? t("analysis.win") : winner === "draw" ? t("analysis.draw") : t("analysis.loss")}
               </div>
-              <div className="text-xs text-white/40">{t("analysis.result")}</div>
+              <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 mt-1">{t("analysis.result")}</div>
             </div>
             <div>
-              <div className="text-xl font-bold text-indigo-400">{totalMoves}</div>
-              <div className="text-xs text-white/40">{t("analysis.totalMoves")}</div>
+              <div className="text-xl font-black tabular-nums text-indigo-400">{totalMoves}</div>
+              <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 mt-1">{t("analysis.totalMoves")}</div>
             </div>
             <div>
-              <div className="text-xl font-bold text-amber-400">{playerCaptures}</div>
-              <div className="text-xs text-white/40">{t("analysis.yourCaptures")}</div>
+              <div className="text-xl font-black tabular-nums text-amber-400">{playerCaptures}</div>
+              <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 mt-1">{t("analysis.yourCaptures")}</div>
             </div>
           </div>
         </div>
@@ -122,8 +122,8 @@ export default function CoachAnalysis({ coach, moveHistory, winner, playerColor,
           </div>
         ) : analysis ? (
           <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
-            <div className="text-sm font-semibold text-white/60 mb-2">{t("analysis.coachSays")}</div>
-            <div className="text-sm leading-relaxed whitespace-pre-wrap">{analysis}</div>
+            <div className="text-[10px] uppercase tracking-[0.08em] font-bold text-white/40 mb-2">{t("analysis.coachSays")}</div>
+            <div className="text-sm leading-relaxed whitespace-pre-wrap text-white/85">{analysis}</div>
           </div>
         ) : (
           <button
